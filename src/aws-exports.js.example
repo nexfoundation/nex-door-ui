@@ -1,0 +1,29 @@
+import { Auth } from 'aws-amplify';
+
+const awsauth = {
+    Auth: {
+
+        // REQUIRED - Amazon Cognito Region
+        region: '<YOUR_REGION>',
+
+        // OPTIONAL - Amazon Cognito User Pool ID
+        userPoolId: '<YOUR_COGNITO_ID>',
+
+        // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+        userPoolWebClientId: '<YOUR_USER_POOL_CLIENT_ID>',
+
+        // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
+        mandatorySignIn: false
+    },
+    API: {
+        endpoints: [
+        {
+            name: 'ServiceEndpoint',
+            endpoint: 'https://XXXXXXXXXX.execute-api.XXXXXXXXX.amazonaws.com/prod/'
+        },
+        ]
+    }
+}
+
+export default awsauth
+Auth.configure(awsauth)
