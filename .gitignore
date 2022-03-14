@@ -16,6 +16,7 @@ yarn-error.log*
 .vscode/*
 !.vscode/launch.json
 !.vscode/tasks.json
+!.vscode/extensions.json
 *.suo
 *.ntvs*
 *.njsproj
