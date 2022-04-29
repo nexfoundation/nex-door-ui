@@ -11,7 +11,7 @@
     </div>
     <div class="link-container">
       <p v class='toggleButton' v-on:click="toggleForm(formType === 'signIn' ? 'signUp' : 'signIn')">{{ formTitle }}</p>
-      <p v-if="formType == 'signIn'" class='toggleButton' v-on:click="toggleForm('forgotPassword')">Forgot Password?</p>
+      <p v-if="formType == 'signIn'" class='toggleButton' v-on:click="toggleForm('forgotPassword')">忘記密碼？</p>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       formType: 'signIn',
-      formTitle: 'Need an account?'
+      formTitle: '還沒註冊？'
     }
   },
   components: {
@@ -37,8 +37,8 @@ export default {
   methods: {
     toggleForm(formType) {
       this.formType = formType
-      if (formType === 'signIn') this.formTitle = 'Need an account?'
-      if (formType === 'signUp') this.formTitle = 'Already have an account?'
+      if (formType === 'signIn') this.formTitle = '還沒註冊？'
+      if (formType === 'signUp') this.formTitle = '已經有一個帳號？'
     }
   }
 }

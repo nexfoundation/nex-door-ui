@@ -1,42 +1,44 @@
 <template>
   <div>
+    <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
     <div class='form-container'>
-      <h1 class='heading'>Sign Up</h1>
+      <h1 class='heading'>註冊 Sign Up</h1>
       <div class='form' v-if="phase === Number(0)">
         <input
           class='input'
           v-model="form.username"
-          placeholder='Username'
+          placeholder='用戶名稱 (Username)'
         />
         <input
           class='input'
           v-model="form.password"
-          placeholder='Password'
+          placeholder='密碼 (Password)'
           type='password'
         />
         <input
           class='input'
           v-model="form.attributes.email"
-          placeholder='Email'
+          placeholder='信箱 (Email)'
         />
-        <input
+        <!--input
           class='input'
           v-model="form.attributes.phone_number"
           placeholder='Phone'
-        />
+        /-->
         <div class='button' v-on:click="signUp">
-          <p>Sign Up</p>
+          <p>註冊 (Sign Up)</p>
         </div>
       </div>
 
       <div class='form' v-if="phase === Number(1)">
+        <p>(請確認您的 Email 或是簡訊的 OTP 驗證碼)</p>
         <input
           class='input'
           v-model="authCode"
-          placeholder='Authentication code'
+          placeholder='請輸入臨時性驗證碼 (Authentication code)'
         />
         <div class='button' v-on:click="confirmSignUp">
-          <p>Confirm Sign Up</p>
+          <p>確認 (Confirm Sign Up)</p>
         </div>
       </div>
     </div>
@@ -56,6 +58,7 @@ export default {
         console.log('user successfully signed up!')
       } catch (err) {
         console.log('error signing up...', err)
+        this.errorMessage = err
       }
     },
     async confirmSignUp() {
@@ -65,6 +68,7 @@ export default {
         console.log('user successfully signed up!')
       } catch (err) {
         console.log('error signing up...', err)
+        this.errorMessage = err
       }
     }
   },
@@ -79,7 +83,8 @@ export default {
         }
       },
       authCode: '',
-      phase: 0
+      phase: 0,
+      errorMessage: undefined
     }
   }
 }
