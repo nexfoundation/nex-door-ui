@@ -9,16 +9,16 @@
                         <img :src="'https://www.gravatar.com/avatar/' + user_attributes['picture'] + '?s=80'" class="mr-3">
                         <div class="media-body">
                             <h5 class="mt-0">{{ user_attributes['name'] }} </h5>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                            {{ user_attributes['custom:tags'] }}
                         </div>
                     </div>
                     <hr>
                     <p><a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-success">Make an appointment</a></p>
                     <p class="card-text">
                         {{ user['Username'] }}
-                        {{ user_attributes['profile'] }}
+                        {{ user_attributes['profile'].substring(0, 100) }}
                     </p>
-                    <code>{{ user['Attributes'] }}</code>
+                    <!--code>{{ user['Attributes'] }}</code-->
                 </div>
             </div>
         </div>
