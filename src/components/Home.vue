@@ -1,7 +1,7 @@
 <template>
     <div class='container'>
-        <h1>Welcome to your App</h1>
-        <p>Amplify your apps. Build on a flexible, scalable, and reliable serverless backend.</p>
+        <h1>關於 NEX Door</h1>
+        <p>串連世界各地的專家 解決各種疑難雜症</p>
         <div class="card-columns">
             <div class="card" v-for="user in users">
                 <div class="card-body" :set="user_attributes = getAttribute(user['Attributes'])">
@@ -13,15 +13,22 @@
                         </div>
                     </div>
                     <hr>
-                    <p><a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-success">Make an appointment</a></p>
-                    <p class="card-text">
-                        {{ user['Username'] }}
-                        {{ user_attributes['profile'].substring(0, 100) }}
+                    <p>
+                        <a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-success">預約</a>
+                        &nbsp;
+                        <b-button v-b-modal.modal @click="showIntroModal('about-' + user_attributes['sub'])">關於我</b-button>
                     </p>
+                    <!-- {{ user['Username'] }} -->
+                    <p class="card-text" :id="'about-' + user_attributes['sub']">{{ user_attributes['profile'] }}</p>
                     <!--code>{{ user['Attributes'] }}</code-->
                 </div>
             </div>
         </div>
+
+        <b-modal ref="my-modal" id="modal" title="關於我">
+            <pre class="intro">{{ intro }}</pre>
+        </b-modal>
+
     </div>
 </template>
 
@@ -33,9 +40,13 @@ export default {
         this.getData()
     },
     data () {
-        return { users: undefined }
+        return { users: undefined, intro: '' }
     },
     methods: {
+        showIntroModal(id) {
+            this.intro = document.getElementById(id).innerHTML
+            this.$refs['my-modal'].show()
+        },
         getAttribute(user_attributes) {
             let attributes = {};
             for(let i of user_attributes){
@@ -77,6 +88,14 @@ export default {
     }
     .container p {
         font-size: 18px;
+        text-align: left;
+    }
+    .card-text {
+        height: 4.6em;
+        width: 15em;
+        overflow: hidden;
+    }
+    pre.intro {
         text-align: left;
     }
 </style>

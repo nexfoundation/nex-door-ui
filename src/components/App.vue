@@ -2,7 +2,7 @@
   <div>
     <div class='header'>
       <img class='header-img' src="../assets/headerimg.png" />
-      <router-link to="/home" class='heading'>AWS Amplify Vue Auth Starter</router-link>
+      <router-link to="/home" class='heading'>NEX Door</router-link>
       <div class="header-menu">
         <router-link to="/home" class='link'>Home</router-link>
         <p class='link' v-on:click="signOut" v-if="isAuthenticated">Sign Out</p>
