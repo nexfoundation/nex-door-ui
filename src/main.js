@@ -7,6 +7,9 @@ import { AmplifyPlugin } from 'aws-amplify-vue'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
+// Bootstrap
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
 // Vue components
 import Auth from './components/Auth.vue'
 import App from './components/App.vue'
@@ -55,6 +58,7 @@ router.beforeResolve((to, _, next) => {
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
+Vue.use(BootstrapVue)
 Vue.use(AmplifyPlugin, AmplifyModules)
 
 new Vue({
