@@ -16,7 +16,7 @@
                     <p>
                         <a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-success">預約</a>
                         &nbsp;
-                        <b-button v-b-modal.modal @click="showIntroModal('about-' + user_attributes['sub'])">關於我</b-button>
+                        <b-button :data-userid="user_attributes['sub']" @click="showIntroModal">關於我</b-button>
                     </p>
                     <!-- {{ user['Username'] }} -->
                     <p class="card-text" :id="'about-' + user_attributes['sub']">{{ user_attributes['profile'] }}</p>
@@ -43,8 +43,9 @@ export default {
         return { users: undefined, intro: '' }
     },
     methods: {
-        showIntroModal(id) {
-            this.intro = document.getElementById(id).innerHTML
+        showIntroModal(e) {
+            let userid = e.currentTarget.getAttribute('data-userid')
+            this.intro = document.getElementById('about-' + userid).innerHTML
             this.$refs['my-modal'].show()
         },
         getAttribute(user_attributes) {
