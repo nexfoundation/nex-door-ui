@@ -2,11 +2,11 @@
   <div>
     <div class='header'>
       <img class='header-img' src="../assets/headerimg.png" />
-      <router-link to="/home" class='heading'>NEX Door</router-link>
+      <router-link to="/" class='heading'>NEX Door</router-link>
       <div class="header-menu">
-        <router-link to="/home" class='link'>Home</router-link>
+        <router-link to="/" class='link'>Home</router-link>
         <p class='link' v-on:click="signOut" v-if="isAuthenticated">Sign Out</p>
-        <router-link class='link' to="/" v-if="!isAuthenticated">Sign In</router-link>
+        <router-link class='link' to="/auth" v-if="!isAuthenticated">Sign In</router-link>
         <router-link class='link' to="/profile" v-if="isAuthenticated">Profile</router-link>
         <router-link class='link' to="/protected">Protected Route</router-link>
       </div>

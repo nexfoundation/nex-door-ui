@@ -25,9 +25,9 @@ require('./assets/main.css')
 
 // route configuration
 const routes = [
-  { path: '/', component: Auth },
+  { path: '/', component: Home },
+  { path: '/auth', component: Auth },
   { path: '/protected', component: Protected, meta: { requiresAuth: true} },
-  { path: '/home', component: Home },
   { path: '/profile', component: Profile, meta: { requiresAuth: true} },
 ]
 
