@@ -27,7 +27,7 @@
                     <p>
                         <a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-success">預約</a>
                         &nbsp;
-                        <b-button :data-userid="user_attributes['sub']" @click="showIntroModal">關於我</b-button>
+                        <b-button :data-username="user_attributes['name']" :data-userpicture="user_attributes['picture']" :data-userid="user_attributes['sub']" @click="showIntroModal">關於我</b-button>
                     </p>
                     <!-- {{ user['Username'] }} -->
                     <p class="card-text" :id="'about-' + user_attributes['sub']">{{ user_attributes['profile'] }}</p>
@@ -37,6 +37,13 @@
         </div>
 
         <b-modal ref="my-modal" id="modal" title="關於我">
+            <div class="media">
+                <img :src="'https://www.gravatar.com/avatar/' + modalCurrentUser['picture'] + '?s=80'" class="mr-3">
+                <div class="media-body">
+                    <h5 class="mt-0">{{ modalCurrentUser['name'] }} </h5>
+                </div>
+            </div>
+            <hr></hr>
             <pre class="intro">{{ intro }}</pre>
         </b-modal>
     </div>
@@ -50,11 +57,15 @@ export default {
         this.getData()
     },
     data () {
-        return { users: undefined, intro: '' }
+        return { users: undefined, intro: '', modalCurrentUser: {'name': '', 'picture': ''} }
     },
     methods: {
         showIntroModal(e) {
             let userid = e.currentTarget.getAttribute('data-userid')
+
+            this.modalCurrentUser['name'] = e.currentTarget.getAttribute('data-username')
+            this.modalCurrentUser['picture'] = e.currentTarget.getAttribute('data-userpicture')
+
             this.intro = document.getElementById('about-' + userid).innerHTML
             this.$refs['my-modal'].show()
         },
