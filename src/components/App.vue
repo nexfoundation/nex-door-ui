@@ -12,6 +12,14 @@
       </div>
     </div>
     <router-view></router-view>
+    <footer class="row" id="nex-footer">
+        <div class="col-md-8">
+          <p class="footer-text">NEX Work 為非營利服務平台，由美國 NEX Foundation 建置，2020 年正式營運。<br>NEX Foundation 為美國註冊商標，屬 NEX Foundation 所有。 其餘各商標均為個別原始公司所有，NEX Foundation 與各該公司並無代理權限或合作關係。<br><br>Copyright © 2020</p>
+        </div>
+        <div class="col-md-4">
+          <a target="_blank" href="https://nexf.org"><img class="footer-logo" src="../assets/nexf_logo.png" alt="NEX Foundation"></a>
+        </div>
+    </footer>
   </div>
 </template>
 
@@ -83,5 +91,19 @@ export default {
 }
 .header-img {
   height: 42px;
+}
+footer#nex-footer {
+  background-color: #307fc4;
+  margin-top: 3em;
+}
+footer#nex-footer .footer-text {
+  padding: 3em;
+  text-align: left;
+  color: #fff;
+  font-size: 14px;
+}
+footer#nex-footer img.footer-logo {
+  padding: 3em;
+  width: 80%;
 }
 </style>

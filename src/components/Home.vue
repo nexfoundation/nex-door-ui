@@ -1,7 +1,18 @@
 <template>
     <div class='container'>
+
         <h1>關於 NEX Door</h1>
-        <p>串連世界各地的專家 解決各種疑難雜症</p>
+        <span>串連世界各地的專家 解決各種疑難雜症</span>
+
+        <hr></hr>
+
+        <blockquote>
+            <p>NEX Door 是一個非營利線上導師領航平台，連結世界各地菁英，創造團結互助的力量，建立台灣人互助網路。讓台灣人陪著台灣人在國際路上打開第一扇門或衝刺最後一哩路。</p>
+            <p>「今日的路人是明日的引路人」，延續 Give and Take 的精神，讓我們啟動正向迴圈，幫助更多台灣人走向世界，讓回家的路變得更好。</p>
+        </blockquote>
+
+        <hr></hr>
+
         <div class="card-columns">
             <div class="card" v-for="user in users">
                 <div class="card-body" :set="user_attributes = getAttribute(user['Attributes'])">
@@ -28,7 +39,6 @@
         <b-modal ref="my-modal" id="modal" title="關於我">
             <pre class="intro">{{ intro }}</pre>
         </b-modal>
-
     </div>
 </template>
 
