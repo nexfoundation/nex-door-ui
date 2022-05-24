@@ -5,16 +5,7 @@
 			"label": "serve",
 			"type": "npm",
 			"script": "serve",
-			"problemMatcher": [
-				// {
-				// 	"base": "$tsc-watch",
-				// 	"background": {
-				// 		"activeOnStart": true,
-				// 		"beginsPattern": "Starting development server",
-				// 		"endsPattern": "Compiled successfully"
-				// 	}
-				// }
-			],
+			"problemMatcher": [],
 			"detail": "vue-cli-service serve"
 		},
 		{
