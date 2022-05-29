@@ -6,6 +6,11 @@
       <div class='form' v-if="phase === Number(0)">
         <input
           class='input'
+          v-model="form.attributes.email"
+          placeholder='信箱 (Email)'
+        />
+        <input
+          class='input'
           v-model="form.username"
           placeholder='用戶名稱 (Username)'
         />
@@ -14,11 +19,6 @@
           v-model="form.password"
           placeholder='密碼 (Password)'
           type='password'
-        />
-        <input
-          class='input'
-          v-model="form.attributes.email"
-          placeholder='信箱 (Email)'
         />
         <!--input
           class='input'
