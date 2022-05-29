@@ -154,7 +154,7 @@
                     // Refresh local current user session and state
                     user = await this.$Amplify.Auth.currentAuthenticatedUser({ bypassCache: true })
                     this.$store.dispatch('setUser', user)
-                    this.$router.push('home')
+                    this.$router.push('/')
                 } catch (err) {
                     console.log('error: ', err)
                     this.errorMessage = err
