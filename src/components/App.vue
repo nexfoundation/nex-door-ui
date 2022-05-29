@@ -85,6 +85,7 @@ export default {
   color: #606368;
   text-align: left;
   margin: 4px;
+  padding-top: 5px;
   font-size: 20px;
   font-weight: 400;
   text-decoration: none;
