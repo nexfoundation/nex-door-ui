@@ -19,16 +19,16 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputName" class="col-sm-2 col-form-label">名稱 Name</label>
+                    <label for="inputName" class="col-sm-2 col-form-label">名稱 Name (必填)</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Name" :value="user_attributes['name']">
+                        <input type="text" class="form-control" id="inputName" placeholder="Name" :value="user_attributes['name']" required="required">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputProfilePhoto" class="col-sm-2 col-form-label">個人頭像 Photo (Gravatar)</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputProfilePhoto" placeholder="205e460b479e2e5b48aec07710c08d50" :value="user_attributes['picture']">
-                        <span class="help-block">(請輸入 Gravatar 的用戶號碼 - https://www.gravatar.com/avatar/<strong>205e460b479e2e5b48aec07710c08d50</strong>)</span>
+                        <span class="help-block">(輸入 Gravatar 的用戶號碼 - https://www.gravatar.com/avatar/<strong>205e460b479e2e5b48aec07710c08d50</strong> | <a href="https://gravatar.com">免費註冊一個頭像</a>)</span>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -50,12 +50,12 @@
                     <label for="inputCalendy" class="col-sm-2 col-form-label">個人預約連結 (Calendy)</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="inputCalendy" placeholder="https://calendly.com/<username>" :value="user_attributes['custom:calendy_url']">
+                        <span class="help-block">(<a href="https://calendly.com/">前往 Calendy</a>)</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputCalendy" class="col-sm-2 col-form-label">諮詢類別 Tags</label>
                     <div class="col-sm-10">
-                      {{ user_attributes['custom:tags'] }}
                       <div class="tag-input">
                         <vue-tags-input
                             v-model="tag"
@@ -69,6 +69,7 @@
                         </vue-tags-input>
 
                         </div>
+                      {{ user_attributes['custom:tags'] }}
                     </div>
                 </div>
                 <div class="form-group row">
