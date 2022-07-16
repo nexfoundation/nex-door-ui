@@ -74,7 +74,7 @@
                 </div>
                 <div class="form-group row">
                     <label for="inputProfileBio">個人簡介 Bio</label>
-                    <textarea class="form-control" id="inputProfileBio" rows="3" v-model="user_attributes['profile']"></textarea>
+                    <textarea class="form-control" id="inputProfileBio" rows="20" v-model="user_attributes['profile']"></textarea>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-10">
