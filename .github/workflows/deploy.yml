@@ -1,0 +1,42 @@
+name: NEX Door UI deployment workflow
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  GH_PAGE_CNAME: 'door-stage.nexf.org'
+  GIT_USER_NAME: 'NEX Door UI Github Action deployment'
+  GIT_USER_EMAIL: 'eason.cao@nexf.org'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the site
+      run: |
+        mkdir ~/.ssh
+        echo "${{ secrets.NEX_DOOR_WEB_DEPLOYMENT_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600  ~/.ssh/id_rsa
+        git clone git@github.com:nexfoundation/nex-door-web.git /tmp/nex-door-web
+        echo "${{ secrets.NEX_DOOR_WEB_DEPLOYMENY_AWS_AMPLIFY_CONFIG_PROD }}" > ${{ github.workspace }}/src/aws-exports.js
+        
+        docker run \
+        -v ${{ github.workspace }}:/app \
+        node:14.17.0-alpine3.13 /bin/sh -c "cd /app && npm install && npm run build"
+        cp -r ${{ github.workspace }}/dist/* /tmp/nex-door-web
+
+        cd /tmp/nex-door-web
+        echo $GH_PAGE_CNAME > CNAME
+
+        git config --global user.email "$GIT_USER_EMAIL"
+        git config --global user.name "$GIT_USER_NAME"
+        git checkout -b gh-page
+        git add -fA
+        git commit --allow-empty -m "Build - $(date -u)"
+        git push -f -q origin gh-page
