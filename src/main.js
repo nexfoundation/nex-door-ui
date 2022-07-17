@@ -33,7 +33,8 @@ const routes = [
 
 // router definition
 const router = new VueRouter({
-  routes
+  routes,
+  mode: 'history'
 })
 
 // implement protected routes for only signed in users
