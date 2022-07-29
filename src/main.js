@@ -42,24 +42,31 @@ const router = new VueRouter({
 
 // implement protected routes for only signed in users
 router.beforeResolve((to, _, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    Vue.prototype.$Amplify.Auth.currentAuthenticatedUser().then((data) => {
-      if (data && data.signInUserSession) {
-        next()
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
+      .then((data) => {
+        if (data && data.signInUserSession) {
+          next();
+        }
       } 
+        }
+      })
       .catch(() => {
         console.log(
-        path: '/',
-        query: {
-          redirect: to.fullPath,
-        }
+          "You are trying to access a protected route. Please sign in."
+        );
+        next({
+          path: "/",
+          query: {
+            redirect: to.fullPath,
+          },
+        });
       });
-    });
   }
-  next()
-})
+  next();
+});
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(AmplifyPlugin, AmplifyModules)
