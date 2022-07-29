@@ -3,7 +3,7 @@
     <div class='header'>
       <img class='header-img' src="../assets/headerimg.png" />
       <router-link to="/" class='heading'>NEX Door</router-link>
-      <div class="header-menu">
+      <div class="header-menu" v-if="this.$route.path !== '/auth'">
         <router-link to="/" class='link'>Home</router-link>
         <p class='link' v-on:click="signOut" v-if="isAuthenticated">Sign Out</p>
         <router-link class='link' to="/auth" v-if="!isAuthenticated">Sign In</router-link>
