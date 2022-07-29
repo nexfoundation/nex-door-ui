@@ -30,8 +30,8 @@ require('./assets/main.css')
 const routes = [
   { path: '/', component: Home },
   { path: '/auth', component: Auth },
-  { path: '/protected', component: Protected, meta: { requiresAuth: true} },
-  { path: '/profile', component: Profile, meta: { requiresAuth: true} },
+  { path: '/protected', component: Protected, meta: { requiresAuth: true } },
+  { path: '/profile', component: Profile, meta: { requiresAuth: true } },
 ]
 
 // router definition
@@ -47,8 +47,6 @@ router.beforeResolve((to, _, next) => {
       .then((data) => {
         if (data && data.signInUserSession) {
           next();
-        }
-      } 
         }
       })
       .catch(() => {
