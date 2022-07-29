@@ -1,11 +1,18 @@
-// https://code.visualstudio.com/docs/getstarted/settings#_workspace-settings
+// See https://code.visualstudio.com/docs/getstarted/settings#_workspace-settings
 {
+    "eslint.format.enable": true,
+    "editor.codeActionsOnSave": {
+        //   "source.fixAll.eslint": true
+    },
     "files.eol": "\n",
     // "files.trimTrailingWhitespace": true,
     "[vue]": {
         "editor.defaultFormatter": "Vue.volar"
     },
-    "[json, jsonc]": {
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     }
-} 
+}
