@@ -1,0 +1,11 @@
+// https://code.visualstudio.com/docs/getstarted/settings#_workspace-settings
+{
+    "files.eol": "\n",
+    // "files.trimTrailingWhitespace": true,
+    "[vue]": {
+        "editor.defaultFormatter": "Vue.volar"
+    },
+    "[json, jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
+} 
