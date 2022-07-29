@@ -8,7 +8,10 @@ import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
 // Bootstrap
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import {
+  BootstrapVue,
+  // IconsPlugin
+} from "bootstrap-vue";
 
 // Vue components
 import Auth from './components/Auth.vue'
@@ -44,9 +47,8 @@ router.beforeResolve((to, _, next) => {
       if (data && data.signInUserSession) {
         next()
       } 
-    }).catch((e) => {
-      console.log('You are trying to access a protected route. Please sign in.')
-      next({
+      .catch(() => {
+        console.log(
         path: '/',
         query: {
           redirect: to.fullPath,
