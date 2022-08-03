@@ -7,6 +7,12 @@ import { AmplifyPlugin } from 'aws-amplify-vue'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
+// Bootstrap
+import {
+  BootstrapVue,
+  // IconsPlugin
+} from "bootstrap-vue";
+
 // Vue components
 import Auth from './components/Auth.vue'
 import App from './components/App.vue'
@@ -22,39 +28,45 @@ require('./assets/main.css')
 
 // route configuration
 const routes = [
-  { path: '/', component: Auth },
-  { path: '/protected', component: Protected, meta: { requiresAuth: true} },
-  { path: '/home', component: Home },
-  { path: '/profile', component: Profile, meta: { requiresAuth: true} },
+  { path: '/', component: Home },
+  { path: '/auth', component: Auth },
+  { path: '/protected', component: Protected, meta: { requiresAuth: true } },
+  { path: '/profile', component: Profile, meta: { requiresAuth: true } },
 ]
 
 // router definition
 const router = new VueRouter({
-  routes
+  routes,
+  mode: 'history'
 })
 
 // implement protected routes for only signed in users
 router.beforeResolve((to, _, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    Vue.prototype.$Amplify.Auth.currentAuthenticatedUser().then((data) => {
-      if (data && data.signInUserSession) {
-        next()
-      } 
-    }).catch((e) => {
-      console.log('You are trying to access a protected route. Please sign in.')
-      next({
-        path: '/',
-        query: {
-          redirect: to.fullPath,
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
+      .then((data) => {
+        if (data && data.signInUserSession) {
+          next();
         }
+      })
+      .catch(() => {
+        console.log(
+          "You are trying to access a protected route. Please sign in."
+        );
+        next({
+          path: "/",
+          query: {
+            redirect: to.fullPath,
+          },
+        });
       });
-    });
   }
-  next()
-})
+  next();
+});
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.use(VueRouter)
+Vue.use(BootstrapVue)
 Vue.use(AmplifyPlugin, AmplifyModules)
 
 new Vue({

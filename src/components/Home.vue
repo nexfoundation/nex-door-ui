@@ -1,27 +1,51 @@
 <template>
     <div class='container'>
-        <h1>Welcome to your App</h1>
-        <p>Amplify your apps. Build on a flexible, scalable, and reliable serverless backend.</p>
+
+        <h1>關於 NEX Door</h1>
+        <span>串連世界各地的專家 解決各種疑難雜症</span>
+
+        <hr>
+
+        <blockquote>
+            <p>NEX Door 是一個非營利線上導師領航平台，連結世界各地菁英，創造團結互助的力量，建立台灣人互助網路。讓台灣人陪著台灣人在國際路上打開第一扇門或衝刺最後一哩路。</p>
+            <p>「今日的路人是明日的引路人」，延續 Give and Take 的精神，讓我們啟動正向迴圈，幫助更多台灣人走向世界，讓回家的路變得更好。</p>
+        </blockquote>
+
+        <hr>
+
         <div class="card-columns">
-            <div class="card" v-for="user in users">
+            <div class="card" v-for="user in users" :key="user.id">
                 <div class="card-body" :set="user_attributes = getAttribute(user['Attributes'])">
                     <div class="media">
                         <img :src="'https://www.gravatar.com/avatar/' + user_attributes['picture'] + '?s=80'" class="mr-3">
                         <div class="media-body">
                             <h5 class="mt-0">{{ user_attributes['name'] }} </h5>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                            {{ user_attributes['custom:tags'] }}
                         </div>
                     </div>
                     <hr>
-                    <p><a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-success">Make an appointment</a></p>
-                    <p class="card-text">
-                        {{ user['Username'] }}
-                        {{ user_attributes['profile'] }}
+                    <p>
+                        <a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-success">預約</a>
+                        &nbsp;
+                        <b-button :data-username="user_attributes['name']" :data-userpicture="user_attributes['picture']" :data-userid="user_attributes['sub']" @click="showIntroModal">關於我</b-button>
                     </p>
-                    <code>{{ user['Attributes'] }}</code>
+                    <!-- {{ user['Username'] }} -->
+                    <p class="card-text" :id="'about-' + user_attributes['sub']">{{ user_attributes['profile'] }}</p>
+                    <!--code>{{ user['Attributes'] }}</code-->
                 </div>
             </div>
         </div>
+
+        <b-modal ref="my-modal" id="modal" title="關於我">
+            <div class="media">
+                <img :src="'https://www.gravatar.com/avatar/' + modalCurrentUser['picture'] + '?s=80'" class="mr-3">
+                <div class="media-body">
+                    <h5 class="mt-0">{{ modalCurrentUser['name'] }} </h5>
+                </div>
+            </div>
+            <hr>
+            <pre class="intro">{{ intro }}</pre>
+        </b-modal>
     </div>
 </template>
 
@@ -33,9 +57,18 @@ export default {
         this.getData()
     },
     data () {
-        return { users: undefined }
+        return { users: undefined, intro: '', modalCurrentUser: {'name': '', 'picture': ''} }
     },
     methods: {
+        showIntroModal(e) {
+            let userid = e.currentTarget.getAttribute('data-userid')
+
+            this.modalCurrentUser['name'] = e.currentTarget.getAttribute('data-username')
+            this.modalCurrentUser['picture'] = e.currentTarget.getAttribute('data-userpicture')
+
+            this.intro = document.getElementById('about-' + userid).innerHTML
+            this.$refs['my-modal'].show()
+        },
         getAttribute(user_attributes) {
             let attributes = {};
             for(let i of user_attributes){
@@ -77,6 +110,14 @@ export default {
     }
     .container p {
         font-size: 18px;
+        text-align: left;
+    }
+    .card-text {
+        height: 4.6em;
+        width: 15em;
+        overflow: hidden;
+    }
+    pre.intro {
         text-align: left;
     }
 </style>

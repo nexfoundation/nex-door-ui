@@ -1,19 +1,15 @@
 <template>
   <div class='auth'>
-    <div v-if="formType === 'signIn'">
-      <sign-in />
-    </div>
-    <div v-if="formType === 'signUp'">
-      <sign-up v-bind="{toggleForm}" />
-    </div>
-    <div v-if="formType === 'forgotPassword'">
-      <forgot-password v-bind="{toggleForm}" />
-    </div>
-    <div class="link-container">
-      <p v class='toggleButton' v-on:click="toggleForm(formType === 'signIn' ? 'signUp' : 'signIn')">{{ formTitle }}</p>
-      <p v-if="formType == 'signIn'" class='toggleButton' v-on:click="toggleForm('forgotPassword')">Forgot Password?</p>
+    <component :is="currentTab" class="tab">
+    </component>
+
+    <!-- TODO: stylee classes, replace btn to div -->
+    <div v-for="tab in tabs" :key="tab" :class="['link-container', { active: currentTab === tab }]"
+      @click="currentTab = tab">
+      {{ tab }}
     </div>
   </div>
+
 </template>
 
 <script>
@@ -23,39 +19,43 @@ import ForgotPassword from './ForgotPassword.vue'
 
 export default {
   name: 'auth',
-  data() {
-    return {
-      formType: 'signIn',
-      formTitle: 'Need an account?'
-    }
-  },
   components: {
     SignIn,
     SignUp,
     ForgotPassword
   },
-  methods: {
-    toggleForm(formType) {
-      this.formType = formType
-      if (formType === 'signIn') this.formTitle = 'Need an account?'
-      if (formType === 'signUp') this.formTitle = 'Already have an account?'
+  data() {
+    return {
+      currentTab: 'SignIn',
+      tabs: ['SignIn', 'SignUp', 'ForgotPassword'],
     }
+  },
+
+  methods: {
   }
 }
 </script>
 
 <style scoped>
+.active {
+  display: none;
+}
+
 .link-container {
+  /* TODO: invalid */
   margin-top: 30;
 }
+
 .auth {
   display: flex;
   flex-direction: column;
 }
+
 .toggleButton {
   cursor: pointer;
   margin-bottom: 0;
 }
+
 .toggleButton:hover {
   opacity: .7;
 }

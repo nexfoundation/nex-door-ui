@@ -1,21 +1,22 @@
 <template>
   <div>
+    <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
     <div class='form-container'>
-      <h1 class='heading'>Sign In</h1>
+      <h1 class='heading'>登入 Sign In</h1>
       <div class='form'>
         <input
           class='input'
-          placeholder='Username'
+          placeholder='用戶名稱 (Username / Email)'
           v-model="form.username"
         />
         <input
           class='input'
-          placeholder='Password'
+          placeholder='密碼 (Password)'
           v-model="form.password"
           type='password'
         />
         <div class='button' v-on:click="signIn">
-          <p>Sign In</p>
+          <p>登入 (Sign In)</p>
         </div>
       </div>
     </div>
@@ -27,13 +28,19 @@ export default {
   name: 'sign-in',
   methods: {
     async signIn() {
+      if (this.form.username == '' || this.form.password == '') {
+        this.errorMessage = '請填寫用戶名稱或密碼！'
+        return
+      }
+
       try {
         const user = await this.$Amplify.Auth.signIn(this.form.username, this.form.password)
         this.$store.dispatch('setIsAuthenticated', true)
         this.$store.dispatch('setUser', user)
-        this.$router.push('profile')
+        this.$router.push('/')
       } catch (err) {
         console.log('error: ', err)
+        this.errorMessage = err
       }
     }
   },
@@ -42,7 +49,8 @@ export default {
     form: {
       username: '',
       password: '',
-    }
+    },
+    errorMessage: undefined
   }
 }
 }
@@ -54,7 +62,7 @@ export default {
   margin: 55px 5px 15px;
 }
 .form-container {
-  width: 262px;;
+  width: 262px;
   margin: 0 auto;
 }
 .form {
