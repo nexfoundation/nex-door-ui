@@ -30,7 +30,6 @@ package-lock.json
 amplify/team-provider-info.json
 
 #amplify
-src/aws-exports.js
 amplify/*
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -40,5 +39,4 @@ amplify/backend/awscloudformation
 build/
 dist/
 node_modules/
-aws-exports.js
 awsconfiguration.json
