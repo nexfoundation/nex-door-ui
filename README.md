@@ -3,10 +3,9 @@
 ### VS Code Remote Container
 
 What is Remote Container? It let us use a Docker container as a full-featured development environment. We can jump in development without the need of cumbersome environment set-up.
+
 Ref: (https://code.visualstudio.com/docs/remote/containers)
 
-
-1. We have set the required development environment in 
 
 #### Prerequiste
 - Docker Desktop installed
