@@ -39,6 +39,7 @@ docker run -it -p 8080:8080 --rm -v $PWD:/app node:14.17.0-alpine3.13 sh
 2. (In the container) Now you can run the front-end UI!
 
 ```
+$ cd ./app  # move to the app folder, which is where we clone our repo in the container
 $ npm install
 $ npm run serve
 ```
