@@ -48,7 +48,7 @@
 <script>
 
 export default {
-  props: ['toggleForm'],
+//   props: ['toggleForm'],
   name: 'sign-up',
   methods: {
     async signUp() {
@@ -70,7 +70,10 @@ export default {
         console.log('error signing up...', err)
         this.errorMessage = err
       }
-    }
+    },
+	toggleForm(val) {
+		this.$emit("toSignIn", val);
+	}
   },
   data() {
     return {
