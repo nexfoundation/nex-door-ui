@@ -5,7 +5,7 @@
         <p>在這裡你可以編輯你的個人資料，以讓更多人更加了解你！</p>
         <code>{{ user_attributes }}</code>
         <div id='profile-form'>
-            <form>
+            <form @submit.prevent>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">用戶名稱 Username</label>
                     <div class="col-sm-10">
@@ -96,10 +96,17 @@
         async beforeCreate() {
             try {
                 let user = await this.$Amplify.Auth.currentAuthenticatedUser()
-                let { attributes } = user
+				let { attributes } = user
+				// remove [] and " from data received
+				attributes['custom:tags'] = attributes['custom:tags'].replace(/[\[\]\"']+/g, '');
+				let tags = attributes['custom:tags'].split(",");
 
-                console.log(attributes)
-                this.user_attributes = attributes
+				console.log(attributes)
+				this.user_attributes = attributes
+				
+				tags.forEach(item => {
+					this.tags.push(item)
+				})
             } catch (err) {
                 console.log('error: ', err)
             }
@@ -109,7 +116,7 @@
                 user_attributes: undefined,
                 errorMessage: undefined,
                 tag: '',
-                tags: [],
+				tags: [],
                 availableMentoringTags: [
                   '稅務簽證',
                   '職涯發展',
@@ -134,7 +141,7 @@
                 tags.forEach((item) => {
                     serializedResult.push(item['text'])
                 })
-
+				console.log(serializedResult)
                 return serializedResult
             },
             async updateAttribute() {
