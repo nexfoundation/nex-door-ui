@@ -1,6 +1,10 @@
 ## Deployment steps
-2 approach. You can choose either VSCode Remote Container or Create container by shell script
-### VS Code Remote Container
+There are 2 approaches to launch the docker container, in which our web application is gonna run.
+
+ 1. VSCode Remote Container
+ 2. Create container by shell script
+ 
+### 1. VS Code Remote Container
 
 What is Remote Container? It let us use a Docker container as a full-featured development environment. We can jump in development without the need of cumbersome environment set-up.
 
@@ -27,16 +31,17 @@ If not, follow below steps:
 
 > Note: vscode may show alert "no debugger installed" after exit debugging. You can ignore it.
 
-### Create container by shell script
+### 2. Create container by shell script
 
-1. You can run the `docker-env.sh` to start up the development environment (container)
+1. Launch container by command line:
+
+Run below command under your app folder. This will launch and enter into the docker container.
 
 ```
-./docker-env.sh
 docker run -it -p 8080:8080 --rm -v $PWD:/app node:14.17.0-alpine3.13 sh
 ```
 
-2. (In the container) Now you can run the front-end UI!
+2. Now you're in the container. What we then need to do is install the necessary libraries and run the application.
 
 ```
 $ cd ./app  # move to the app folder, which is where we clone our repo in the container
