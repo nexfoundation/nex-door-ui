@@ -66,8 +66,10 @@ export default {
             this.modalCurrentUser['name'] = e.currentTarget.getAttribute('data-username')
             this.modalCurrentUser['picture'] = e.currentTarget.getAttribute('data-userpicture')
 
-            this.intro = document.getElementById('about-' + userid).innerHTML
-            this.$refs['my-modal'].show()
+			this.intro = document.getElementById('about-' + userid).innerHTML
+			this.$refs['my-modal'].show()
+
+			console.log(e.currentTarget)
         },
         getAttribute(user_attributes) {
             let attributes = {};

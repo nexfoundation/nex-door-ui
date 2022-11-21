@@ -69,7 +69,7 @@
                         </vue-tags-input>
 
                         </div>
-                      {{ user_attributes['custom:tags'] }}
+						{{ user_attributes['custom:tags'] }}
                     </div>
                 </div>
                 <div class="form-group row">
@@ -97,16 +97,20 @@
             try {
                 let user = await this.$Amplify.Auth.currentAuthenticatedUser()
 				let { attributes } = user
-				// remove [] and " from data received
-				attributes['custom:tags'] = attributes['custom:tags'].replace(/[\[\]\"']+/g, '');
-				let tags = attributes['custom:tags'].split(",");
 
+				// remove [] and " from data received
+				let atr = attributes['custom:tags'].replace(/[\[\]\"']+/g, '')
+				let tags = atr.split(",")
+				attributes['custom:tags'] = []
+
+				tags.forEach(item => {
+					attributes['custom:tags'].push(item)
+					this.tags.push(item)
+				})
+				
 				console.log(attributes)
 				this.user_attributes = attributes
 				
-				tags.forEach(item => {
-					this.tags.push(item)
-				})
             } catch (err) {
                 console.log('error: ', err)
             }
@@ -136,14 +140,18 @@
             }
         },
         methods: {
-            serializeTags(tags) {
-                let serializedResult = []
-                tags.forEach((item) => {
-                    serializedResult.push(item['text'])
-                })
-				console.log(serializedResult)
-                return serializedResult
-            },
+			serializeTags() {
+				// run code only if changed
+				if (JSON.stringify(this.user_attributes['custom:tags']) !== JSON.stringify(this.tags)) {
+					let serializedResult = []
+					this.tags.forEach((item) => {
+						serializedResult.push(item['text'])
+					})
+					console.log(serializedResult)
+					return serializedResult
+				}
+				return this.tags
+			},
             async updateAttribute() {
                 try {
                     let user = await this.$Amplify.Auth.currentAuthenticatedUser()
@@ -153,7 +161,7 @@
                         'profile': document.getElementById("inputProfileBio").value,
                         'website': document.getElementById("inputWebsite").value,
                         'custom:accept_mentoring': document.getElementById("inputAcceptMentoring").value,
-                        'custom:tags': JSON.stringify(this.serializeTags(this.tags)),
+						'custom:tags': JSON.stringify(this.serializeTags()),
                         'custom:calendy_url': document.getElementById("inputCalendy").value
                     })
 
