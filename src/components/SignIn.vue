@@ -20,25 +20,33 @@
         </div>
       </div>
     </div>
+	<LoadingBar ref="loadingBar" />
   </div>
 </template>
 
 <script>
+import LoadingBar from './LoadingBar.vue'
+
 export default {
   name: 'sign-in',
+  components: {
+    LoadingBar
+  },
   methods: {
     async signIn() {
       if (this.form.username == '' || this.form.password == '') {
         this.errorMessage = '請填寫用戶名稱或密碼！'
         return
       }
-
+      this.$refs.loadingBar.doAjax(true);
       try {
         const user = await this.$Amplify.Auth.signIn(this.form.username, this.form.password)
         this.$store.dispatch('setIsAuthenticated', true)
         this.$store.dispatch('setUser', user)
         this.$router.push('/')
+        this.$refs.loadingBar.doAjax(false);
       } catch (err) {
+        this.$refs.loadingBar.doAjax(false);
         console.log('error: ', err)
         this.errorMessage = err
       }
