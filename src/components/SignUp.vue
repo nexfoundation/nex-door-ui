@@ -25,7 +25,7 @@
           v-model="form.attributes.phone_number"
           placeholder='Phone'
         /-->
-        <div class='button' v-on:click="signUp">
+        <div class='button' v-on:click="signUp" @update="isLoading = $event">
           <p>註冊 (Sign Up)</p>
         </div>
       </div>
@@ -45,38 +45,50 @@
         </div>
       </div>
     </div>
+    <LoadingBar ref="loadingBar"/>
   </div>
 </template>
 
 <script>
+import LoadingBar from './LoadingBar.vue'
 
 export default {
 //   props: ['toggleForm'],
   name: 'sign-up',
+  components: {
+    LoadingBar
+  },
   methods: {
     async signUp() {
+      // need a validation before triggering loading bar
+      this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
       try {
         await this.$Amplify.Auth.signUp(this.form)
         this.phase = 1
+        this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
         console.log('user successfully signed up!')
       } catch (err) {
+        this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
         this.errorMessage = err
       }
     },
     async confirmSignUp() {
+      this.$refs.loadingBar.doAjax(true);
       try {
         await this.$Amplify.Auth.confirmSignUp(this.form.username, this.authCode)
         this.toggleForm('signIn')
+        this.$refs.loadingBar.doAjax(false);
         console.log('user successfully signed up!')
       } catch (err) {
+        this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
         this.errorMessage = err
       }
     },
     toggleForm(val) {
       this.$emit("set-current-tab", val);
-    }
+    },
     async resendConfirmationCode() {
       // Ignore the request if it is still in the resend confirmation code cooldown period
       if (this.confirmationCodeCooldownSecond > 0) {
