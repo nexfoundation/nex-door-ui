@@ -40,6 +40,9 @@
         <div class='button' v-on:click="confirmSignUp">
           <p>確認 (Confirm Sign Up)</p>
         </div>
+        <div class='button' v-on:click="resendConfirmationCode">
+          <p>重新發送驗證碼 (Resend Confirmation Code) {{ '(' + confirmationCodeCooldownSecond + ')' }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -71,9 +74,32 @@ export default {
         this.errorMessage = err
       }
     },
-	toggleForm(val) {
-		this.$emit("set-current-tab", val);
-	}
+    toggleForm(val) {
+      this.$emit("set-current-tab", val);
+    }
+    async resendConfirmationCode() {
+      // Ignore the request if it is still in the resend confirmation code cooldown period
+      if (this.confirmationCodeCooldownSecond > 0) {
+        return
+      }
+
+      this.confirmationCodeCooldownSecond = 90
+      this.confirmationCodeCooldownCountdown()
+      try {
+        await this.$Amplify.Auth.resendSignUp(this.form.username);
+        console.log('code resent successfully');
+      } catch (err) {
+        console.log('error resending code: ', err);
+      }
+    },
+    confirmationCodeCooldownCountdown() {
+      if (this.confirmationCodeCooldownSecond > 0) {
+        setTimeout(() => {
+          this.confirmationCodeCooldownSecond -= 1
+            this.confirmationCodeCooldownCountdown()
+        }, 1000)
+      }
+    }
   },
   data() {
     return {
@@ -87,7 +113,8 @@ export default {
       },
       authCode: '',
       phase: 0,
-      errorMessage: undefined
+      errorMessage: undefined,
+      confirmationCodeCooldownSecond: 0
     }
   }
 }
