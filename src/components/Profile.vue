@@ -5,7 +5,7 @@
         <p>在這裡你可以編輯你的個人資料，以讓更多人更加了解你！</p>
         <code>{{ user_attributes }}</code>
         <div id='profile-form'>
-            <form>
+            <form @submit.prevent>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">用戶名稱 Username</label>
                     <div class="col-sm-10">
@@ -69,7 +69,7 @@
                         </vue-tags-input>
 
                         </div>
-                      {{ user_attributes['custom:tags'] }}
+						{{ user_attributes['custom:tags'] }}
                     </div>
                 </div>
                 <div class="form-group row">
@@ -96,10 +96,26 @@
         async beforeCreate() {
             try {
                 let user = await this.$Amplify.Auth.currentAuthenticatedUser()
-                let { attributes } = user
+				let { attributes } = user
 
-                console.log(attributes)
-                this.user_attributes = attributes
+                console.log(typeof attributes['custom:tags'])
+                console.log(attributes['custom:tags'])
+                
+                // Kun: Need help on understanding what's the main purpose of below code doing~
+
+				// remove [] and " from data received
+				let atr = attributes['custom:tags'].replace(/[\[\]\"']+/g, '')
+				let tags = atr.split(",")
+				attributes['custom:tags'] = []
+
+				tags.forEach(item => {
+					attributes['custom:tags'].push(item)
+					this.tags.push(item)
+				})
+				
+				console.log(attributes)
+				this.user_attributes = attributes
+				
             } catch (err) {
                 console.log('error: ', err)
             }
@@ -109,7 +125,7 @@
                 user_attributes: undefined,
                 errorMessage: undefined,
                 tag: '',
-                tags: [],
+				tags: [],
                 availableMentoringTags: [
                   '稅務簽證',
                   '職涯發展',
@@ -129,14 +145,18 @@
             }
         },
         methods: {
-            serializeTags(tags) {
-                let serializedResult = []
-                tags.forEach((item) => {
-                    serializedResult.push(item['text'])
-                })
-
-                return serializedResult
-            },
+			getLatestTagsList() {
+				// run code only if changed
+				if (JSON.stringify(this.user_attributes['custom:tags']) !== JSON.stringify(this.tags)) {
+					let serializedResult = []
+					this.tags.forEach((item) => {
+						serializedResult.push(item['text'])
+					})
+					console.log(serializedResult)
+					return serializedResult
+				}
+				return this.tags
+			},
             async updateAttribute() {
                 try {
                     let user = await this.$Amplify.Auth.currentAuthenticatedUser()
@@ -146,7 +166,7 @@
                         'profile': document.getElementById("inputProfileBio").value,
                         'website': document.getElementById("inputWebsite").value,
                         'custom:accept_mentoring': document.getElementById("inputAcceptMentoring").value,
-                        'custom:tags': JSON.stringify(this.serializeTags(this.tags)),
+						'custom:tags': JSON.stringify(this.getLatestTagsList()),
                         'custom:calendy_url': document.getElementById("inputCalendy").value
                     })
 
