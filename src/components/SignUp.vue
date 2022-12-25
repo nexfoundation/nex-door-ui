@@ -25,9 +25,9 @@
           v-model="form.attributes.phone_number"
           placeholder='Phone'
         /-->
-        <div class='button' v-on:click="signUp" @update="isLoading = $event">
+        <button class='button' :disabled="isBtnDisabled" v-on:click="signUp" @update="isLoading = $event">
           <p>註冊 (Sign Up)</p>
-        </div>
+        </button>
       </div>
 
       <div class='form' v-if="phase === Number(1)">
@@ -37,9 +37,9 @@
           v-model="authCode"
           placeholder='請輸入臨時性驗證碼 (Authentication code)'
         />
-        <div class='button' v-on:click="confirmSignUp">
+        <button class='button' v-on:click="confirmSignUp">
           <p>確認 (Confirm Sign Up)</p>
-        </div>
+        </button>
         <div class='button' v-on:click="resendConfirmationCode">
           <p>重新發送驗證碼 (Resend Confirmation Code) {{ '(' + confirmationCodeCooldownSecond + ')' }}</p>
         </div>
@@ -113,6 +113,15 @@ export default {
       }
     }
   },
+  computed: {
+	isBtnDisabled() {
+		return (
+			!this.form.username ||
+			!this.form.password ||
+			!this.form.attributes.email
+		);
+	},
+  },
   data() {
     return {
       form: {
@@ -153,9 +162,15 @@ export default {
   box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
   margin: 25px 0px 20px;
   align-self: flex-start;
+  opacity: 1;
 }
-.button:hover {
-  opacity: .9;
+
+.button[disabled] {
+	opacity: 0.7;
+}
+
+.button:not([disabled]):hover {
+  opacity: 0.9;
 }
 .button p {
   margin: 0;

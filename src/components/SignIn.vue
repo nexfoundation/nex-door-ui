@@ -15,9 +15,9 @@
           v-model="form.password"
           type='password'
         />
-        <div class='button' v-on:click="signIn">
+        <button class='button' :disabled="isBtnDisabled" v-on:click="signIn">
           <p>登入 (Sign In)</p>
-        </div>
+        </button>
       </div>
     </div>
 	<LoadingBar ref="loadingBar" />
@@ -52,6 +52,14 @@ export default {
       }
     }
   },
+  computed: {
+	isBtnDisabled() {
+		return (
+			!this.form.username ||
+			!this.form.password
+		);
+	},
+  },
   data() {
   return {
     form: {
@@ -85,9 +93,14 @@ export default {
   box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
   margin: 25px 0px 20px;
   align-self: flex-start;
+  opacity: 1;
 }
-.button:hover {
-  opacity: .9;
+
+.button[disabled] {
+	opacity: 0.7;
+}
+.button:not([disabled]):hover {
+  opacity: 0.9;
 }
 .button p {
   margin: 0;
