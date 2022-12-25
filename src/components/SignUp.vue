@@ -72,7 +72,7 @@ export default {
       }
     },
 	toggleForm(val) {
-		this.$emit("toSignIn", val);
+		this.$emit("set-current-tab", val);
 	}
   },
   data() {
