@@ -1,6 +1,6 @@
 <template>
   <div class='auth'>
-    <component :is="currentTab" class="tab">
+    <component :is="currentTab" class="tab" @toSignIn="toSignIn">
     </component>
 
     <!-- TODO: stylee classes, replace btn to div -->
@@ -31,8 +31,11 @@ export default {
     }
   },
 
-  methods: {
-  }
+	methods: {
+		toSignIn(val) {
+			this.currentTab = val;
+		}
+	}
 }
 </script>
 
