@@ -98,6 +98,11 @@
                 let user = await this.$Amplify.Auth.currentAuthenticatedUser()
 				let { attributes } = user
 
+                console.log(typeof attributes['custom:tags'])
+                console.log(attributes['custom:tags'])
+                
+                // Kun: Need help on understanding what's the main purpose of below code doing~
+
 				// remove [] and " from data received
 				let atr = attributes['custom:tags'].replace(/[\[\]\"']+/g, '')
 				let tags = atr.split(",")
@@ -140,7 +145,7 @@
             }
         },
         methods: {
-			serializeTags() {
+			getLatestTagsList() {
 				// run code only if changed
 				if (JSON.stringify(this.user_attributes['custom:tags']) !== JSON.stringify(this.tags)) {
 					let serializedResult = []
@@ -161,7 +166,7 @@
                         'profile': document.getElementById("inputProfileBio").value,
                         'website': document.getElementById("inputWebsite").value,
                         'custom:accept_mentoring': document.getElementById("inputAcceptMentoring").value,
-						'custom:tags': JSON.stringify(this.serializeTags()),
+						'custom:tags': JSON.stringify(this.getLatestTagsList()),
                         'custom:calendy_url': document.getElementById("inputCalendy").value
                     })
 

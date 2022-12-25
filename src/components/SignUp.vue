@@ -50,7 +50,7 @@
 import LoadingBar from './LoadingBar.vue'
 
 export default {
-  props: ['toggleForm'],
+//   props: ['toggleForm'],
   name: 'sign-up',
   components: {
     LoadingBar
@@ -83,6 +83,9 @@ export default {
         this.errorMessage = err
       }
     },
+	toggleForm(val) {
+		this.$emit("set-current-tab", val);
+	}
   },
   data() {
     return {
