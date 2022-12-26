@@ -114,7 +114,7 @@ export default {
       authCode: '',
       phase: 0,
       errorMessage: undefined,
-      confirmationCodeCooldownSecond: 0
+      confirmationCodeCooldownSecond: 30 
     }
   }
 }
