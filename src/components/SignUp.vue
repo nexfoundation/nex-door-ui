@@ -62,12 +62,12 @@ export default {
       try {
         await this.$Amplify.Auth.signUp(this.form)
         this.phase = 1
-        this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
         console.log('user successfully signed up!')
       } catch (err) {
-        this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
         this.errorMessage = err
+      } finally{
+        this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
       }
     },
     async confirmSignUp() {
@@ -75,12 +75,12 @@ export default {
       try {
         await this.$Amplify.Auth.confirmSignUp(this.form.username, this.authCode)
         this.toggleForm('signIn')
-        this.$refs.loadingBar.doAjax(false);
         console.log('user successfully signed up!')
       } catch (err) {
-        this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
         this.errorMessage = err
+      } finally{
+        this.$refs.loadingBar.doAjax(false);
       }
     },
 	toggleForm(val) {
