@@ -161,12 +161,12 @@ export default {
   cursor: pointer;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
   margin: 25px 0px 20px;
-  align-self: flex-start;
   opacity: 1;
 }
 
 .button[disabled] {
-	opacity: 0.7;
+	opacity: 0.5;
+  cursor: default;
 }
 
 .button:not([disabled]):hover {
