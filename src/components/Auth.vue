@@ -46,7 +46,8 @@ export default {
 
 .link-container {
   /* TODO: invalid */
-  margin-top: 30;
+  margin-bottom: 5px;
+  cursor: pointer;
 }
 
 .auth {
