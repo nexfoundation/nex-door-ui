@@ -64,7 +64,10 @@ export default {
       this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
       try {
         await this.$Amplify.Auth.signUp(this.form)
+        
         this.phase = 1
+        this.confirmationCodeCooldownCountdown()
+
         this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
         console.log('user successfully signed up!')
       } catch (err) {
@@ -135,7 +138,7 @@ export default {
       authCode: '',
       phase: 0,
       errorMessage: undefined,
-      confirmationCodeCooldownSecond: 30 
+      confirmationCodeCooldownSecond: 30
     }
   }
 }
