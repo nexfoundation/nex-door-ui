@@ -25,9 +25,9 @@
           v-model="form.attributes.phone_number"
           placeholder='Phone'
         /-->
-        <div class='button' v-on:click="signUp">
+        <button class='button' :disabled="isBtnDisabled" v-on:click="signUp" @update="isLoading = $event">
           <p>註冊 (Sign Up)</p>
-        </div>
+        </button>
       </div>
 
       <div class='form' v-if="phase === Number(1)">
@@ -37,46 +37,58 @@
           v-model="authCode"
           placeholder='請輸入臨時性驗證碼 (Authentication code)'
         />
-        <div class='button' v-on:click="confirmSignUp">
+        <button class='button' v-on:click="confirmSignUp">
           <p>確認 (Confirm Sign Up)</p>
-        </div>
+        </button>
         <div class='button' v-on:click="resendConfirmationCode">
           <p>重新發送驗證碼 (Resend Confirmation Code) {{ '(' + confirmationCodeCooldownSecond + ')' }}</p>
         </div>
       </div>
     </div>
+    <LoadingBar ref="loadingBar"/>
   </div>
 </template>
 
 <script>
+import LoadingBar from './LoadingBar.vue'
 
 export default {
 //   props: ['toggleForm'],
   name: 'sign-up',
+  components: {
+    LoadingBar
+  },
   methods: {
     async signUp() {
+      // need a validation before triggering loading bar
+      this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
       try {
         await this.$Amplify.Auth.signUp(this.form)
         this.phase = 1
+        this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
         console.log('user successfully signed up!')
       } catch (err) {
+        this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
         this.errorMessage = err
       }
     },
     async confirmSignUp() {
+      this.$refs.loadingBar.doAjax(true);
       try {
         await this.$Amplify.Auth.confirmSignUp(this.form.username, this.authCode)
         this.toggleForm('signIn')
+        this.$refs.loadingBar.doAjax(false);
         console.log('user successfully signed up!')
       } catch (err) {
+        this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
         this.errorMessage = err
       }
     },
     toggleForm(val) {
       this.$emit("set-current-tab", val);
-    }
+    },
     async resendConfirmationCode() {
       // Ignore the request if it is still in the resend confirmation code cooldown period
       if (this.confirmationCodeCooldownSecond > 0) {
@@ -100,6 +112,15 @@ export default {
         }, 1000)
       }
     }
+  },
+  computed: {
+	isBtnDisabled() {
+		return (
+			!this.form.username ||
+			!this.form.password ||
+			!this.form.attributes.email
+		);
+	},
   },
   data() {
     return {
@@ -140,10 +161,16 @@ export default {
   cursor: pointer;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
   margin: 25px 0px 20px;
-  align-self: flex-start;
+  opacity: 1;
 }
-.button:hover {
-  opacity: .9;
+
+.button[disabled] {
+	opacity: 0.5;
+  cursor: default;
+}
+
+.button:not([disabled]):hover {
+  opacity: 0.9;
 }
 .button p {
   margin: 0;

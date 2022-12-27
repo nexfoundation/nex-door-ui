@@ -13,6 +13,7 @@
     "aws-amplify-vue": "^0.1.7",
     "bootstrap-vue": "^2.22.0",
     "vue": "^2.5.17",
+    "vue-loading-overlay": "^3.4.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

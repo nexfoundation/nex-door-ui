@@ -15,34 +15,50 @@
           v-model="form.password"
           type='password'
         />
-        <div class='button' v-on:click="signIn">
+        <button class='button' :disabled="isBtnDisabled" v-on:click="signIn">
           <p>登入 (Sign In)</p>
-        </div>
+        </button>
       </div>
     </div>
+	<LoadingBar ref="loadingBar" />
   </div>
 </template>
 
 <script>
+import LoadingBar from './LoadingBar.vue'
+
 export default {
   name: 'sign-in',
+  components: {
+    LoadingBar
+  },
   methods: {
     async signIn() {
       if (this.form.username == '' || this.form.password == '') {
         this.errorMessage = '請填寫用戶名稱或密碼！'
         return
       }
-
+      this.$refs.loadingBar.doAjax(true);
       try {
         const user = await this.$Amplify.Auth.signIn(this.form.username, this.form.password)
         this.$store.dispatch('setIsAuthenticated', true)
         this.$store.dispatch('setUser', user)
         this.$router.push('/')
+        this.$refs.loadingBar.doAjax(false);
       } catch (err) {
+        this.$refs.loadingBar.doAjax(false);
         console.log('error: ', err)
         this.errorMessage = err
       }
     }
+  },
+  computed: {
+	isBtnDisabled() {
+		return (
+			!this.form.username ||
+			!this.form.password
+		);
+	},
   },
   data() {
   return {
@@ -76,10 +92,15 @@ export default {
   cursor: pointer;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
   margin: 25px 0px 20px;
-  align-self: flex-start;
+  opacity: 1;
 }
-.button:hover {
-  opacity: .9;
+
+.button[disabled] {
+	opacity: 0.5;
+  cursor: default;
+}
+.button:not([disabled]):hover {
+  opacity: 0.9;
 }
 .button p {
   margin: 0;

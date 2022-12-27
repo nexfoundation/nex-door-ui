@@ -22,7 +22,7 @@ export default {
   components: {
     SignIn,
     SignUp,
-    ForgotPassword
+	ForgotPassword,
   },
   data() {
     return {
