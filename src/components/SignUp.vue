@@ -74,6 +74,8 @@ export default {
         this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
         this.errorMessage = err
+      } finally{
+        this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
       }
     },
     async confirmSignUp() {
@@ -87,6 +89,8 @@ export default {
         this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
         this.errorMessage = err
+      } finally{
+        this.$refs.loadingBar.doAjax(false);
       }
     },
     toggleForm(val) {
