@@ -25,7 +25,7 @@
           v-model="form.attributes.phone_number"
           placeholder='Phone'
         /-->
-        <div class='button' v-on:click="signUp" @update="isLoading = $event">
+        <div class='button' v-on:click="signUp">
           <p>註冊 (Sign Up)</p>
         </div>
       </div>
