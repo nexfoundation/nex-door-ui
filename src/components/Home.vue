@@ -45,25 +45,34 @@
                 <img :src="'https://www.gravatar.com/avatar/' + modalCurrentUser['picture'] + '?s=80'" class="mr-3">
                 <div class="media-body">
                     <h5 class="mt-0">{{ modalCurrentUser['name'] }} </h5>
-					<p>網站:<a :href="modalCurrentUser['website']" target="_blank">{{ modalCurrentUser['website'] }}</a></p>
+					<p>網站:<a :href="modalCurrentUser['website']">{{ modalCurrentUser['website'] }}</a></p>
                 </div>
             </div>
             <hr>
-            <pre class="intro">{{ intro }}</pre>
+            <!-- <pre class="intro">{{ intro }}</pre> -->
+            <pre class="intro">
+				<!-- <p v-for="(str, idx) in this.intro" :key="idx">{{str}}</p> -->
+				<intro-text v-for="(str, idx) in this.intro" :key="idx" :str="str"/>
+			</pre>
         </b-modal>
     </div>
 </template>
 
 <script>
 import { API } from 'aws-amplify';
+import IntroText from './IntroText';
 export default {
     name: 'home',
     created() {
         this.getData()
-    },
+	},
+	components: {
+		IntroText
+	},
     data () {
-        return { users: undefined, intro: '', modalCurrentUser: {'name': '', 'picture': '', website: ''} }
-    },
+        // return { users: undefined, intro: '', modalCurrentUser: {'name': '', 'picture': '', website: ''} }
+        return { users: undefined, intro: [], modalCurrentUser: {'name': '', 'picture': '', website: ''} }
+	},
     methods: {
         showIntroModal(e) {
 			console.log(e.currentTarget)
@@ -74,7 +83,8 @@ export default {
             this.modalCurrentUser['picture'] = e.currentTarget.getAttribute('data-userpicture')
 			this.modalCurrentUser['website'] = e.currentTarget.getAttribute('data-userUrl')
 
-			this.intro = document.getElementById('about-' + userid).innerHTML
+			// this.intro = document.getElementById('about-' + userid).innerHTML
+			this.intro = document.getElementById('about-' + userid).innerHTML.split('\n')
 			this.$refs['my-modal'].show()
 
 			console.log(e.currentTarget)
@@ -106,7 +116,7 @@ export default {
 </script>
 
 <style scoped>
-    .container {
+.container {
         padding-top: 80px;
         /* width: 800px; */
         margin: 0 auto;
