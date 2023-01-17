@@ -10,9 +10,11 @@ export default {
 	props: ['str'],
 	methods: {
 		retrieveUrl(str) {
-			if (str.length === str.substring(str.indexOf('http'))) {
+			// when it's http://www.abc.com, return it directly
+			if (str.length === str.substring(str.indexOf('http')).length) {
 				return str
 			}
+			// extract only http://www.abc.com if original str is "abc http://www.abc.com abc"
 			const url = str.substring(str.indexOf('http')).split(" ")[0]
 			return url
 		}
