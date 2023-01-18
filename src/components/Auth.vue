@@ -4,10 +4,10 @@
     </component>
 
     <!-- TODO: stylee classes, replace btn to div -->
-    <div v-for="tab in tabs" :key="tab" :class="['link-container', { active: currentTab === tab }]"
+    <button v-for="tab in tabs" :key="tab" :class="['link-container', { active: currentTab === tab }, 'secondary',]" 
       @click="currentTab = tab">
       {{ tab }}
-    </div>
+    </button>
   </div>
 
 </template>

@@ -16,7 +16,7 @@
           type='password'
         />
         <button class='button' :disabled="isBtnDisabled" v-on:click="signIn">
-          <p>登入 (Sign In)</p>
+        登入 (Sign In)
         </button>
       </div>
     </div>
@@ -72,7 +72,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .heading {
   text-align: left;
   margin: 55px 5px 15px;
@@ -107,4 +107,4 @@ export default {
   color: white;
   font-weight: 600;
 }
-</style>
+</style> -->
