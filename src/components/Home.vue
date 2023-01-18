@@ -22,7 +22,7 @@
 
     <article class="container-fluid " aria-busy="true" v-if="loading"></article>
     <!-- <progress value="25" max="100" v-if="loading" indeterminate="true"></progress> -->
-    <div class="grid">
+    <div class="">
       <article class=" col-sm-4 col-md-2" v-for="user in users" :key="user.id">
         <!-- <article class=" col-md-8 "> -->
 
