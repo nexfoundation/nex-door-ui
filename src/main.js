@@ -7,11 +7,12 @@ import { AmplifyPlugin } from 'aws-amplify-vue'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
+import "@picocss/pico"
 // Bootstrap
-import {
-  BootstrapVue,
-  // IconsPlugin
-} from "bootstrap-vue";
+// import {
+//   BootstrapVue,
+//   // IconsPlugin
+// } from "bootstrap-vue";
 
 // Vue components
 import Auth from './components/Auth.vue'
@@ -24,7 +25,9 @@ import Profile from './components/Profile.vue'
 import store from './store'
 
 // global styles
-require('./assets/main.css')
+// require('./assets/main.css')
+// import "@picocss/pico/css/pico.css";
+// import "@/assets/css/pico.css";
 
 // route configuration
 const routes = [
@@ -66,7 +69,7 @@ router.beforeResolve((to, _, next) => {
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter)
-Vue.use(BootstrapVue)
+// Vue.use(BootstrapVue)
 Vue.use(AmplifyPlugin, AmplifyModules)
 
 new Vue({
