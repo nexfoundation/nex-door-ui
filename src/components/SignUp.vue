@@ -25,9 +25,12 @@
           v-model="form.attributes.phone_number"
           placeholder='Phone'
         /-->
-        <button class='button' :disabled="isBtnDisabled" v-on:click="signUp" @update="isLoading = $event">
-          <p>註冊 (Sign Up)</p>
-        </button>
+		<ValidateBtn 
+			:formArray="[form.username, form.password, form.attributes.email]" 
+			:text="'註冊 (Sign Up)'" 
+			:btnType="'sign-button'"
+			v-on:click.native="signUp"
+		/>
       </div>
 
       <div class='form' v-if="phase === Number(1)">
@@ -37,9 +40,15 @@
           v-model="authCode"
           placeholder='請輸入臨時性驗證碼 (Authentication code)'
         />
-        <button class='button' v-on:click="confirmSignUp">
+		<ValidateBtn 
+			:formArray="[form.username, form.password, form.attributes.email]" 
+			:text="'確認 (Confirm Sign Up)'"
+			:btnType="'sign-button'" v-on:click.native="confirmSignUp" 
+		/>
+        <!-- <button class='button' v-on:click="confirmSignUp">
           <p>確認 (Confirm Sign Up)</p>
-        </button>
+        </button> -->
+		
         <div class='button' v-on:click="resendConfirmationCode">
           <p>重新發送驗證碼 (Resend Confirmation Code) {{ '(' + confirmationCodeCooldownSecond + ')' }}</p>
         </div>
@@ -51,12 +60,14 @@
 
 <script>
 import LoadingBar from './LoadingBar.vue'
+import ValidateBtn from './ValidateBtn.vue'
 
 export default {
 //   props: ['toggleForm'],
   name: 'sign-up',
   components: {
-    LoadingBar
+	LoadingBar,
+	ValidateBtn
   },
   methods: {
     async signUp() {
@@ -120,29 +131,20 @@ export default {
       }
     }
   },
-  computed: {
-	isBtnDisabled() {
-		return (
-			!this.form.username ||
-			!this.form.password ||
-			!this.form.attributes.email
-		);
-	},
-  },
   data() {
     return {
-      form: {
-        username: '',
-        password: '',
-        attributes: {
-          email: '',
-          phone_number: '',
-        }
-      },
-      authCode: '',
-      phase: 0,
-      errorMessage: undefined,
-      confirmationCodeCooldownSecond: 30
+		form: {
+			username: '',
+			password: '',
+			attributes: {
+			email: '',
+			phone_number: '',
+			}
+		},
+		authCode: '',
+		phase: 0,
+		errorMessage: undefined,
+		confirmationCodeCooldownSecond: 30,
     }
   }
 }
@@ -161,27 +163,5 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.button {
-  padding: 13px 35px;
-  background-color: #2c3e50;
-  cursor: pointer;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
-  margin: 25px 0px 20px;
-  opacity: 1;
-}
-
-.button[disabled] {
-	opacity: 0.5;
-  cursor: default;
-}
-
-.button:not([disabled]):hover {
-  opacity: 0.9;
-}
-.button p {
-  margin: 0;
-  color: white;
-  font-weight: 600;
 }
 </style>

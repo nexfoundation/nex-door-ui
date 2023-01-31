@@ -15,9 +15,12 @@
           v-model="form.password"
           type='password'
         />
-        <button class='button' :disabled="isBtnDisabled" v-on:click="signIn">
-          <p>登入 (Sign In)</p>
-        </button>
+		<ValidateBtn 
+			:formArray="[form.username, form.password]" 
+			:text="'登入 (Sign In)'" 
+			:btnType="'sign-button'"
+			v-on:click.native="signIn"
+		/>
       </div>
     </div>
 	<LoadingBar ref="loadingBar" />
@@ -26,11 +29,13 @@
 
 <script>
 import LoadingBar from './LoadingBar.vue'
+import ValidateBtn from './ValidateBtn.vue'
 
 export default {
   name: 'sign-in',
   components: {
-    LoadingBar
+	LoadingBar,
+	ValidateBtn
   },
   methods: {
     async signIn() {
@@ -52,21 +57,13 @@ export default {
       }
     }
   },
-  computed: {
-	isBtnDisabled() {
-		return (
-			!this.form.username ||
-			!this.form.password
-		);
-	},
-  },
   data() {
-  return {
-    form: {
-      username: '',
-      password: '',
-    },
-    errorMessage: undefined
+	return {
+		form: {
+			username: '',
+			password: '',
+		},
+		errorMessage: undefined,
   }
 }
 }
@@ -85,26 +82,5 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.button {
-  padding: 13px 35px;
-  background-color: #2c3e50;
-  cursor: pointer;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
-  margin: 25px 0px 20px;
-  opacity: 1;
-}
-
-.button[disabled] {
-	opacity: 0.5;
-  cursor: default;
-}
-.button:not([disabled]):hover {
-  opacity: 0.9;
-}
-.button p {
-  margin: 0;
-  color: white;
-  font-weight: 600;
 }
 </style>
