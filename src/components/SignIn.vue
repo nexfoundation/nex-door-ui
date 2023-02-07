@@ -48,7 +48,37 @@ export default {
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
         console.log('error: ', err)
-        this.errorMessage = err
+
+        // Response i18n error message based on Congito Exceptions
+        // Response data:
+        // { "code": "InvalidParameterException", "name": "InvalidParameterException", "message": "Invalid email address format." }
+        const lang = window.navigator.language || 'en';
+        const messages = {
+          en: {
+            // Code here ...
+          },
+          // TODO: might need to have other zh language code ('zh', 'zh-cn', 'zh-hk', 'zh-sg')
+          'zh-TW': {
+            // InvalidParameterException
+            'Invalid email address format.': 'Email 格式輸入錯誤',
+            'User already exists': '用戶名稱已存在',
+            'An account with the given email already exists.': 'Email 已經被註冊',
+
+            // NotAuthorizedException
+            'Incorrect username or password.': '帳號密碼不正確',
+
+            // UserNotConfirmedException
+            'User is not confirmed.': '用戶尚未驗證，請確認信箱並且完成驗證'
+          }
+        };
+
+        let errori18nMessage = err.message;
+        if (messages[lang] && messages[lang][err.message]) {
+            errori18nMessage = messages[lang][err.message]
+        }
+        console.log(err);
+
+        this.errorMessage = errori18nMessage
       }
     }
   },
