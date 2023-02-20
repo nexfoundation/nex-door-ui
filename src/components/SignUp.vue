@@ -51,6 +51,7 @@
 
 <script>
 import LoadingBar from './LoadingBar.vue'
+import i18n from '../mixin/i18n.js'
 
 export default {
 //   props: ['toggleForm'],
@@ -58,6 +59,7 @@ export default {
   components: {
     LoadingBar
   },
+  mixins: [i18n],
   methods: {
     async signUp() {
       // need a validation before triggering loading bar
@@ -73,35 +75,7 @@ export default {
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
-
-        // Response i18n error message based on Congito Exceptions
-        // Response data:
-        // { "code": "InvalidParameterException", "name": "InvalidParameterException", "message": "Invalid email address format." }
-        const lang = window.navigator.language || 'en';
-        const messages = {
-          en: {
-            // Code here ...
-          },
-          // TODO: might need to have other zh language code ('zh', 'zh-cn', 'zh-hk', 'zh-sg')
-          'zh-TW': {
-            // InvalidParameterException
-            'Invalid email address format.': 'Email 格式輸入錯誤',
-            'User already exists': '用戶名稱已經被註冊',
-            'An account with the given email already exists.': 'Email 已經被註冊',
-
-            // InvalidParameterException
-            'Password did not conform with policy: Password not long enough': '密碼長度未符合要求',
-            'Password did not conform with policy: Password must have numeric characters': '密碼需包含數字',
-            'Password did not conform with policy: Password must have lowercase characters': '密碼需包含英文小寫'
-          }
-        };
-
-        let errori18nMessage = err.message;
-        if (messages[lang] && messages[lang][err.message]) {
-            errori18nMessage = messages[lang][err.message]
-        }
-
-        this.errorMessage = errori18nMessage
+        this.errorMessage = this.geti18nAuthenticationErrorMessage(err.message)
       } finally{
         this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
       }
