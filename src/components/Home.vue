@@ -13,8 +13,8 @@
 
         <hr>
 
-        <div class="card-columns">
-            <div class="card" v-for="user in users" :key="user.id">
+        <div class="grid grid-cols-3 gap-4">
+            <div class="card card-bordered shadow-xl" v-for="user in users" :key="user.id">
                 <div class="card-body" :set="user_attributes = getAttribute(user['Attributes'])">
                     <div class="media">
                         <img :src="'https://www.gravatar.com/avatar/' + user_attributes['picture'] + '?s=80'" class="mr-3">
@@ -25,13 +25,14 @@
                     </div>
                     <hr>
                     <p>
-                        <a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-success">預約</a>
+                        <a :href="user_attributes['custom:calendy_url']" :disabled="! user_attributes['custom:calendy_url']" class="btn btn-primary">預約</a>
                         &nbsp;
-                        <b-button :data-username="user_attributes['name']" 
-								:data-userpicture="user_attributes['picture']" 
-								:data-userid="user_attributes['sub']" 
+                        <button class="btn btn-secondary"
+                                :data-username="user_attributes['name']"
+								:data-userpicture="user_attributes['picture']"
+								:data-userid="user_attributes['sub']"
 								:data-userUrl="user_attributes['website']"
-								@click="showIntroModal">關於我</b-button>
+								@click="showIntroModal">關於我</button>
                     </p>
                     <!-- {{ user['Username'] }} -->
                     <p class="card-text" :id="'about-' + user_attributes['sub']">{{ user_attributes['profile'] }}</p>
@@ -40,7 +41,7 @@
             </div>
         </div>
 
-        <b-modal ref="my-modal" id="modal" title="關於我">
+        <div class="modal" ref="my-modal" id="modal" title="關於我">
             <div class="media">
                 <img :src="'https://www.gravatar.com/avatar/' + modalCurrentUser['picture'] + '?s=80'" class="mr-3">
                 <div class="media-body">
@@ -54,7 +55,7 @@
 				<!-- <p v-for="(str, idx) in this.intro" :key="idx">{{str}}</p> -->
 				<intro-text v-for="(str, idx) in this.intro" :key="idx" :str="str"/>
 			</pre>
-        </b-modal>
+        </div>
     </div>
 </template>
 

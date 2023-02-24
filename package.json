@@ -9,9 +9,10 @@
   },
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
+    "autoprefixer": "^10.4.13",
     "aws-amplify": "^1.1.10",
     "aws-amplify-vue": "^0.1.7",
-    "bootstrap-vue": "^2.22.0",
+    "daisyui": "^2.51.0",
     "vue": "^2.5.17",
     "vue-loading-overlay": "^3.4.2",
     "vue-router": "^3.0.1",
@@ -24,6 +25,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
+    "tailwindcss": "^3.2.7",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {
@@ -40,11 +42,6 @@
     },
     "parserOptions": {
       "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
     }
   },
   "browserslist": [

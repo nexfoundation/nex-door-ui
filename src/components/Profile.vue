@@ -7,10 +7,10 @@
         <div id='profile-form'>
             <form @submit.prevent>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">用戶名稱 Username</label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" :value="username">
-                    </div>
+                    <label class="label">
+                        <span class="label-text">用戶名稱 Username</span>
+                    </label>
+                    <input type="text" readonly class="form-control-plaintext" :value="username">
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Email</label>
@@ -100,7 +100,7 @@
 
                 console.log(typeof attributes['custom:tags'])
                 console.log(attributes['custom:tags'])
-                
+
                 // Kun: Need help on understanding what's the main purpose of below code doing~
 
 				// remove [] and " from data received
@@ -112,10 +112,10 @@
 					attributes['custom:tags'].push(item)
 					this.tags.push(item)
 				})
-				
+
 				console.log(attributes)
 				this.user_attributes = attributes
-				
+
             } catch (err) {
                 console.log('error: ', err)
             }
