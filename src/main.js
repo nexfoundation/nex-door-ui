@@ -19,6 +19,7 @@ import App from './components/App.vue'
 import Home from './components/Home.vue'
 import Protected from './components/Protected.vue'
 import Profile from './components/Profile.vue'
+import FederatedLogin from './components/FederatedLogin.vue'
 
 // Vuex store
 import store from './store'
@@ -30,6 +31,7 @@ require('./assets/main.css')
 const routes = [
   { path: '/', component: Home },
   { path: '/auth', component: Auth },
+  { path: '/federatedLogin', component: FederatedLogin },
   { path: '/protected', component: Protected, meta: { requiresAuth: true } },
   { path: '/profile', component: Profile, meta: { requiresAuth: true } },
 ]

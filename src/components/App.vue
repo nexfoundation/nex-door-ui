@@ -28,10 +28,17 @@
 export default {
   async beforeCreate() {
     try {
-      const user = await this.$Amplify.Auth.currentAuthenticatedUser()
-      this.$store.dispatch('setIsAuthenticated', true)
-      this.$store.dispatch('setUser', user)
-      this.$router.push('profile')
+      // Using Hub to detect Social IDP (Google) Login
+      // Reference: https://github.com/aws-amplify/amplify-js/issues/5133#issuecomment-600759135
+      this.$Amplify.Hub.listen("auth", ({ payload: { event, data } }) => {
+        switch (event) {
+          case "signIn":
+            this.$store.dispatch('setIsAuthenticated', true)
+            this.$store.dispatch('setUser', data)
+            this.$router.push('/')
+            break;
+        }
+      });
     } catch (err) {
       console.log('error: ', err)
     }

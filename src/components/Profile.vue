@@ -97,6 +97,7 @@
             try {
                 let user = await this.$Amplify.Auth.currentAuthenticatedUser()
 				let { attributes } = user
+				this.user_attributes = attributes // Login with IDP with not have custom attributes
 
                 console.log(typeof attributes['custom:tags'])
                 console.log(attributes['custom:tags'])
