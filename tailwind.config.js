@@ -3,6 +3,12 @@ module.exports = {
   content: ['./src/**/*.{vue,js,ts}'],
   theme: {
     extend: {},
+    container: {
+      center: true,
+    },
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require("daisyui"),
+  ],
 }
