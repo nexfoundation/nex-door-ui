@@ -13,6 +13,7 @@
     "aws-amplify": "^1.1.10",
     "aws-amplify-vue": "^0.1.7",
     "daisyui": "^2.51.0",
+    "theme-change": "^2.5.0",
     "vue": "^2.5.17",
     "vue-loading-overlay": "^3.4.2",
     "vue-router": "^3.0.1",

@@ -29,6 +29,7 @@
               <li><router-link to="/protected">Protected Route</router-link></li>
             </ul>
           </div>
+          <input type="checkbox" class="toggle" data-toggle-theme="dark,light" data-act-class="ACTIVECLASS" />
         </div>
       </div>
       <router-view></router-view>
@@ -46,6 +47,7 @@
 </template>
 
 <script>
+import { themeChange } from 'theme-change';
 
 export default {
   async beforeCreate() {
@@ -57,6 +59,9 @@ export default {
     } catch (err) {
       console.log('error: ', err)
     }
+  },
+  mounted() {
+    themeChange(false);
   },
   computed: {
     isAuthenticated () {
