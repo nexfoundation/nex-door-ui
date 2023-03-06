@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue, { createApp } from 'vue'
+import * as VueRouter from 'vue-router'
 
 // amplify configuration
 import Amplify, * as AmplifyModules from 'aws-amplify'
@@ -11,7 +11,7 @@ Amplify.configure(aws_exports)
 import {
   BootstrapVue,
   // IconsPlugin
-} from "bootstrap-vue";
+} from 'bootstrap-vue'
 
 // Vue components
 import Auth from './components/Auth.vue'
@@ -35,9 +35,14 @@ const routes = [
 ]
 
 // router definition
-const router = new VueRouter({
+// const router = new VueRouter({
+//   routes,
+//   mode: 'history',
+// })
+const router = VueRouter.createRouter({
   routes,
-  mode: 'history'
+  mode: 'history',
+  history: VueRouter.createWebHistory(),
 })
 
 // implement protected routes for only signed in users
@@ -46,31 +51,32 @@ router.beforeResolve((to, _, next) => {
     Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
       .then((data) => {
         if (data && data.signInUserSession) {
-          next();
+          next()
         }
       })
       .catch(() => {
         console.log(
-          "You are trying to access a protected route. Please sign in."
-        );
+          'You are trying to access a protected route. Please sign in.'
+        )
         next({
-          path: "/",
+          path: '/',
           query: {
             redirect: to.fullPath,
           },
-        });
-      });
+        })
+      })
   }
-  next();
-});
+  next()
+})
 
-Vue.config.productionTip = false;
+// Vue.config.productionTip = false;
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(AmplifyPlugin, AmplifyModules)
 
-new Vue({
-  render: v => v(App),
-  router: router,
-  store
-}).$mount('#app')
+// new Vue({
+//   render: v => v(App),
+//   router: router,
+//   store
+// }).$mount('#app')
+createApp(App).use(store).use(router).mount('#app')
