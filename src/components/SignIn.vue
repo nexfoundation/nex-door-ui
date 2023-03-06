@@ -1,26 +1,28 @@
 <template>
   <div>
     <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
-    <div class='form-container'>
-      <h1 class='heading'>登入 Sign In</h1>
-      <div class='form'>
+    <div class="card w-96 mx-auto shadow-xl">
+      <div class="card-body">
+        <h1 class="card-title">登入 Sign In</h1>
         <input
-          class='input'
+          class="input w-full max-w-xs"
           placeholder='用戶名稱 (Username / Email)'
           v-model="form.username"
         />
         <input
-          class='input'
+          class="input w-full max-w-xs"
           placeholder='密碼 (Password)'
           v-model="form.password"
           type='password'
         />
-        <button class='button' :disabled="isBtnDisabled" v-on:click="signIn">
-          <p>登入 (Sign In)</p>
-        </button>
+        <div class="card-actions justify-end">
+          <button class="btn btn-primary" :disabled="isBtnDisabled" v-on:click="signIn">
+            登入 (Sign In)
+          </button>
+        </div>
       </div>
     </div>
-	<LoadingBar ref="loadingBar" />
+    <LoadingBar ref="loadingBar" />
   </div>
 </template>
 

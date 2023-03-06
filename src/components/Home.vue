@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-20">
+    <div class="container my-20">
         <article class="prose mx-auto my-12">
             <h1>關於 NEX Door</h1>
             <span>串連世界各地的專家 解決各種疑難雜症</span>
@@ -10,7 +10,7 @@
         </article>
 
 
-        <div class="grid grid-cols-3 gap-8 my-12" v-if="users">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-12" v-if="users">
             <user-card
                 v-for="user in users"
                 :key="user.id"

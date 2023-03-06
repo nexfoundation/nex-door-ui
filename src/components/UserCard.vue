@@ -12,7 +12,7 @@
       </div>
       <hr>
       <p>
-        <button class="btn btn-primary"
+        <button class="btn btn-primary mr-2"
           :disabled="!calendlyUrl"
           @click="openCalendly">預約</button>
         <button class="btn btn-secondary"
