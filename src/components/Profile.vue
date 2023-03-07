@@ -86,6 +86,10 @@
 import VueTagsInput from '@johmun/vue-tags-input';
 import ValidateBtn from './ValidateBtn.vue'
 
+// helper functions for converting tag values to VueTagsInput format
+const cleanupTagValue = t => t.text;
+const wrapTagValue = t => ( { text: t });
+
 export default {
 	name: 'profile',
 	components: {
@@ -116,7 +120,7 @@ export default {
                 picture: picture || '',
                 profile: profile || '',
                 tag: '',
-                tags: JSON.parse(tags) || [],
+                tags: tags ? JSON.parse(tags).map(wrapTagValue) : [],
                 username,
                 website: website || '',
             }
@@ -156,9 +160,6 @@ export default {
 		}
 	},
 	methods: {
-        parseTagValues() {
-            return this.form.tags.map(t => t.text);
-        },
 		async updateAttribute() {
             this.isSubmitting = true;
 			try {
@@ -168,7 +169,7 @@ export default {
                     profile: this.form.profile,
                     website: this.form.website,
 					'custom:accept_mentoring': this.form.acceptMentoring,
-					'custom:tags': JSON.stringify(this.form.tags),
+					'custom:tags': JSON.stringify(this.form.tags.map(cleanupTagValue)),
 					'custom:calendy_url': this.form.calendlyUrl,
                 }
 
