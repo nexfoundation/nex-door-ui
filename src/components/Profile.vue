@@ -21,7 +21,7 @@
                 <div class="form-group row">
                     <label for="inputName" class="col-sm-2 col-form-label">名稱 Name (必填)</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Name" :value="user_attributes['name']" required="required">
+                        <input type="text" class="form-control" id="inputName" placeholder="Name" v-model="user_attributes['name']" required="required">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -78,7 +78,11 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-10">
-                        <button class="btn btn-primary" v-on:click="updateAttribute">Update</button>
+						<ValidateBtn 
+							:formArray="[user_attributes.name]" 
+							:text="'Update'"
+							:btnType="'update-button'" v-on:click.native="updateAttribute" 
+						/>
                     </div>
                 </div>
             </form>
@@ -87,102 +91,107 @@
 </template>
 
 <script>
-    import VueTagsInput from '@johmun/vue-tags-input';
-    export default {
-        name: 'home',
-        components: {
-            VueTagsInput,
-        },
-        async beforeCreate() {
-            try {
-                let user = await this.$Amplify.Auth.currentAuthenticatedUser()
-				let { attributes } = user
+import VueTagsInput from '@johmun/vue-tags-input';
+import ValidateBtn from './ValidateBtn.vue'
 
-                console.log(typeof attributes['custom:tags'])
-                console.log(attributes['custom:tags'])
-                
-                // Kun: Need help on understanding what's the main purpose of below code doing~
+export default {
+	name: 'home',
+	components: {
+		VueTagsInput,
+		ValidateBtn
+	},
+	async beforeCreate() {
+		try {
+			let user = await this.$Amplify.Auth.currentAuthenticatedUser()
+			let { attributes } = user
 
-				// remove [] and " from data received
-				let atr = attributes['custom:tags'].replace(/[\[\]\"']+/g, '')
-				let tags = atr.split(",")
-				attributes['custom:tags'] = []
+			console.log(typeof attributes['custom:tags'])
+			console.log(attributes['custom:tags'])
+			
+			// Kun: Need help on understanding what's the main purpose of below code doing~
+			// Yi: The original custom:tags is an "array like" string. ex: ["稅務簽證","職涯發展"]
+			// Following code remove , and [] and separate it to a real array
 
-				tags.forEach(item => {
-					attributes['custom:tags'].push(item)
-					this.tags.push(item)
+			// remove [] and " from data received
+			let atr = attributes['custom:tags'].replace(/[\[\]\"']+/g, '')
+			let tags = atr.split(",")
+			attributes['custom:tags'] = []
+
+			tags.forEach(item => {
+				attributes['custom:tags'].push(item)
+				this.tags.push(item)
+			})
+			
+			console.log(attributes)
+			this.user_attributes = attributes
+			
+		} catch (err) {
+			console.log('error: ', err)
+		}
+	},
+	data() {
+		return {
+			user_attributes: {name: ''}, // has to pre-assign name in order to set it in v-model
+			errorMessage: undefined,
+			tag: '',
+			tags: [],
+			availableMentoringTags: [
+				'稅務簽證',
+				'職涯發展',
+				'商業創業',
+				'租屋買房',
+				'旅行生活',
+				'人生相談',
+				'興趣分享',
+				'設計美學',
+				'海外婚姻',
+			],
+		}
+	},
+	computed: {
+		username() {
+			return this.$store.state.user.username
+		}
+	},
+	methods: {
+		getLatestTagsList() {
+			// run code only if changed
+			if (JSON.stringify(this.user_attributes['custom:tags']) !== JSON.stringify(this.tags)) {
+				let serializedResult = []
+				this.tags.forEach((item) => {
+					serializedResult.push(item['text'])
 				})
-				
-				console.log(attributes)
-				this.user_attributes = attributes
-				
-            } catch (err) {
-                console.log('error: ', err)
-            }
-        },
-        data() {
-            return {
-                user_attributes: undefined,
-                errorMessage: undefined,
-                tag: '',
-				tags: [],
-                availableMentoringTags: [
-                  '稅務簽證',
-                  '職涯發展',
-                  '商業創業',
-                  '租屋買房',
-                  '旅行生活',
-                  '人生相談',
-                  '興趣分享',
-                  '設計美學',
-                  '海外婚姻',
-                ],
-            }
-        },
-        computed: {
-            username() {
-                return this.$store.state.user.username
-            }
-        },
-        methods: {
-			getLatestTagsList() {
-				// run code only if changed
-				if (JSON.stringify(this.user_attributes['custom:tags']) !== JSON.stringify(this.tags)) {
-					let serializedResult = []
-					this.tags.forEach((item) => {
-						serializedResult.push(item['text'])
-					})
-					console.log(serializedResult)
-					return serializedResult
-				}
-				return this.tags
-			},
-            async updateAttribute() {
-                try {
-                    let user = await this.$Amplify.Auth.currentAuthenticatedUser()
-                    let result = await this.$Amplify.Auth.updateUserAttributes(user, {
-                        'name': document.getElementById("inputName").value,
-                        'picture': document.getElementById("inputProfilePhoto").value,
-                        'profile': document.getElementById("inputProfileBio").value,
-                        'website': document.getElementById("inputWebsite").value,
-                        'custom:accept_mentoring': document.getElementById("inputAcceptMentoring").value,
-						'custom:tags': JSON.stringify(this.getLatestTagsList()),
-                        'custom:calendy_url': document.getElementById("inputCalendy").value
-                    })
+				console.log(serializedResult)
+				return serializedResult
+			}
+			return this.tags
+		},
+		async updateAttribute() {
+			try {
+				let user = await this.$Amplify.Auth.currentAuthenticatedUser()
+				let result = await this.$Amplify.Auth.updateUserAttributes(user, {
+					'name': document.getElementById("inputName").value,
+					'picture': document.getElementById("inputProfilePhoto").value,
+					'profile': document.getElementById("inputProfileBio").value,
+					'website': document.getElementById("inputWebsite").value,
+					'custom:accept_mentoring': document.getElementById("inputAcceptMentoring").value,
+					'custom:tags': JSON.stringify(this.getLatestTagsList()),
+					'custom:calendy_url': document.getElementById("inputCalendy").value
+				})
 
-                    console.log(result)
+				console.log(result)
 
-                    // Refresh local current user session and state
-                    user = await this.$Amplify.Auth.currentAuthenticatedUser({ bypassCache: true })
-                    this.$store.dispatch('setUser', user)
-                    this.$router.push('/')
-                } catch (err) {
-                    console.log('error: ', err)
-                    this.errorMessage = err
-                }
-            }
-        }
-    }
+				// Refresh local current user session and state
+				user = await this.$Amplify.Auth.currentAuthenticatedUser({ bypassCache: true })
+				this.$store.dispatch('setUser', user)
+				this.$router.push('/')
+			} catch (err) {
+				console.log('error: ', err)
+				this.errorMessage = err
+			}
+		}
+	}
+}
 </script>
 
 <style scoped>
