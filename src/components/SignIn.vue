@@ -1,29 +1,29 @@
 <template>
   <div>
     <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
-    <div class='form-container'>
-      <h1 class='heading'>登入 Sign In</h1>
-      <div class='form'>
+    <div class="card w-96 mx-auto shadow-xl">
+      <div class="card-body">
+        <h1 class="card-title">登入 Sign In</h1>
         <input
-          class='input'
+          class="input w-full max-w-xs"
           placeholder='用戶名稱 (Username / Email)'
           v-model="form.username"
         />
         <input
-          class='input'
+          class="input w-full max-w-xs"
           placeholder='密碼 (Password)'
           v-model="form.password"
           type='password'
         />
-		<ValidateBtn 
-			:formArray="[form.username, form.password]" 
-			:text="'登入 (Sign In)'" 
-			:btnType="'sign-button'"
-			v-on:click.native="signIn"
-		/>
+        <div class="card-actions justify-end">
+          <ValidateBtn
+            :formArray="[form.username, form.password]"
+            @click.native="signIn"
+          >登入 (Sign In)</ValidateBtn>
+        </div>
       </div>
     </div>
-	<LoadingBar ref="loadingBar" />
+    <LoadingBar ref="loadingBar" />
   </div>
 </template>
 
@@ -58,29 +58,14 @@ export default {
     }
   },
   data() {
-	return {
-		form: {
-			username: '',
-			password: '',
-		},
-		errorMessage: undefined,
+    return {
+      form: {
+        username: '',
+        password: '',
+      },
+      errorMessage: undefined,
+    }
   }
-}
 }
 </script>
 
-<style scoped>
-.heading {
-  text-align: left;
-  margin: 55px 5px 15px;
-}
-.form-container {
-  width: 262px;
-  margin: 0 auto;
-}
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-</style>
