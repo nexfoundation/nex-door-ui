@@ -16,9 +16,10 @@
           type='password'
         />
         <div class="card-actions justify-end">
-          <button class="btn btn-primary" :disabled="isBtnDisabled" v-on:click="signIn">
-            登入 (Sign In)
-          </button>
+          <ValidateBtn
+            :formArray="[form.username, form.password]"
+            @click.native="signIn"
+          >登入 (Sign In)</ValidateBtn>
         </div>
       </div>
     </div>
@@ -28,11 +29,13 @@
 
 <script>
 import LoadingBar from './LoadingBar.vue'
+import ValidateBtn from './ValidateBtn.vue'
 
 export default {
   name: 'sign-in',
   components: {
-    LoadingBar
+	LoadingBar,
+	ValidateBtn
   },
   methods: {
     async signIn() {
@@ -50,63 +53,19 @@ export default {
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
         console.log('error: ', err)
-        this.errorMessage = err
+        this.errorMessage = err.message
       }
     }
   },
-  computed: {
-	isBtnDisabled() {
-		return (
-			!this.form.username ||
-			!this.form.password
-		);
-	},
-  },
   data() {
-  return {
-    form: {
-      username: '',
-      password: '',
-    },
-    errorMessage: undefined
+    return {
+      form: {
+        username: '',
+        password: '',
+      },
+      errorMessage: undefined,
+    }
   }
-}
 }
 </script>
 
-<style scoped>
-.heading {
-  text-align: left;
-  margin: 55px 5px 15px;
-}
-.form-container {
-  width: 262px;
-  margin: 0 auto;
-}
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.button {
-  padding: 13px 35px;
-  background-color: #2c3e50;
-  cursor: pointer;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
-  margin: 25px 0px 20px;
-  opacity: 1;
-}
-
-.button[disabled] {
-	opacity: 0.5;
-  cursor: default;
-}
-.button:not([disabled]):hover {
-  opacity: 0.9;
-}
-.button p {
-  margin: 0;
-  color: white;
-  font-weight: 600;
-}
-</style>

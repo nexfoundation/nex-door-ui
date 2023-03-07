@@ -22,9 +22,11 @@
             type="password"
           />
           <div class="card-actions justify-end">
-            <button class="btn btn-primary" :disabled="isBtnDisabled" v-on:click="signUp" @update="isLoading = $event">
-              註冊 (Sign Up)
-            </button>
+            <ValidateBtn
+              :formArray="[form.username, form.password, form.attributes.email]"
+              @click.native="signUp"
+              @update="isLoading = $event"
+            >註冊 (Sign Up)</ValidateBtn>
           </div>
         </template>
 
@@ -36,9 +38,10 @@
             placeholder="請輸入臨時性驗證碼 (Authentication code)"
           />
           <div class="card-actions justify-end">
-            <button class="btn btn-primary" v-on:click="confirmSignUp">
-              <p>確認 (Confirm Sign Up)</p>
-            </button>
+            <ValidateBtn
+              :formArray="[form.username, form.password, form.attributes.email]"
+              @click.native="confirmSignUp"
+            >確認 (Confirm Sign Up)</ValidateBtn>
             <div class="btn btn-ghost" v-on:click="resendConfirmationCode">
               <p>重新發送驗證碼 (Resend Confirmation Code) {{ '(' + confirmationCodeCooldownSecond + ')' }}</p>
             </div>
@@ -52,11 +55,13 @@
 
 <script>
 import LoadingBar from './LoadingBar.vue'
+import ValidateBtn from './ValidateBtn.vue'
 
 export default {
   name: 'sign-up',
   components: {
-    LoadingBar
+	LoadingBar,
+	ValidateBtn
   },
   methods: {
     async signUp() {
@@ -120,29 +125,20 @@ export default {
       }
     }
   },
-  computed: {
-	isBtnDisabled() {
-		return (
-			!this.form.username ||
-			!this.form.password ||
-			!this.form.attributes.email
-		);
-	},
-  },
   data() {
     return {
-      form: {
-        username: '',
-        password: '',
-        attributes: {
-          email: '',
-          phone_number: '',
-        }
-      },
-      authCode: '',
-      phase: 0,
-      errorMessage: undefined,
-      confirmationCodeCooldownSecond: 30
+		form: {
+			username: '',
+			password: '',
+			attributes: {
+			email: '',
+			phone_number: '',
+			}
+		},
+		authCode: '',
+		phase: 0,
+		errorMessage: undefined,
+		confirmationCodeCooldownSecond: 30,
     }
   }
 }

@@ -36,9 +36,11 @@
     </div>
 
     <footer class="footer bottom-0 w-full p-4 bg-primary">
-      <div>
-        <p class="w-full footer-text">NEX Work 為非營利服務平台，由美國 NEX Foundation 建置，2020 年正式營運。<br>NEX Foundation 為美國註冊商標，屬 NEX Foundation 所有。 其餘各商標均為個別原始公司所有，NEX Foundation 與各該公司並無代理權限或合作關係。<br><br>Copyright © 2020</p>
-      </div>
+      <p class="w-full footer-text text-primary-content">
+        NEX Work 為非營利服務平台，由美國 NEX Foundation 建置，2020 年正式營運。<br>
+        NEX Foundation 為美國註冊商標，屬 NEX Foundation 所有。 其餘各商標均為個別原始公司所有，NEX Foundation 與各該公司並無代理權限或合作關係。<br><br>
+        Copyright © 2020
+      </p>
       <div>
         <a target="_blank" href="https://nexf.org"><img src="../assets/nexf_logo.png" alt="NEX Foundation"></a>
       </div>
@@ -55,7 +57,7 @@ export default {
       const user = await this.$Amplify.Auth.currentAuthenticatedUser()
       this.$store.dispatch('setIsAuthenticated', true)
       this.$store.dispatch('setUser', user)
-      this.$router.push('profile')
+      // this.$router.push('profile')
     } catch (err) {
       console.log('error: ', err)
     }

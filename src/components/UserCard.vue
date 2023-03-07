@@ -61,10 +61,10 @@
         return JSON.parse(this.attributes["custom:tags"]);
       },
       calendlyUrl() {
-        if (!this.attributes["custom:calendy_url"]) {
+        if (!this.attributes["custom:calendly_url"]) {
           return;
         }
-        return `https://calendly.com${this.attributes["custom:calendy_url"]}`;
+        return this.attributes["custom:calendly_url"];
       },
       website() {
         return this.attributes.website;
