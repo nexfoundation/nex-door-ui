@@ -54,7 +54,7 @@ export default {
         await this.$Amplify.Auth.forgotPassword(this.form.username)
         this.formState = 'resetPasswordConfirm'
       } catch (err) {
-        console.log('error: ', err)
+        console.error(err)
       }
     },
     async forgotPasswordSubmit() {
@@ -64,7 +64,7 @@ export default {
         alert('Successfully reset password1')
         this.toggleForm('signIn')
       } catch (err) {
-        console.log('error: ', err)
+        console.error(err)
       }
     }
   },

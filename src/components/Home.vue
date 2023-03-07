@@ -38,7 +38,6 @@
 
 <script>
 import { API } from 'aws-amplify';
-import IntroText from './IntroText';
 import UserCard from './UserCard';
 export default {
     name: 'home',
@@ -54,11 +53,10 @@ export default {
             const response = await API.get(apiName, path, myInit);
             this.users = response;
         } catch(error) {
-            console.log(error.response);
+            console.error(error);
         }
 	},
 	components: {
-		IntroText,
         UserCard,
 	},
     data() {
@@ -70,19 +68,15 @@ export default {
     },
     methods: {
         showIntroModal(e) {
-			console.log(e.currentTarget)
-			// console.log(website)
-            let userid = e.currentTarget.getAttribute('data-userid')
+            const userid = e.currentTarget.getAttribute('data-userid')
 
             this.modalCurrentUser['name'] = e.currentTarget.getAttribute('data-username')
             this.modalCurrentUser['picture'] = e.currentTarget.getAttribute('data-userpicture')
 			this.modalCurrentUser['website'] = e.currentTarget.getAttribute('data-userUrl')
 
 			// this.intro = document.getElementById('about-' + userid).innerHTML
-			this.intro = document.getElementById('about-' + userid).innerHTML.split('\n')
+			this.intro = document.getElementById(`about-${userid}`).innerHTML.split('\n')
 			this.$refs['my-modal'].show()
-
-			console.log(e.currentTarget)
         },
     }
 }
