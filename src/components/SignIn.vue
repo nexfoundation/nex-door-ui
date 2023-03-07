@@ -48,7 +48,7 @@ export default {
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
         console.log('error: ', err)
-        this.errorMessage = err
+        this.errorMessage = err.message
       }
     }
   },
