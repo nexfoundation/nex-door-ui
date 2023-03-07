@@ -31,7 +31,6 @@
 
 <script>
   export default {
-    name: "user-card",
     props: ["user", "showIntroModal"],
     data() {
       const attributes = this.user.Attributes.reduce((result, a) => {

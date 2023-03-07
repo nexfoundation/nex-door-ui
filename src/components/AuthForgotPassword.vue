@@ -46,7 +46,6 @@ const form = {
 }
 
 export default {
-  name: 'forgot-password',
   props: ['toggleForm'],
   methods: {
     async forgotPassword() {

@@ -11,7 +11,7 @@
 
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-12" v-if="users">
-            <user-card
+            <HomeCard
                 v-for="user in users"
                 :key="user.id"
                 :user="user"
@@ -38,7 +38,7 @@
 
 <script>
 import { API } from 'aws-amplify';
-import UserCard from './UserCard';
+import HomeCard from './HomeCard.vue';
 export default {
     name: 'home',
     async created() {
@@ -57,7 +57,7 @@ export default {
         }
 	},
 	components: {
-        UserCard,
+        HomeCard,
 	},
     data() {
         return {

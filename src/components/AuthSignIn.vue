@@ -28,11 +28,10 @@
 </template>
 
 <script>
-import LoadingBar from './LoadingBar.vue'
-import ValidateBtn from './ValidateBtn.vue'
+import LoadingBar from './base/BaseLoadingBar.vue'
+import ValidateBtn from './base/BaseValidateBtn.vue'
 
 export default {
-  name: 'sign-in',
   components: {
 	LoadingBar,
 	ValidateBtn
