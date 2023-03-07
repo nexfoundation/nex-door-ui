@@ -1,4 +1,4 @@
-import Vue, { createApp } from 'vue'
+import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
 
 // amplify configuration
@@ -35,20 +35,18 @@ const routes = [
 ]
 
 // router definition
-// const router = new VueRouter({
-//   routes,
-//   mode: 'history',
-// })
 const router = VueRouter.createRouter({
   routes,
   mode: 'history',
   history: VueRouter.createWebHistory(),
 })
 
+let app = createApp(App)
+
 // implement protected routes for only signed in users
 router.beforeResolve((to, _, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
+    app.config.globalProperties.$Amplify.Auth.currentAuthenticatedUser()
       .then((data) => {
         if (data && data.signInUserSession) {
           next()
@@ -70,13 +68,9 @@ router.beforeResolve((to, _, next) => {
 })
 
 // Vue.config.productionTip = false;
-Vue.use(VueRouter)
-Vue.use(BootstrapVue)
-Vue.use(AmplifyPlugin, AmplifyModules)
-
-// new Vue({
-//   render: v => v(App),
-//   router: router,
-//   store
-// }).$mount('#app')
-createApp(App).use(store).use(router).mount('#app')
+app.use(VueRouter)
+app.use(BootstrapVue)
+app.use(AmplifyPlugin, AmplifyModules)
+app.use(store)
+app.use(router)
+app.mount('#app')
