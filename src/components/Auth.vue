@@ -1,12 +1,11 @@
 <template>
-  <div class='auth'>
-    <component :is="currentTab" class="tab" @toSignIn="toSignIn">
-    </component>
-
-    <!-- TODO: stylee classes, replace btn to div -->
-    <div v-for="tab in tabs" :key="tab" :class="['link-container', { active: currentTab === tab }]"
-      @click="currentTab = tab">
-      {{ tab }}
+  <div class="container my-20">
+    <component :is="currentTab" @toSignIn="toSignIn" />
+    <div class="tabs tabs-boxed w-96 mx-auto mt-8">
+      <div v-for="tab in tabs" :key="tab" :class="['tab', { 'tab-active': currentTab === tab }]"
+        @click="currentTab = tab">
+        {{ tab }}
+      </div>
     </div>
   </div>
 
@@ -22,7 +21,7 @@ export default {
   components: {
     SignIn,
     SignUp,
-	ForgotPassword,
+    ForgotPassword,
   },
   data() {
     return {
@@ -38,29 +37,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-.active {
-  display: none;
-}
-
-.link-container {
-  /* TODO: invalid */
-  margin-bottom: 5px;
-  cursor: pointer;
-}
-
-.auth {
-  display: flex;
-  flex-direction: column;
-}
-
-.toggleButton {
-  cursor: pointer;
-  margin-bottom: 0;
-}
-
-.toggleButton:hover {
-  opacity: .7;
-}
-</style>

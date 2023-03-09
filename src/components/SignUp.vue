@@ -1,48 +1,52 @@
 <template>
   <div>
     <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
-    <div class='form-container'>
-      <h1 class='heading'>註冊 Sign Up</h1>
-      <div class='form' v-if="phase === Number(0)">
-        <input
-          class='input'
-          v-model="form.attributes.email"
-          placeholder='信箱 (Email)'
-        />
-        <input
-          class='input'
-          v-model="form.username"
-          placeholder='用戶名稱 (Username)'
-        />
-        <input
-          class='input'
-          v-model="form.password"
-          placeholder='密碼 (Password)'
-          type='password'
-        />
-        <!--input
-          class='input'
-          v-model="form.attributes.phone_number"
-          placeholder='Phone'
-        /-->
-        <button class='button' :disabled="isBtnDisabled" v-on:click="signUp" @update="isLoading = $event">
-          <p>註冊 (Sign Up)</p>
-        </button>
-      </div>
+    <div class="card w-96 mx-auto shadow-xl">
+      <div class="card-body">
+        <h1 class="card-title">註冊 Sign Up</h1>
+        <template v-if="phase === Number(0)">
+          <input
+            class="input w-full max-w-ws"
+            v-model="form.attributes.email"
+            placeholder="信箱 (Email)"
+          />
+          <input
+            class="input w-full max-w-ws"
+            v-model="form.username"
+            placeholder="用戶名稱 (Username)"
+          />
+          <input
+            class="input w-full max-w-ws"
+            v-model="form.password"
+            placeholder="密碼 (Password)"
+            type="password"
+          />
+          <div class="card-actions justify-end">
+            <ValidateBtn
+              :formArray="[form.username, form.password, form.attributes.email]"
+              @click.native="signUp"
+              @update="isLoading = $event"
+            >註冊 (Sign Up)</ValidateBtn>
+          </div>
+        </template>
 
-      <div class='form' v-if="phase === Number(1)">
-        <p>(請確認您的 Email 或是簡訊的 OTP 驗證碼)</p>
-        <input
-          class='input'
-          v-model="authCode"
-          placeholder='請輸入臨時性驗證碼 (Authentication code)'
-        />
-        <button class='button' v-on:click="confirmSignUp">
-          <p>確認 (Confirm Sign Up)</p>
-        </button>
-        <div class='button' v-on:click="resendConfirmationCode">
-          <p>重新發送驗證碼 (Resend Confirmation Code) {{ '(' + confirmationCodeCooldownSecond + ')' }}</p>
-        </div>
+        <template v-else-if="phase === Number(1)">
+          <p>(請確認您的 Email 或是簡訊的 OTP 驗證碼)</p>
+          <input
+            class="input w-full max-w-ws"
+            v-model="authCode"
+            placeholder="請輸入臨時性驗證碼 (Authentication code)"
+          />
+          <div class="card-actions justify-end">
+            <ValidateBtn
+              :formArray="[form.username, form.password, form.attributes.email]"
+              @click.native="confirmSignUp"
+            >確認 (Confirm Sign Up)</ValidateBtn>
+            <div class="btn btn-ghost" v-on:click="resendConfirmationCode">
+              <p>重新發送驗證碼 (Resend Confirmation Code) {{ '(' + confirmationCodeCooldownSecond + ')' }}</p>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
     <LoadingBar ref="loadingBar"/>
@@ -50,14 +54,15 @@
 </template>
 
 <script>
-import LoadingBar from './LoadingBar.vue'
 import i18n from '../mixin/i18n.js'
+import LoadingBar from './LoadingBar.vue'
+import ValidateBtn from './ValidateBtn.vue'
 
 export default {
-//   props: ['toggleForm'],
   name: 'sign-up',
   components: {
-    LoadingBar
+	LoadingBar,
+	ValidateBtn
   },
   mixins: [i18n],
   methods: {
@@ -66,7 +71,7 @@ export default {
       this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
       try {
         await this.$Amplify.Auth.signUp(this.form)
-        
+
         this.phase = 1
         this.confirmationCodeCooldownCountdown()
 
@@ -122,68 +127,21 @@ export default {
       }
     }
   },
-  computed: {
-	isBtnDisabled() {
-		return (
-			!this.form.username ||
-			!this.form.password ||
-			!this.form.attributes.email
-		);
-	},
-  },
   data() {
     return {
-      form: {
-        username: '',
-        password: '',
-        attributes: {
-          email: '',
-          phone_number: '',
-        }
-      },
-      authCode: '',
-      phase: 0,
-      errorMessage: undefined,
-      confirmationCodeCooldownSecond: 30
+		form: {
+			username: '',
+			password: '',
+			attributes: {
+			email: '',
+			phone_number: '',
+			}
+		},
+		authCode: '',
+		phase: 0,
+		errorMessage: undefined,
+		confirmationCodeCooldownSecond: 30,
     }
   }
 }
 </script>
-
-<style scoped>
-.heading {
-  text-align: left;
-  margin: 55px 5px 15px;
-}
-.form-container {
-  width: 262px;;
-  margin: 0 auto;
-}
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.button {
-  padding: 13px 35px;
-  background-color: #2c3e50;
-  cursor: pointer;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
-  margin: 25px 0px 20px;
-  opacity: 1;
-}
-
-.button[disabled] {
-	opacity: 0.5;
-  cursor: default;
-}
-
-.button:not([disabled]):hover {
-  opacity: 0.9;
-}
-.button p {
-  margin: 0;
-  color: white;
-  font-weight: 600;
-}
-</style>

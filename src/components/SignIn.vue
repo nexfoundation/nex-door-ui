@@ -1,37 +1,42 @@
 <template>
   <div>
     <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
-    <div class='form-container'>
-      <h1 class='heading'>登入 Sign In</h1>
-      <div class='form'>
+    <div class="card w-96 mx-auto shadow-xl">
+      <div class="card-body">
+        <h1 class="card-title">登入 Sign In</h1>
         <input
-          class='input'
+          class="input w-full max-w-xs"
           placeholder='用戶名稱 (Username / Email)'
           v-model="form.username"
         />
         <input
-          class='input'
+          class="input w-full max-w-xs"
           placeholder='密碼 (Password)'
           v-model="form.password"
           type='password'
         />
-        <button class='button' :disabled="isBtnDisabled" v-on:click="signIn">
-          <p>登入 (Sign In)</p>
-        </button>
+        <div class="card-actions justify-end">
+          <ValidateBtn
+            :formArray="[form.username, form.password]"
+            @click.native="signIn"
+          >登入 (Sign In)</ValidateBtn>
+        </div>
       </div>
     </div>
-	<LoadingBar ref="loadingBar" />
+    <LoadingBar ref="loadingBar" />
   </div>
 </template>
 
 <script>
-import LoadingBar from './LoadingBar.vue'
 import i18n from '../mixin/i18n.js'
+import LoadingBar from './LoadingBar.vue'
+import ValidateBtn from './ValidateBtn.vue'
 
 export default {
   name: 'sign-in',
   components: {
-    LoadingBar
+	LoadingBar,
+	ValidateBtn
   },
   mixins: [i18n],
   methods: {
@@ -54,59 +59,15 @@ export default {
       }
     }
   },
-  computed: {
-	isBtnDisabled() {
-		return (
-			!this.form.username ||
-			!this.form.password
-		);
-	},
-  },
   data() {
-  return {
-    form: {
-      username: '',
-      password: '',
-    },
-    errorMessage: undefined
+    return {
+      form: {
+        username: '',
+        password: '',
+      },
+      errorMessage: undefined,
+    }
   }
-}
 }
 </script>
 
-<style scoped>
-.heading {
-  text-align: left;
-  margin: 55px 5px 15px;
-}
-.form-container {
-  width: 262px;
-  margin: 0 auto;
-}
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.button {
-  padding: 13px 35px;
-  background-color: #2c3e50;
-  cursor: pointer;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
-  margin: 25px 0px 20px;
-  opacity: 1;
-}
-
-.button[disabled] {
-	opacity: 0.5;
-  cursor: default;
-}
-.button:not([disabled]):hover {
-  opacity: 0.9;
-}
-.button p {
-  margin: 0;
-  color: white;
-  font-weight: 600;
-}
-</style>

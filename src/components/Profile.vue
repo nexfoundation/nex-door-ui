@@ -1,209 +1,190 @@
 <template>
-    <div class='container'>
+    <div class="container my-20">
         <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
-        <h1>歡迎回來！</h1>
+        <h1 class="text-5xl font-bold leading-relaxed">歡迎回來！</h1>
         <p>在這裡你可以編輯你的個人資料，以讓更多人更加了解你！</p>
-        <code>{{ user_attributes }}</code>
-        <div id='profile-form'>
-            <form @submit.prevent>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">用戶名稱 Username</label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" :value="username">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control-plaintext" :value="user_attributes['email']">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputName" class="col-sm-2 col-form-label">名稱 Name (必填)</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputName" placeholder="Name" :value="user_attributes['name']" required="required">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputProfilePhoto" class="col-sm-2 col-form-label">個人頭像 Photo (Gravatar)</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputProfilePhoto" placeholder="205e460b479e2e5b48aec07710c08d50" :value="user_attributes['picture']">
-                        <span class="help-block">(輸入 Gravatar 的用戶號碼 - https://www.gravatar.com/avatar/<strong>205e460b479e2e5b48aec07710c08d50</strong> | <a href="https://gravatar.com">免費註冊一個頭像</a>)</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputWebsite" class="col-sm-2 col-form-label">個人網站 Website</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputWebsite" placeholder="https://example.com" :value="user_attributes['website']">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputCalendy" class="col-sm-2 col-form-label">開放其他人向你諮詢 Accept Mentoring</label>
-                    <div class="col-sm-10">
-                        <select class="form-control" id="inputAcceptMentoring">
-                            <option value="0" :selected="user_attributes['custom:accept_mentoring'] == 0">No</option>
-                            <option value="1" :selected="user_attributes['custom:accept_mentoring'] == 1">Yes</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputCalendy" class="col-sm-2 col-form-label">個人預約連結 (Calendy)</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="inputCalendy" placeholder="https://calendly.com/<username>" :value="user_attributes['custom:calendy_url']">
-                        <span class="help-block">(<a href="https://calendly.com/">前往 Calendy</a>)</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputCalendy" class="col-sm-2 col-form-label">諮詢類別 Tags</label>
-                    <div class="col-sm-10">
-                      <div class="tag-input">
-                        <vue-tags-input
-                            v-model="tag"
-                            :tags="tags"
-                            :autocomplete-items="availableMentoringTags"
-                            @tags-changed="newTags => tags = newTags"
-                        >
-                            <template slot="autocomplete-header">
-                                <strong>選擇你可以提供的諮詢項目</strong>
-                            </template>
-                        </vue-tags-input>
 
-                        </div>
-						{{ user_attributes['custom:tags'] }}
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputProfileBio">個人簡介 Bio</label>
-                    <textarea class="form-control" id="inputProfileBio" rows="20" v-model="user_attributes['profile']"></textarea>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <button class="btn btn-primary" v-on:click="updateAttribute">Update</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+        <form @submit.prevent>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">用戶名稱 Username</span>
+                </label>
+                <input type="text" readonly class="input input-bordered input-disabled w-full max-w-xs" :value="form.username">
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="text" readonly class="input input-bordered input-disabled w-full max-w-xs" :value="form.email">
+            </div>
+            <div class="form-control">
+                <label for="inputName" class="label">
+                    <span class="label-text">名稱 Name (必填)</span>
+                </label>
+                <input type="text" class="input input-bordered w-full max-w-xs" id="inputName" placeholder="Name" v-model="form.name" required="required">
+            </div>
+            <div class="form-control">
+                <label for="inputProfilePhoto" class="label">
+                    <span class="label-text tooltip" data-tip="輸入 Gravatar 的用戶號碼 - https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50">個人頭像 Photo (Gravatar)</span>
+                </label>
+                    <input type="text" class="input input-bordered w-full max-w-xs" id="inputProfilePhoto" placeholder="205e460b479e2e5b48aec07710c08d50" v-model="form.picture">
+                    <span class="help-block"></span>
+            </div>
+            <div class="form-control">
+                <label for="inputWebsite" class="label">
+                    <span class="label-text">個人網站 Website</span>
+                </label>
+                <input type="text" class="input input-bordered w-full max-w-xs" id="inputWebsite" placeholder="https://example.com" v-model="form.website">
+            </div>
+            <div class="form-control">
+                <label for="inputCalendly" class="label">
+                    <span class="label-text">開放其他人向你諮詢 Accept Mentoring</span>
+                </label>
+                <select class="select select-bordered w-full max-w-xs" id="inputAcceptMentoring" v-model="form.acceptMentoring">
+                    <option :value="'0'">No</option>
+                    <option :value="'1'">Yes</option>
+                </select>
+            </div>
+            <div class="form-control">
+                <label for="inputCalendly" class="label">
+                    <span class="label-text">個人預約連結 (<a class="link" href="https://calendly.com/">Calendly</a>)</span>
+                </label>
+                <input type="text" class="input input-bordered w-full max-w-xs" id="inputCalendly" placeholder="https://calendly.com/<username>" v-model="form.calendlyUrl">
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">諮詢類別 Tags</span>
+                </label>
+                <vue-tags-input
+                    v-model="form.tag"
+                    :tags="form.tags"
+                    :autocomplete-items="availableMentoringTags"
+                    @tags-changed="newTags => form.tags = newTags"
+                >
+                    <template slot="autocomplete-header">
+                        <strong>選擇你可以提供的諮詢項目</strong>
+                    </template>
+                </vue-tags-input>
+            </div>
+            <div class="form-control">
+                <label for="inputProfileBio" class="label">
+                    <span class="label-text">個人簡介 Bio</span>
+                </label>
+                <textarea class="textarea textarea-bordered max-w-md" id="inputProfileBio" rows="5" v-model="form.profile"></textarea>
+            </div>
+            <ValidateBtn
+                :formArray="[form.name]"
+                :disabled="isSubmitting"
+                @click.native="updateAttribute"
+                class="mt-4"
+            >Update</ValidateBtn>
+        </form>
     </div>
 </template>
 
 <script>
-    import VueTagsInput from '@johmun/vue-tags-input';
-    export default {
-        name: 'home',
-        components: {
-            VueTagsInput,
-        },
-        async beforeCreate() {
-            try {
-                let user = await this.$Amplify.Auth.currentAuthenticatedUser()
-				let { attributes } = user
+import VueTagsInput from '@johmun/vue-tags-input';
+import ValidateBtn from './ValidateBtn.vue'
 
-                console.log(typeof attributes['custom:tags'])
-                console.log(attributes['custom:tags'])
-                
-                // Kun: Need help on understanding what's the main purpose of below code doing~
+// helper functions for converting tag values to VueTagsInput format
+const cleanupTagValue = t => t.text;
+const wrapTagValue = t => ( { text: t });
 
-				// remove [] and " from data received
-				let atr = attributes['custom:tags'].replace(/[\[\]\"']+/g, '')
-				let tags = atr.split(",")
-				attributes['custom:tags'] = []
+export default {
+	name: 'profile',
+	components: {
+		VueTagsInput,
+		ValidateBtn,
+	},
+	async created() {
+        try {
+            const user = await this.$Amplify.Auth.currentAuthenticatedUser();
+            const { username } = user;
+            const {
+                email,
+                name,
+                picture,
+                profile,
+                website,
+                'custom:accept_mentoring': acceptMentoring,
+                'custom:calendly_url': calendlyUrl,
+                'custom:tags': tags,
+            } = user.attributes;
 
-				tags.forEach(item => {
-					attributes['custom:tags'].push(item)
-					this.tags.push(item)
-				})
-				
-				console.log(attributes)
-				this.user_attributes = attributes
-				
-            } catch (err) {
-                console.log('error: ', err)
-            }
-        },
-        data() {
-            return {
-                user_attributes: undefined,
-                errorMessage: undefined,
+            this.user = user;
+            this.form = {
+                acceptMentoring: acceptMentoring || '0',
+                calendlyUrl: calendlyUrl || '',
+                email: email || '',
+                name: name || '',
+                picture: picture || '',
+                profile: profile || '',
                 tag: '',
-				tags: [],
-                availableMentoringTags: [
-                  '稅務簽證',
-                  '職涯發展',
-                  '商業創業',
-                  '租屋買房',
-                  '旅行生活',
-                  '人生相談',
-                  '興趣分享',
-                  '設計美學',
-                  '海外婚姻',
-                ],
+                tags: tags ? JSON.parse(tags).map(wrapTagValue) : [],
+                username,
+                website: website || '',
             }
-        },
-        computed: {
-            username() {
-                return this.$store.state.user.username
-            }
-        },
-        methods: {
-			getLatestTagsList() {
-				// run code only if changed
-				if (JSON.stringify(this.user_attributes['custom:tags']) !== JSON.stringify(this.tags)) {
-					let serializedResult = []
-					this.tags.forEach((item) => {
-						serializedResult.push(item['text'])
-					})
-					console.log(serializedResult)
-					return serializedResult
-				}
-				return this.tags
-			},
-            async updateAttribute() {
-                try {
-                    let user = await this.$Amplify.Auth.currentAuthenticatedUser()
-                    let result = await this.$Amplify.Auth.updateUserAttributes(user, {
-                        'name': document.getElementById("inputName").value,
-                        'picture': document.getElementById("inputProfilePhoto").value,
-                        'profile': document.getElementById("inputProfileBio").value,
-                        'website': document.getElementById("inputWebsite").value,
-                        'custom:accept_mentoring': document.getElementById("inputAcceptMentoring").value,
-						'custom:tags': JSON.stringify(this.getLatestTagsList()),
-                        'custom:calendy_url': document.getElementById("inputCalendy").value
-                    })
 
-                    console.log(result)
-
-                    // Refresh local current user session and state
-                    user = await this.$Amplify.Auth.currentAuthenticatedUser({ bypassCache: true })
-                    this.$store.dispatch('setUser', user)
-                    this.$router.push('/')
-                } catch (err) {
-                    console.log('error: ', err)
-                    this.errorMessage = err
+		} catch (err) {
+			console.error(err)
+		}
+	},
+	data() {
+		return {
+            user: {},
+            form: {
+                username: '',
+                email: '',
+                name: '',
+                picture: '',
+                website: '',
+                acceptMentoring: 0,
+                calendlyUrl: '',
+                tag: '',
+                tags: [],
+                profile: '',
+            },
+			errorMessage: undefined,
+			availableMentoringTags: [
+				{ text: '稅務簽證' },
+				{ text: '職涯發展' },
+				{ text: '商業創業' },
+				{ text: '租屋買房' },
+				{ text: '旅行生活' },
+				{ text: '人生相談' },
+				{ text: '興趣分享' },
+				{ text: '設計美學' },
+				{ text: '海外婚姻' },
+			],
+            isSubmitting: false,
+		}
+	},
+	methods: {
+		async updateAttribute() {
+            this.isSubmitting = true;
+			try {
+                const data = {
+                    name: this.form.name,
+                    picture: this.form.picture,
+                    profile: this.form.profile,
+                    website: this.form.website,
+					'custom:accept_mentoring': this.form.acceptMentoring,
+					'custom:tags': JSON.stringify(this.form.tags.map(cleanupTagValue)),
+					'custom:calendy_url': this.form.calendlyUrl,
                 }
-            }
-        }
-    }
-</script>
 
-<style scoped>
-    #profile-form {
-        width: 100%;
-    }
-    .container {
-        padding-top: 80px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .container h1 {
-        margin-bottom: 0px;
-    }
-    .container p {
-        font-size: 18px;
-        text-align: left;
-    }
-    .container textarea {
-        text-align: left;
-    }
-</style>
+                await this.$Amplify.Auth.updateUserAttributes(this.user, data)
+
+                // Refresh local current user session and state
+                const user = await this.$Amplify.Auth.currentAuthenticatedUser({ bypassCache: true })
+                this.$store.dispatch('setUser', user)
+                this.$router.push('/')
+			} catch (err) {
+				console.error(err)
+				this.errorMessage = err
+                this.isSubmitting = false
+			}
+		}
+	}
+}
+</script>
