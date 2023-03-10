@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import i18n from '../mixin/i18n.js'
 import LoadingBar from './LoadingBar.vue'
 import ValidateBtn from './ValidateBtn.vue'
 
@@ -37,6 +38,7 @@ export default {
 	LoadingBar,
 	ValidateBtn
   },
+  mixins: [i18n],
   methods: {
     async signIn() {
       if (this.form.username == '' || this.form.password == '') {
@@ -53,7 +55,7 @@ export default {
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
         console.log('error: ', err)
-        this.errorMessage = err.message
+        this.errorMessage = this.geti18nAuthenticationErrorMessage(err.message)
       }
     }
   },

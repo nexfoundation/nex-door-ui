@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import i18n from '../mixin/i18n.js'
 import LoadingBar from './LoadingBar.vue'
 import ValidateBtn from './ValidateBtn.vue'
 
@@ -63,6 +64,7 @@ export default {
 	LoadingBar,
 	ValidateBtn
   },
+  mixins: [i18n],
   methods: {
     async signUp() {
       // need a validation before triggering loading bar
@@ -78,7 +80,7 @@ export default {
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
         console.log('error signing up...', err)
-        this.errorMessage = err
+        this.errorMessage = this.geti18nAuthenticationErrorMessage(err.message)
       } finally{
         this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
       }
