@@ -1,6 +1,8 @@
 <template>
   <div class="container my-20">
-    <component :is="currentTab" @toSignIn="toSignIn" />
+    <form>
+      <component :is="currentTab" @toSignIn="toSignIn" />
+    </form>
     <div class="tabs tabs-boxed w-96 mx-auto mt-8">
       <div v-for="tab in tabs" :key="tab" :class="['tab', { 'tab-active': currentTab === tab }]"
         @click="currentTab = tab">
@@ -19,13 +21,13 @@ import AuthForgotPassword from './AuthForgotPassword.vue'
 export default {
   name: 'auth',
   components: {
-    SignIn: AuthSignIn,
-    SignUp: AuthSignUp,
-    ForgotPassword: AuthForgotPassword,
+    AuthSignIn,
+    AuthSignUp,
+    AuthForgotPassword,
   },
   data() {
     return {
-      currentTab: 'AuthSignIn',
+      currentTab: 'AuthSignUp',
       tabs: ['AuthSignIn', 'AuthSignUp', 'AuthForgotPassword'],
     }
   },

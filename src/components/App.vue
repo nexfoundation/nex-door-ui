@@ -59,7 +59,7 @@ export default {
       this.$store.dispatch('setUser', user)
       // this.$router.push('profile')
     } catch (err) {
-      console.error(err)
+      console.log('guest user')
     }
   },
   mounted() {

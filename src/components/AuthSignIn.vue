@@ -4,17 +4,17 @@
     <div class="card w-96 mx-auto shadow-xl">
       <div class="card-body">
         <h1 class="card-title">登入 Sign In</h1>
-        <input
-          class="input w-full max-w-xs"
-          placeholder='用戶名稱 (Username / Email)'
+        <base-input
+          placeholder="用戶名稱 (Username)"
           v-model="form.username"
-        />
-        <input
-          class="input w-full max-w-xs"
-          placeholder='密碼 (Password)'
+          autocomplete="username"
+        ></base-input>
+        <base-input
+          placeholder="密碼 (Password)"
           v-model="form.password"
-          type='password'
-        />
+          type="password"
+          autocomplete="current-password"
+        ></base-input>
         <div class="card-actions justify-end">
           <ValidateBtn
             :formArray="[form.username, form.password]"
@@ -29,13 +29,15 @@
 
 <script>
 import i18n from '../mixin/i18n.js'
+import BaseInput from './base/BaseInput.vue'
 import LoadingBar from './base/BaseLoadingBar.vue'
 import ValidateBtn from './base/BaseValidateBtn.vue'
 
 export default {
   components: {
-	LoadingBar,
-	ValidateBtn
+    BaseInput,
+    LoadingBar,
+    ValidateBtn
   },
   mixins: [i18n],
   methods: {
