@@ -5,7 +5,7 @@
       <div class="card-body">
         <h1 class="card-title">註冊 Sign Up</h1>
         <template v-if="phase === Number(0)">
-          <BaseInput
+          <base-input
             v-model="form.attributes.email"
             placeholder="信箱 (Email)"
           />
