@@ -58,7 +58,6 @@ router.beforeResolve((to, _, next) => {
 
 // Vue.config.productionTip = false;
 app.use(VueRouter)
-app.use(BootstrapVue)
 app.use(AmplifyPlugin, AmplifyModules)
 app.use(store)
 app.use(router)

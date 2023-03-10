@@ -1,9 +1,17 @@
 <template>
   <div>
-    <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
+    <div
+      v-if="errorMessage"
+      class="alert alert-danger"
+      role="alert"
+    >
+      {{ errorMessage }}
+    </div>
     <div class="card w-96 mx-auto shadow-xl">
       <div class="card-body">
-        <h1 class="card-title">註冊 Sign Up</h1>
+        <h1 class="card-title">
+          註冊 Sign Up
+        </h1>
         <template v-if="phase === Number(0)">
           <base-input
             v-model="form.attributes.email"
@@ -13,19 +21,21 @@
             v-model="form.username"
             placeholder="用戶名稱 (Username)"
             autocomplete="username"
-          ></base-input>
+          />
           <base-input
             v-model="form.password"
             placeholder="密碼 (Password)"
             type="password"
             autocomplete="new-password"
-          ></base-input>
+          />
           <div class="card-actions justify-end">
             <ValidateBtn
-              :formArray="[form.username, form.password, form.attributes.email]"
-              @click.native="signUp"
+              :form-array="[form.username, form.password, form.attributes.email]"
+              @click="signUp"
               @update="isLoading = $event"
-            >註冊 (Sign Up)</ValidateBtn>
+            >
+              註冊 (Sign Up)
+            </ValidateBtn>
           </div>
         </template>
 
@@ -34,24 +44,29 @@
           <base-input
             v-model="authCode"
             placeholder="請輸入臨時性驗證碼 (Authentication code)"
-          ></base-input>
+          />
 
           <div class="text-xs">
             沒收到驗證碼？
-            <a class="link" @click="resendConfirmationCode">
+            <a
+              class="link"
+              @click="resendConfirmationCode"
+            >
               點我重新發送驗證碼 {{ `(${confirmationCodeCooldownSecond} 秒)` }}
             </a>
           </div>
           <div class="card-actions justify-end">
             <ValidateBtn
-              :formArray="[form.username, form.password, form.attributes.email]"
-              @click.native="confirmSignUp"
-            >確認 (Confirm Sign Up)</ValidateBtn>
+              :form-array="[form.username, form.password, form.attributes.email]"
+              @click="confirmSignUp"
+            >
+              確認 (Confirm Sign Up)
+            </ValidateBtn>
           </div>
         </template>
       </div>
     </div>
-    <LoadingBar ref="loadingBar"/>
+    <LoadingBar ref="loadingBar" />
   </div>
 </template>
 
@@ -68,9 +83,23 @@ export default {
     ValidateBtn
   },
   mixins: [i18n],
-  // created() {
-  //   this.confirmationCodeCooldownCountdown();
-  // },
+  emits: ["set-current-tab"],
+  data() {
+    return {
+      form: {
+        username: '',
+        password: '',
+        attributes: {
+          email: '',
+          phone_number: '',
+        }
+      },
+      authCode: '',
+      phase: 0,
+      errorMessage: undefined,
+      confirmationCodeCooldownSecond: 30,
+    }
+  },
   methods: {
     async signUp() {
       // need a validation before triggering loading bar
@@ -131,22 +160,6 @@ export default {
           this.confirmationCodeCooldownCountdown()
         }, 1000)
       }
-    }
-  },
-  data() {
-    return {
-      form: {
-        username: '',
-        password: '',
-        attributes: {
-          email: '',
-          phone_number: '',
-        }
-      },
-      authCode: '',
-      phase: 0,
-      errorMessage: undefined,
-      confirmationCodeCooldownSecond: 30,
     }
   }
 }

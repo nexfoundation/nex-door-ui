@@ -1,23 +1,35 @@
 <template>
   <input
-    class="input input-bordered w-full max-w-xs"
     :id="id"
+    class="input input-bordered w-full max-w-xs"
     :placeholder="placeholder"
     :type="type"
     :autocomplete="autocomplete"
     :readonly="readonly"
-    :value="value"
-    @input="$emit('input', $event.target.value)"
-  />
+    :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.modelValue)"
+  >
 </template>
 
 <script>
 export default {
   props: {
-    id: String,
-    placeholder: String,
-    value: String,
-    autocomplete: String,
+    id: {
+      type: String,
+      default: undefined,
+    },
+    placeholder: {
+      type: String,
+      default: undefined,
+    },
+    modelValue: {
+      type: String,
+      default: undefined,
+    },
+    autocomplete: {
+      type: String,
+      default: undefined,
+    },
     type: {
       type: String,
       default() {
@@ -26,6 +38,6 @@ export default {
     },
     readonly: Boolean,
   },
-  emits: ['update:value']
+  emits: ['update:modelValue']
 }
 </script>
