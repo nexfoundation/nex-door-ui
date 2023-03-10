@@ -11,7 +11,7 @@
 
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-12" v-if="users">
-            <user-card
+            <HomeCard
                 v-for="user in users"
                 :key="user.id"
                 :user="user"
@@ -38,8 +38,7 @@
 
 <script>
 import { API } from 'aws-amplify';
-import IntroText from './IntroText';
-import UserCard from './UserCard';
+import HomeCard from './HomeCard.vue';
 export default {
     name: 'home',
     async created() {
@@ -54,12 +53,11 @@ export default {
             const response = await API.get(apiName, path, myInit);
             this.users = response;
         } catch(error) {
-            console.log(error.response);
+            console.error(error);
         }
 	},
 	components: {
-		IntroText,
-        UserCard,
+        HomeCard,
 	},
     data() {
         return {
@@ -70,19 +68,15 @@ export default {
     },
     methods: {
         showIntroModal(e) {
-			console.log(e.currentTarget)
-			// console.log(website)
-            let userid = e.currentTarget.getAttribute('data-userid')
+            const userid = e.currentTarget.getAttribute('data-userid')
 
             this.modalCurrentUser['name'] = e.currentTarget.getAttribute('data-username')
             this.modalCurrentUser['picture'] = e.currentTarget.getAttribute('data-userpicture')
 			this.modalCurrentUser['website'] = e.currentTarget.getAttribute('data-userUrl')
 
 			// this.intro = document.getElementById('about-' + userid).innerHTML
-			this.intro = document.getElementById('about-' + userid).innerHTML.split('\n')
+			this.intro = document.getElementById(`about-${userid}`).innerHTML.split('\n')
 			this.$refs['my-modal'].show()
-
-			console.log(e.currentTarget)
         },
     }
 }

@@ -55,11 +55,10 @@
 
 <script>
 import i18n from '../mixin/i18n.js'
-import LoadingBar from './LoadingBar.vue'
-import ValidateBtn from './ValidateBtn.vue'
+import LoadingBar from './base/BaseLoadingBar.vue'
+import ValidateBtn from './base/BaseValidateBtn.vue'
 
 export default {
-  name: 'sign-up',
   components: {
 	LoadingBar,
 	ValidateBtn
@@ -79,7 +78,7 @@ export default {
         console.log('user successfully signed up!')
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
-        console.log('error signing up...', err)
+        console.error('error signing up...', err)
         this.errorMessage = this.geti18nAuthenticationErrorMessage(err.message)
       } finally{
         this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
@@ -94,7 +93,7 @@ export default {
         console.log('user successfully signed up!')
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
-        console.log('error signing up...', err)
+        console.error('error signing up...', err)
         this.errorMessage = err
       } finally{
         this.$refs.loadingBar.doAjax(false);
@@ -115,7 +114,7 @@ export default {
         await this.$Amplify.Auth.resendSignUp(this.form.username);
         console.log('code resent successfully');
       } catch (err) {
-        console.log('error resending code: ', err);
+        console.error('error resending code: ', err);
       }
     },
     confirmationCodeCooldownCountdown() {

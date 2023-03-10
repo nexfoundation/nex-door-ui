@@ -84,7 +84,7 @@
 
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
-import ValidateBtn from './ValidateBtn.vue'
+import ValidateBtn from './base/BaseValidateBtn.vue'
 
 // helper functions for converting tag values to VueTagsInput format
 const cleanupTagValue = t => t.text;

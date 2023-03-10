@@ -12,21 +12,21 @@
 </template>
 
 <script>
-import SignIn from './SignIn.vue'
-import SignUp from './SignUp.vue'
-import ForgotPassword from './ForgotPassword.vue'
+import AuthSignIn from './AuthSignIn.vue'
+import AuthSignUp from './AuthSignUp.vue'
+import AuthForgotPassword from './AuthForgotPassword.vue'
 
 export default {
   name: 'auth',
   components: {
-    SignIn,
-    SignUp,
-    ForgotPassword,
+    SignIn: AuthSignIn,
+    SignUp: AuthSignUp,
+    ForgotPassword: AuthForgotPassword,
   },
   data() {
     return {
-      currentTab: 'SignIn',
-      tabs: ['SignIn', 'SignUp', 'ForgotPassword'],
+      currentTab: 'AuthSignIn',
+      tabs: ['AuthSignIn', 'AuthSignUp', 'AuthForgotPassword'],
     }
   },
 

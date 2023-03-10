@@ -59,7 +59,7 @@ export default {
       this.$store.dispatch('setUser', user)
       // this.$router.push('profile')
     } catch (err) {
-      console.log('error: ', err)
+      console.error(err)
     }
   },
   mounted() {
@@ -78,7 +78,7 @@ export default {
         this.$store.dispatch('setUser', {})
         this.$router.push('/')
       } catch (err) {
-        console.log('error signing out.')
+        console.error('error signing out:', err)
       }
     }
   },

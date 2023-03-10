@@ -29,11 +29,10 @@
 
 <script>
 import i18n from '../mixin/i18n.js'
-import LoadingBar from './LoadingBar.vue'
-import ValidateBtn from './ValidateBtn.vue'
+import LoadingBar from './base/BaseLoadingBar.vue'
+import ValidateBtn from './base/BaseValidateBtn.vue'
 
 export default {
-  name: 'sign-in',
   components: {
 	LoadingBar,
 	ValidateBtn
@@ -54,6 +53,7 @@ export default {
         this.$refs.loadingBar.doAjax(false);
       } catch (err) {
         this.$refs.loadingBar.doAjax(false);
+        console.error(err)
         console.log('error: ', err)
         this.errorMessage = this.geti18nAuthenticationErrorMessage(err.message)
       }
