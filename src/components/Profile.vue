@@ -9,32 +9,32 @@
                 <label class="label">
                     <span class="label-text">用戶名稱 Username</span>
                 </label>
-                <input type="text" readonly class="input input-bordered input-disabled w-full max-w-xs" :value="form.username">
+                <base-input v-model="form.username"></base-input>
             </div>
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">Email</span>
                 </label>
-                <input type="text" readonly class="input input-bordered input-disabled w-full max-w-xs" :value="form.email">
+                <base-input v-model="form.email"></base-input>
             </div>
             <div class="form-control">
                 <label for="inputName" class="label">
                     <span class="label-text">名稱 Name (必填)</span>
                 </label>
-                <input type="text" class="input input-bordered w-full max-w-xs" id="inputName" placeholder="Name" v-model="form.name" required="required">
+                <base-input id="inputName" placeholder="Name" v-model="form.name" required></base-input>
             </div>
             <div class="form-control">
                 <label for="inputProfilePhoto" class="label">
                     <span class="label-text tooltip" data-tip="輸入 Gravatar 的用戶號碼 - https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50">個人頭像 Photo (Gravatar)</span>
                 </label>
-                    <input type="text" class="input input-bordered w-full max-w-xs" id="inputProfilePhoto" placeholder="205e460b479e2e5b48aec07710c08d50" v-model="form.picture">
+                    <base-input placeholder="205e460b479e2e5b48aec07710c08d50" v-model="form.picture"></base-input>
                     <span class="help-block"></span>
             </div>
             <div class="form-control">
                 <label for="inputWebsite" class="label">
                     <span class="label-text">個人網站 Website</span>
                 </label>
-                <input type="text" class="input input-bordered w-full max-w-xs" id="inputWebsite" placeholder="https://example.com" v-model="form.website">
+                <base-input id="inputWebsite" placeholder="https://example.com" v-model="form.website"></base-input>
             </div>
             <div class="form-control">
                 <label for="inputCalendly" class="label">
@@ -49,7 +49,7 @@
                 <label for="inputCalendly" class="label">
                     <span class="label-text">個人預約連結 (<a class="link" href="https://calendly.com/">Calendly</a>)</span>
                 </label>
-                <input type="text" class="input input-bordered w-full max-w-xs" id="inputCalendly" placeholder="https://calendly.com/<username>" v-model="form.calendlyUrl">
+                <base-input id="inputCalendly" placeholder="https://calendly.com/<username>" v-model="form.calendlyUrl"></base-input>
             </div>
             <div class="form-control">
                 <label class="label">
@@ -84,6 +84,7 @@
 
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
+import BaseInput from './base/BaseInput.vue';
 import ValidateBtn from './base/BaseValidateBtn.vue'
 
 // helper functions for converting tag values to VueTagsInput format
@@ -94,6 +95,7 @@ export default {
 	name: 'profile',
 	components: {
 		VueTagsInput,
+        BaseInput,
 		ValidateBtn,
 	},
 	async created() {

@@ -5,22 +5,21 @@
       <div class="card-body">
         <h1 class="card-title">註冊 Sign Up</h1>
         <template v-if="phase === Number(0)">
-          <input
-            class="input w-full max-w-ws"
+          <BaseInput
             v-model="form.attributes.email"
             placeholder="信箱 (Email)"
           />
-          <input
-            class="input w-full max-w-ws"
+          <base-input
             v-model="form.username"
             placeholder="用戶名稱 (Username)"
-          />
-          <input
-            class="input w-full max-w-ws"
+            autocomplete="username"
+          ></base-input>
+          <base-input
             v-model="form.password"
             placeholder="密碼 (Password)"
             type="password"
-          />
+            autocomplete="new-password"
+          ></base-input>
           <div class="card-actions justify-end">
             <ValidateBtn
               :formArray="[form.username, form.password, form.attributes.email]"
@@ -32,19 +31,22 @@
 
         <template v-else-if="phase === Number(1)">
           <p>(請確認您的 Email 或是簡訊的 OTP 驗證碼)</p>
-          <input
-            class="input w-full max-w-ws"
+          <base-input
             v-model="authCode"
             placeholder="請輸入臨時性驗證碼 (Authentication code)"
-          />
+          ></base-input>
+
+          <div class="text-xs">
+            沒收到驗證碼？
+            <a class="link" @click="resendConfirmationCode">
+              點我重新發送驗證碼 {{ `(${confirmationCodeCooldownSecond} 秒)` }}
+            </a>
+          </div>
           <div class="card-actions justify-end">
             <ValidateBtn
               :formArray="[form.username, form.password, form.attributes.email]"
               @click.native="confirmSignUp"
             >確認 (Confirm Sign Up)</ValidateBtn>
-            <div class="btn btn-ghost" v-on:click="resendConfirmationCode">
-              <p>重新發送驗證碼 (Resend Confirmation Code) {{ '(' + confirmationCodeCooldownSecond + ')' }}</p>
-            </div>
           </div>
         </template>
       </div>
@@ -55,15 +57,20 @@
 
 <script>
 import i18n from '../mixin/i18n.js'
+import BaseInput from './base/BaseInput.vue'
 import LoadingBar from './base/BaseLoadingBar.vue'
 import ValidateBtn from './base/BaseValidateBtn.vue'
 
 export default {
   components: {
-	LoadingBar,
-	ValidateBtn
+    BaseInput,
+    LoadingBar,
+    ValidateBtn
   },
   mixins: [i18n],
+  // created() {
+  //   this.confirmationCodeCooldownCountdown();
+  // },
   methods: {
     async signUp() {
       // need a validation before triggering loading bar
@@ -121,25 +128,25 @@ export default {
       if (this.confirmationCodeCooldownSecond > 0) {
         setTimeout(() => {
           this.confirmationCodeCooldownSecond -= 1
-            this.confirmationCodeCooldownCountdown()
+          this.confirmationCodeCooldownCountdown()
         }, 1000)
       }
     }
   },
   data() {
     return {
-		form: {
-			username: '',
-			password: '',
-			attributes: {
-			email: '',
-			phone_number: '',
-			}
-		},
-		authCode: '',
-		phase: 0,
-		errorMessage: undefined,
-		confirmationCodeCooldownSecond: 30,
+      form: {
+        username: '',
+        password: '',
+        attributes: {
+          email: '',
+          phone_number: '',
+        }
+      },
+      authCode: '',
+      phase: 0,
+      errorMessage: undefined,
+      confirmationCodeCooldownSecond: 30,
     }
   }
 }

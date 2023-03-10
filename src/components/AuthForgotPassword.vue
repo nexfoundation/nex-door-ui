@@ -4,11 +4,7 @@
       <div class="card-body">
         <h1 class="card-title">Reset Password</h1>
         <template v-if="formState === 'resetPassword'">
-          <input
-            class="input w-full max-w-xs"
-            placeholder="Username"
-            v-model="form.username"
-          />
+          <base-input placeholder="Username" v-model="form.username"></base-input>
           <div class="card-actions justify-end">
             <div class="btn btn-primary mt-4" v-on:click="forgotPassword">
               Send verification code
@@ -16,17 +12,8 @@
           </div>
         </template>
         <template v-if="formState === 'resetPasswordConfirm'">
-          <input
-            class="input w-full max-w-xs"
-            placeholder="Verification Code"
-            v-model="form.authCode"
-          />
-          <input
-            class="input w-full max-w-xs"
-            type="password"
-            placeholder="New Password"
-            v-model="form.password"
-          />
+          <base-input placeholder="Verification Code" v-model="form.authCode"></base-input>
+          <base-input type="password" autocomplete="new-password" placeholder="New Password" v-model="form.password"></base-input>
           <div class="card-actions justify-end">
             <div class="btn btn-primary" v-on:click="forgotPasswordSubmit">
               Set new password
@@ -39,6 +26,8 @@
 </template>
 
 <script>
+import BaseInput from './base/BaseInput.vue'
+
 const form = {
   username: '',
   password: '',
@@ -46,6 +35,9 @@ const form = {
 }
 
 export default {
+  components: {
+    BaseInput,
+  },
   props: ['toggleForm'],
   methods: {
     async forgotPassword() {
