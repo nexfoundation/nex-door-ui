@@ -94,9 +94,9 @@ const wrapTagValue = t => ( { text: t });
 export default {
 	name: 'profile',
 	components: {
-		VueTagsInput,
+        VueTagsInput,
         BaseInput,
-		ValidateBtn,
+        ValidateBtn,
 	},
 	async created() {
         try {
