@@ -1,33 +1,34 @@
 <template>
-  <div class='auth'>
-    <component :is="currentTab" class="tab" @toSignIn="toSignIn">
-    </component>
-
-    <!-- TODO: stylee classes, replace btn to div -->
-    <div v-for="tab in tabs" :key="tab" :class="['link-container', { active: currentTab === tab }]"
-      @click="currentTab = tab">
-      {{ tab }}
+  <div class="container my-20">
+    <form>
+      <component :is="currentTab" @toSignIn="toSignIn" />
+    </form>
+    <div class="tabs tabs-boxed w-96 mx-auto mt-8">
+      <div v-for="tab in tabs" :key="tab" :class="['tab', { 'tab-active': currentTab === tab }]"
+        @click="currentTab = tab">
+        {{ tab }}
+      </div>
     </div>
   </div>
 
 </template>
 
 <script>
-import SignIn from './SignIn.vue'
-import SignUp from './SignUp.vue'
-import ForgotPassword from './ForgotPassword.vue'
+import AuthSignIn from './AuthSignIn.vue'
+import AuthSignUp from './AuthSignUp.vue'
+import AuthForgotPassword from './AuthForgotPassword.vue'
 
 export default {
   name: 'auth',
   components: {
-    SignIn,
-    SignUp,
-	ForgotPassword,
+    AuthSignIn,
+    AuthSignUp,
+    AuthForgotPassword,
   },
   data() {
     return {
-      currentTab: 'SignIn',
-      tabs: ['SignIn', 'SignUp', 'ForgotPassword'],
+      currentTab: 'AuthSignUp',
+      tabs: ['AuthSignIn', 'AuthSignUp', 'AuthForgotPassword'],
     }
   },
 
@@ -38,29 +39,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-.active {
-  display: none;
-}
-
-.link-container {
-  /* TODO: invalid */
-  margin-bottom: 5px;
-  cursor: pointer;
-}
-
-.auth {
-  display: flex;
-  flex-direction: column;
-}
-
-.toggleButton {
-  cursor: pointer;
-  margin-bottom: 0;
-}
-
-.toggleButton:hover {
-  opacity: .7;
-}
-</style>

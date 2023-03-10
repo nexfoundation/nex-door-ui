@@ -7,30 +7,19 @@ import { AmplifyPlugin } from 'aws-amplify-vue'
 import aws_exports from './aws-exports'
 Amplify.configure(aws_exports)
 
-// Bootstrap
-import {
-  BootstrapVue,
-  // IconsPlugin
-} from 'bootstrap-vue'
-
 // Vue components
-import Auth from './components/Auth.vue'
 import App from './components/App.vue'
+import Auth from './components/Auth.vue'
 import Home from './components/Home.vue'
-import Protected from './components/Protected.vue'
 import Profile from './components/Profile.vue'
 
 // Vuex store
 import store from './store'
 
-// global styles
-require('./assets/main.css')
-
 // route configuration
 const routes = [
   { path: '/', component: Home },
   { path: '/auth', component: Auth },
-  { path: '/protected', component: Protected, meta: { requiresAuth: true } },
   { path: '/profile', component: Profile, meta: { requiresAuth: true } },
 ]
 
@@ -64,8 +53,8 @@ router.beforeResolve((to, _, next) => {
         })
       })
   }
-  next()
-})
+  next();
+});
 
 // Vue.config.productionTip = false;
 app.use(VueRouter)

@@ -1,29 +1,55 @@
 <template>
-  <div>
-    <div class='header'>
-      <img class='header-img' src="../assets/headerimg.png" />
-      <router-link to="/" class='heading'>NEX Door</router-link>
-      <div class="header-menu" v-if="this.$route.path !== '/auth'">
-        <router-link to="/" class='link'>Home</router-link>
-        <p class='link' v-on:click="signOut" v-if="isAuthenticated">Sign Out</p>
-        <router-link class='link' to="/auth" v-if="!isAuthenticated">Sign In</router-link>
-        <router-link class='link' to="/profile" v-if="isAuthenticated">Profile</router-link>
-        <router-link class='link' to="/protected">Protected Route</router-link>
+  <div class="flex flex-col min-h-screen">
+    <div class="flex-grow">
+      <div class="navbar">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <label tabindex="0" class="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </label>
+            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+              <li><router-link to="/">Home</router-link></li>
+              <li v-if="isAuthenticated"><p v-on:click="signOut">Sign Out</p></li>
+              <li v-if="!isAuthenticated"><router-link to="/auth">Sign In</router-link></li>
+              <li v-if="isAuthenticated"><router-link to="/profile">Profile</router-link></li>
+              <li><router-link to="/protected">Protected Route</router-link></li>
+            </ul>
+          </div>
+          <router-link to="/" class="flex">
+            <img class="w-10" src="../assets/headerimg.png" /> <span class="self-center">NEX Door</span>
+          </router-link>
+        </div>
+        <div class="navbar-end hidden lg:flex">
+          <div v-if="this.$route.path !== '/auth'">
+            <ul class="menu menu-horizontal px-1">
+              <li><router-link to="/">Home</router-link></li>
+              <li v-if="isAuthenticated"><p v-on:click="signOut">Sign Out</p></li>
+              <li v-if="!isAuthenticated"><router-link to="/auth">Sign In</router-link></li>
+              <li v-if="isAuthenticated"><router-link to="/profile">Profile</router-link></li>
+              <li><router-link to="/protected">Protected Route</router-link></li>
+            </ul>
+          </div>
+          <input type="checkbox" class="toggle" data-toggle-theme="dark,light" data-act-class="ACTIVECLASS" />
+        </div>
       </div>
+      <router-view></router-view>
     </div>
-    <router-view></router-view>
-    <footer class="row" id="nex-footer">
-        <div class="col-md-8">
-          <p class="footer-text">NEX Work 為非營利服務平台，由美國 NEX Foundation 建置，2020 年正式營運。<br>NEX Foundation 為美國註冊商標，屬 NEX Foundation 所有。 其餘各商標均為個別原始公司所有，NEX Foundation 與各該公司並無代理權限或合作關係。<br><br>Copyright © 2020</p>
-        </div>
-        <div class="col-md-4">
-          <a target="_blank" href="https://nexf.org"><img class="footer-logo" src="../assets/nexf_logo.png" alt="NEX Foundation"></a>
-        </div>
+
+    <footer class="footer bottom-0 w-full p-4 bg-primary">
+      <p class="w-full footer-text text-primary-content">
+        NEX Work 為非營利服務平台，由美國 NEX Foundation 建置，2020 年正式營運。<br>
+        NEX Foundation 為美國註冊商標，屬 NEX Foundation 所有。 其餘各商標均為個別原始公司所有，NEX Foundation 與各該公司並無代理權限或合作關係。<br><br>
+        Copyright © 2020
+      </p>
+      <div>
+        <a target="_blank" href="https://nexf.org"><img src="../assets/nexf_logo.png" alt="NEX Foundation"></a>
+      </div>
     </footer>
   </div>
 </template>
 
 <script>
+import { themeChange } from 'theme-change';
 
 export default {
   async beforeCreate() {
@@ -31,10 +57,13 @@ export default {
       const user = await this.$Amplify.Auth.currentAuthenticatedUser()
       this.$store.dispatch('setIsAuthenticated', true)
       this.$store.dispatch('setUser', user)
-      this.$router.push('profile')
+      // this.$router.push('profile')
     } catch (err) {
-      console.log('error: ', err)
+      console.log('guest user')
     }
+  },
+  mounted() {
+    themeChange(false);
   },
   computed: {
     isAuthenticated () {
@@ -49,62 +78,10 @@ export default {
         this.$store.dispatch('setUser', {})
         this.$router.push('/')
       } catch (err) {
-        console.log('error signing out.')
+        console.error('error signing out:', err)
       }
     }
   },
   name: 'app',
 }
 </script>
-
-<style scoped>
-.header-menu {
-  flex: 1;
-  padding-right: 50px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-.link {
-  text-align: right;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 14px;
-  margin: 0px 0px 0px 30px;
-  color: #202124;
-  text-decoration: none;
-}
-.header {
-  display: flex;
-  background-color: white;;
-  padding: 20px;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
-  align-items: center;
-}
-.heading {
-  color: #606368;
-  text-align: left;
-  margin: 4px;
-  padding-top: 5px;
-  font-size: 20px;
-  font-weight: 400;
-  text-decoration: none;
-}
-.header-img {
-  height: 42px;
-}
-footer#nex-footer {
-  background-color: #307fc4;
-  margin-top: 3em;
-}
-footer#nex-footer .footer-text {
-  padding: 3em;
-  text-align: left;
-  color: #fff;
-  font-size: 14px;
-}
-footer#nex-footer img.footer-logo {
-  padding: 3em;
-  width: 80%;
-}
-</style>

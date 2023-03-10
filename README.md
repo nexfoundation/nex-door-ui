@@ -15,7 +15,7 @@ The final goal is the same. We're going to launch the docker container in which 
 
  1. VSCode Remote Container
  2. Create container by shell script
- 
+
 #### 1. VS Code Remote Container
 
 What is Remote Container? It let us use a Docker container as a full-featured development environment. We can jump in development without the need of cumbersome environment set-up.
@@ -60,3 +60,8 @@ $ cd ./app  # move to the app folder, which is where we clone our repo in the co
 $ npm install
 $ npm run serve
 ```
+
+
+##### Building tailwind css
+
+Go into the docker container, in `./app`, run `npx tailwindcss -i ./src/assets/main.css  -o ./public/main.css --watch` to start watching for css changes.
