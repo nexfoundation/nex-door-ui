@@ -1,9 +1,17 @@
 <template>
   <div>
-    <div v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</div>
+    <div
+      v-if="errorMessage"
+      class="alert alert-danger"
+      role="alert"
+    >
+      {{ errorMessage }}
+    </div>
     <div class="card w-96 mx-auto shadow-xl">
       <div class="card-body">
-        <h1 class="card-title">註冊 Sign Up</h1>
+        <h1 class="card-title">
+          註冊 Sign Up
+        </h1>
         <template v-if="phase === Number(0)">
           <base-input
             v-model="form.attributes.email"
@@ -13,19 +21,21 @@
             v-model="form.username"
             placeholder="用戶名稱 (Username)"
             autocomplete="username"
-          ></base-input>
+          />
           <base-input
             v-model="form.password"
             placeholder="密碼 (Password)"
             type="password"
             autocomplete="new-password"
-          ></base-input>
+          />
           <div class="card-actions justify-end">
             <ValidateBtn
-              :formArray="[form.username, form.password, form.attributes.email]"
-              @click.native="signUp"
+              :form-array="[form.username, form.password, form.attributes.email]"
+              @click="signUp"
               @update="isLoading = $event"
-            >註冊 (Sign Up)</ValidateBtn>
+            >
+              註冊 (Sign Up)
+            </ValidateBtn>
           </div>
         </template>
 
@@ -34,28 +44,34 @@
           <base-input
             v-model="authCode"
             placeholder="請輸入臨時性驗證碼 (Authentication code)"
-          ></base-input>
+          />
 
           <div class="text-xs">
             沒收到驗證碼？
-            <a class="link" @click="resendConfirmationCode">
+            <a
+              class="link"
+              @click="resendConfirmationCode"
+            >
               點我重新發送驗證碼 {{ `(${confirmationCodeCooldownSecond} 秒)` }}
             </a>
           </div>
           <div class="card-actions justify-end">
             <ValidateBtn
-              :formArray="[form.username, form.password, form.attributes.email]"
-              @click.native="confirmSignUp"
-            >確認 (Confirm Sign Up)</ValidateBtn>
+              :form-array="[form.username, form.password, form.attributes.email]"
+              @click="confirmSignUp"
+            >
+              確認 (Confirm Sign Up)
+            </ValidateBtn>
           </div>
         </template>
       </div>
     </div>
-    <LoadingBar ref="loadingBar"/>
+    <LoadingBar ref="loadingBar" />
   </div>
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 import i18n from '../mixin/i18n.js'
 import BaseInput from './base/BaseInput.vue'
 import LoadingBar from './base/BaseLoadingBar.vue'
@@ -68,15 +84,29 @@ export default {
     ValidateBtn
   },
   mixins: [i18n],
-  // created() {
-  //   this.confirmationCodeCooldownCountdown();
-  // },
+  emits: ["set-current-tab"],
+  data() {
+    return {
+      form: {
+        username: '',
+        password: '',
+        attributes: {
+          email: '',
+          phone_number: '',
+        }
+      },
+      authCode: '',
+      phase: 0,
+      errorMessage: undefined,
+      confirmationCodeCooldownSecond: 30,
+    }
+  },
   methods: {
     async signUp() {
       // need a validation before triggering loading bar
       this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
       try {
-        await this.$Amplify.Auth.signUp(this.form)
+        await Auth.signUp(this.form)
 
         this.phase = 1
         this.confirmationCodeCooldownCountdown()
@@ -94,7 +124,7 @@ export default {
     async confirmSignUp() {
       this.$refs.loadingBar.doAjax(true);
       try {
-        await this.$Amplify.Auth.confirmSignUp(this.form.username, this.authCode)
+        await Auth.confirmSignUp(this.form.username, this.authCode)
         this.toggleForm('signIn')
         this.$refs.loadingBar.doAjax(false);
         console.log('user successfully signed up!')
@@ -118,7 +148,7 @@ export default {
       this.confirmationCodeCooldownSecond = 90
       this.confirmationCodeCooldownCountdown()
       try {
-        await this.$Amplify.Auth.resendSignUp(this.form.username);
+        await Auth.resendSignUp(this.form.username);
         console.log('code resent successfully');
       } catch (err) {
         console.error('error resending code: ', err);
@@ -131,22 +161,6 @@ export default {
           this.confirmationCodeCooldownCountdown()
         }, 1000)
       }
-    }
-  },
-  data() {
-    return {
-      form: {
-        username: '',
-        password: '',
-        attributes: {
-          email: '',
-          phone_number: '',
-        }
-      },
-      authCode: '',
-      phase: 0,
-      errorMessage: undefined,
-      confirmationCodeCooldownSecond: 30,
     }
   }
 }

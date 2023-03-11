@@ -4,35 +4,93 @@
       <div class="navbar">
         <div class="navbar-start">
           <div class="dropdown">
-            <label tabindex="0" class="btn btn-ghost lg:hidden">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            <label
+              tabindex="0"
+              class="btn btn-ghost lg:hidden"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              /></svg>
             </label>
-            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-              <li><router-link to="/">Home</router-link></li>
-              <li v-if="isAuthenticated"><p v-on:click="signOut">Sign Out</p></li>
-              <li v-if="!isAuthenticated"><router-link to="/auth">Sign In</router-link></li>
-              <li v-if="isAuthenticated"><router-link to="/profile">Profile</router-link></li>
-              <li><router-link to="/protected">Protected Route</router-link></li>
+            <ul
+              tabindex="0"
+              class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <router-link to="/">
+                  Home
+                </router-link>
+              </li>
+              <li v-if="isAuthenticated">
+                <p @click="signOut">
+                  Sign Out
+                </p>
+              </li>
+              <li v-if="!isAuthenticated">
+                <router-link to="/auth">
+                  Sign In
+                </router-link>
+              </li>
+              <li v-if="isAuthenticated">
+                <router-link to="/profile">
+                  Profile
+                </router-link>
+              </li>
             </ul>
           </div>
-          <router-link to="/" class="flex">
-            <img class="w-10" src="../assets/headerimg.png" /> <span class="self-center">NEX Door</span>
+          <router-link
+            to="/"
+            class="flex"
+          >
+            <img
+              class="w-10"
+              src="../assets/headerimg.png"
+            > <span class="self-center">NEX Door</span>
           </router-link>
         </div>
         <div class="navbar-end hidden lg:flex">
-          <div v-if="this.$route.path !== '/auth'">
+          <div v-if="$route.path !== '/auth'">
             <ul class="menu menu-horizontal px-1">
-              <li><router-link to="/">Home</router-link></li>
-              <li v-if="isAuthenticated"><p v-on:click="signOut">Sign Out</p></li>
-              <li v-if="!isAuthenticated"><router-link to="/auth">Sign In</router-link></li>
-              <li v-if="isAuthenticated"><router-link to="/profile">Profile</router-link></li>
-              <li><router-link to="/protected">Protected Route</router-link></li>
+              <li>
+                <router-link to="/">
+                  Home
+                </router-link>
+              </li>
+              <li v-if="isAuthenticated">
+                <p @click="signOut">
+                  Sign Out
+                </p>
+              </li>
+              <li v-if="!isAuthenticated">
+                <router-link to="/auth">
+                  Sign In
+                </router-link>
+              </li>
+              <li v-if="isAuthenticated">
+                <router-link to="/profile">
+                  Profile
+                </router-link>
+              </li>
             </ul>
           </div>
-          <input type="checkbox" class="toggle" data-toggle-theme="dark,light" data-act-class="ACTIVECLASS" />
+          <input
+            type="checkbox"
+            class="toggle"
+            data-toggle-theme="dark,light"
+            data-act-class="ACTIVECLASS"
+          >
         </div>
       </div>
-      <router-view></router-view>
+      <router-view />
     </div>
 
     <footer class="footer bottom-0 w-full p-4 bg-primary">
@@ -42,19 +100,32 @@
         Copyright © 2020
       </p>
       <div>
-        <a target="_blank" href="https://nexf.org"><img src="../assets/nexf_logo.png" alt="NEX Foundation"></a>
+        <a
+          target="_blank"
+          href="https://nexf.org"
+        ><img
+          src="../assets/nexf_logo.png"
+          alt="NEX Foundation"
+        ></a>
       </div>
     </footer>
   </div>
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 import { themeChange } from 'theme-change';
 
 export default {
+  name: 'App',
+  computed: {
+    isAuthenticated () {
+      return this.$store.state.isAuthenticated
+    },
+  },
   async beforeCreate() {
     try {
-      const user = await this.$Amplify.Auth.currentAuthenticatedUser()
+      const user = await Auth.currentAuthenticatedUser()
       this.$store.dispatch('setIsAuthenticated', true)
       this.$store.dispatch('setUser', user)
       // this.$router.push('profile')
@@ -65,15 +136,10 @@ export default {
   mounted() {
     themeChange(false);
   },
-  computed: {
-    isAuthenticated () {
-      return this.$store.state.isAuthenticated
-    },
-  },
   methods: {
     async signOut() {
       try {
-        await this.$Amplify.Auth.signOut()
+        await Auth.signOut()
         this.$store.dispatch('setIsAuthenticated', false)
         this.$store.dispatch('setUser', {})
         this.$router.push('/')
@@ -82,6 +148,5 @@ export default {
       }
     }
   },
-  name: 'app',
 }
 </script>

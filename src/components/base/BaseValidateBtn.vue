@@ -1,12 +1,24 @@
 <template>
-	<button class='btn btn-primary' :disabled='disabled || isBtnDisabled'>
-		<slot></slot>
-	</button>
+  <button
+    class="btn btn-primary"
+    :disabled="disabled || isBtnDisabled"
+  >
+    <slot />
+  </button>
 </template>
 
 <script>
 export default {
-	props: ['formArray', 'disabled'],
+	props: {
+		formArray: {
+			type: Array[String],
+			default: [],
+		},
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
+	},
 	computed: {
 		isBtnDisabled() {
 			if (this.formArray) {

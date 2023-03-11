@@ -2,20 +2,39 @@
   <div>
     <div class="card w-96 mx-auto shadow-xl">
       <div class="card-body">
-        <h1 class="card-title">Reset Password</h1>
+        <h1 class="card-title">
+          Reset Password
+        </h1>
         <template v-if="formState === 'resetPassword'">
-          <base-input placeholder="Username" v-model="form.username"></base-input>
+          <base-input
+            v-model="form.username"
+            placeholder="Username"
+          />
           <div class="card-actions justify-end">
-            <div class="btn btn-primary mt-4" v-on:click="forgotPassword">
+            <div
+              class="btn btn-primary mt-4"
+              @click="forgotPassword"
+            >
               Send verification code
             </div>
           </div>
         </template>
         <template v-if="formState === 'resetPasswordConfirm'">
-          <base-input placeholder="Verification Code" v-model="form.authCode"></base-input>
-          <base-input type="password" autocomplete="new-password" placeholder="New Password" v-model="form.password"></base-input>
+          <base-input
+            v-model="form.authCode"
+            placeholder="Verification Code"
+          />
+          <base-input
+            v-model="form.password"
+            type="password"
+            autocomplete="new-password"
+            placeholder="New Password"
+          />
           <div class="card-actions justify-end">
-            <div class="btn btn-primary" v-on:click="forgotPasswordSubmit">
+            <div
+              class="btn btn-primary"
+              @click="forgotPasswordSubmit"
+            >
               Set new password
             </div>
           </div>
@@ -26,6 +45,7 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 import BaseInput from './base/BaseInput.vue'
 
 const form = {
@@ -38,11 +58,22 @@ export default {
   components: {
     BaseInput,
   },
-  props: ['toggleForm'],
+  props: {
+    toggleForm: {
+      type: Function,
+      default: () => {},
+    },
+  },
+  data() {
+  return {
+    formState: 'resetPassword',
+    form
+  }
+},
   methods: {
     async forgotPassword() {
       try {
-        await this.$Amplify.Auth.forgotPassword(this.form.username)
+        await Auth.forgotPassword(this.form.username)
         this.formState = 'resetPasswordConfirm'
       } catch (err) {
         console.error(err)
@@ -50,7 +81,7 @@ export default {
     },
     async forgotPasswordSubmit() {
       try {
-        await this.$Amplify.Auth.forgotPasswordSubmit(this.form.username, this.form.authCode, this.form.password)
+        await Auth.forgotPasswordSubmit(this.form.username, this.form.authCode, this.form.password)
         this.form = form
         alert('Successfully reset password1')
         this.toggleForm('signIn')
@@ -58,12 +89,6 @@ export default {
         console.error(err)
       }
     }
-  },
-  data() {
-  return {
-    formState: 'resetPassword',
-    form
   }
-}
 }
 </script>
