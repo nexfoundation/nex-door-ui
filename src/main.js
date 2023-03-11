@@ -2,25 +2,25 @@ import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
 
 // amplify configuration
-import Amplify, * as AmplifyModules from 'aws-amplify'
-import { AmplifyPlugin } from 'aws-amplify-vue'
-import aws_exports from './aws-exports'
-Amplify.configure(aws_exports)
+import { Amplify } from 'aws-amplify';
+import awsExports from './aws-exports';
+Amplify.configure(awsExports);
 
 // Vue components
 import App from './components/App.vue'
-import Auth from './components/Auth.vue'
-import Home from './components/Home.vue'
-import Profile from './components/Profile.vue'
+import AuthPage from './components/AuthPage.vue'
+import HomePage from './components/HomePage.vue'
+import ProfilePage from './components/ProfilePage.vue'
+
 
 // Vuex store
 import store from './store'
 
 // route configuration
 const routes = [
-  { path: '/', component: Home },
-  { path: '/auth', component: Auth },
-  { path: '/profile', component: Profile, meta: { requiresAuth: true } },
+  { path: '/', component: HomePage },
+  { path: '/auth', component: AuthPage },
+  { path: '/profile', component: ProfilePage, meta: { requiresAuth: true } },
 ]
 
 // router definition
@@ -30,7 +30,7 @@ const router = VueRouter.createRouter({
   history: VueRouter.createWebHistory(),
 })
 
-let app = createApp(App)
+const app = createApp(App)
 
 // implement protected routes for only signed in users
 router.beforeResolve((to, _, next) => {
@@ -56,9 +56,6 @@ router.beforeResolve((to, _, next) => {
   next();
 });
 
-// Vue.config.productionTip = false;
-app.use(VueRouter)
-app.use(AmplifyPlugin, AmplifyModules)
 app.use(store)
 app.use(router)
 app.mount('#app')

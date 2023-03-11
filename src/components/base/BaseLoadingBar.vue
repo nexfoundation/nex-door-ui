@@ -11,7 +11,7 @@
 // Import component
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
-import 'vue-loading-overlay/dist/vue-loading.css';
+import 'vue-loading-overlay/dist/css/index.css';
 
 export default {
 	components: {

@@ -56,7 +56,7 @@
 import { API } from 'aws-amplify';
 import HomeCard from './HomeCard.vue';
 export default {
-    name: 'Home',
+    name: 'HomePage',
 	components: {
         HomeCard,
 	},

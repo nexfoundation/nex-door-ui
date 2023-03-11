@@ -156,7 +156,7 @@ const cleanupTagValue = t => t.text;
 const wrapTagValue = t => ( { text: t });
 
 export default {
-	name: 'Profile',
+	name: 'ProfilePage',
 	components: {
         VueTagsInput,
         BaseInput,

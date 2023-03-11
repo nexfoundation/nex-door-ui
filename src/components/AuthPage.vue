@@ -3,7 +3,7 @@
     <form>
       <component
         :is="currentTab"
-        @toSignIn="toSignIn"
+        @to-sign-in="toSignIn"
       />
     </form>
     <div class="tabs tabs-boxed w-96 mx-auto mt-8">
@@ -25,7 +25,7 @@ import AuthSignUp from './AuthSignUp.vue'
 import AuthForgotPassword from './AuthForgotPassword.vue'
 
 export default {
-  name: 'Auth',
+  name: 'AuthPage',
   components: {
     AuthSignIn,
     AuthSignUp,

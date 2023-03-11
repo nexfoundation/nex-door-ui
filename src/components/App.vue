@@ -45,11 +45,6 @@
                   Profile
                 </router-link>
               </li>
-              <li>
-                <router-link to="/protected">
-                  Protected Route
-                </router-link>
-              </li>
             </ul>
           </div>
           <router-link
@@ -63,7 +58,7 @@
           </router-link>
         </div>
         <div class="navbar-end hidden lg:flex">
-          <div v-if="this.$route.path !== '/auth'">
+          <div v-if="$route.path !== '/auth'">
             <ul class="menu menu-horizontal px-1">
               <li>
                 <router-link to="/">
@@ -83,11 +78,6 @@
               <li v-if="isAuthenticated">
                 <router-link to="/profile">
                   Profile
-                </router-link>
-              </li>
-              <li>
-                <router-link to="/protected">
-                  Protected Route
                 </router-link>
               </li>
             </ul>

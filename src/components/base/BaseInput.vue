@@ -7,7 +7,7 @@
     :autocomplete="autocomplete"
     :readonly="readonly"
     :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.modelValue)"
+    @input="$emit('update:modelValue', $event.target.value)"
   >
 </template>
 
@@ -24,7 +24,7 @@ export default {
     },
     modelValue: {
       type: String,
-      default: undefined,
+      default: '',
     },
     autocomplete: {
       type: String,
