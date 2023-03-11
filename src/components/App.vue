@@ -113,6 +113,7 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 import { themeChange } from 'theme-change';
 
 export default {
@@ -124,7 +125,7 @@ export default {
   },
   async beforeCreate() {
     try {
-      const user = await this.$Amplify.Auth.currentAuthenticatedUser()
+      const user = await Auth.currentAuthenticatedUser()
       this.$store.dispatch('setIsAuthenticated', true)
       this.$store.dispatch('setUser', user)
       // this.$router.push('profile')
@@ -138,7 +139,7 @@ export default {
   methods: {
     async signOut() {
       try {
-        await this.$Amplify.Auth.signOut()
+        await Auth.signOut()
         this.$store.dispatch('setIsAuthenticated', false)
         this.$store.dispatch('setUser', {})
         this.$router.push('/')

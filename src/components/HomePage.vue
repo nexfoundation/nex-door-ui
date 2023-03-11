@@ -41,13 +41,6 @@
         </div>
       </div>
       <hr>
-      <pre>
-        <intro-text
-          v-for="(str, idx) in intro"
-          :key="idx"
-          :str="str"
-          />
-        </pre>
     </div>
   </div>
 </template>

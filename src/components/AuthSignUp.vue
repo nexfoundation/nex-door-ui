@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 import i18n from '../mixin/i18n.js'
 import BaseInput from './base/BaseInput.vue'
 import LoadingBar from './base/BaseLoadingBar.vue'
@@ -105,7 +106,7 @@ export default {
       // need a validation before triggering loading bar
       this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
       try {
-        await this.$Amplify.Auth.signUp(this.form)
+        await Auth.signUp(this.form)
 
         this.phase = 1
         this.confirmationCodeCooldownCountdown()
@@ -123,7 +124,7 @@ export default {
     async confirmSignUp() {
       this.$refs.loadingBar.doAjax(true);
       try {
-        await this.$Amplify.Auth.confirmSignUp(this.form.username, this.authCode)
+        await Auth.confirmSignUp(this.form.username, this.authCode)
         this.toggleForm('signIn')
         this.$refs.loadingBar.doAjax(false);
         console.log('user successfully signed up!')
@@ -147,7 +148,7 @@ export default {
       this.confirmationCodeCooldownSecond = 90
       this.confirmationCodeCooldownCountdown()
       try {
-        await this.$Amplify.Auth.resendSignUp(this.form.username);
+        await Auth.resendSignUp(this.form.username);
         console.log('code resent successfully');
       } catch (err) {
         console.error('error resending code: ', err);

@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 import BaseInput from './base/BaseInput.vue'
 
 const form = {
@@ -72,7 +73,7 @@ export default {
   methods: {
     async forgotPassword() {
       try {
-        await this.$Amplify.Auth.forgotPassword(this.form.username)
+        await Auth.forgotPassword(this.form.username)
         this.formState = 'resetPasswordConfirm'
       } catch (err) {
         console.error(err)
@@ -80,7 +81,7 @@ export default {
     },
     async forgotPasswordSubmit() {
       try {
-        await this.$Amplify.Auth.forgotPasswordSubmit(this.form.username, this.form.authCode, this.form.password)
+        await Auth.forgotPasswordSubmit(this.form.username, this.form.authCode, this.form.password)
         this.form = form
         alert('Successfully reset password1')
         this.toggleForm('signIn')

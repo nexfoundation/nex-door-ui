@@ -58,7 +58,8 @@
         default: undefined,
       },
       showIntroModal: {
-        type: Boolean,
+        type: Function,
+        default: () => {},
       }
     },
     data() {

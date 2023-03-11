@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
 
 // amplify configuration
-import { Amplify } from 'aws-amplify';
+import { Amplify, Auth } from 'aws-amplify';
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
 
@@ -35,7 +35,7 @@ const app = createApp(App)
 // implement protected routes for only signed in users
 router.beforeResolve((to, _, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    app.config.globalProperties.$Amplify.Auth.currentAuthenticatedUser()
+    Auth.currentAuthenticatedUser()
       .then((data) => {
         if (data && data.signInUserSession) {
           next()

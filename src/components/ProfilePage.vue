@@ -147,6 +147,7 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 import VueTagsInput from '@sipec/vue3-tags-input';
 import BaseInput from './base/BaseInput.vue';
 import ValidateBtn from './base/BaseValidateBtn.vue'
@@ -194,7 +195,7 @@ export default {
 	},
 	async created() {
         try {
-            const user = await this.$Amplify.Auth.currentAuthenticatedUser();
+            const user = await Auth.currentAuthenticatedUser();
             const { username } = user;
             const {
                 email,
@@ -239,10 +240,10 @@ export default {
 					'custom:calendy_url': this.form.calendlyUrl,
                 }
 
-                await this.$Amplify.Auth.updateUserAttributes(this.user, data)
+                await Auth.updateUserAttributes(this.user, data)
 
                 // Refresh local current user session and state
-                const user = await this.$Amplify.Auth.currentAuthenticatedUser({ bypassCache: true })
+                const user = await Auth.currentAuthenticatedUser({ bypassCache: true })
                 this.$store.dispatch('setUser', user)
                 this.$router.push('/')
 			} catch (err) {

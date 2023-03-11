@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 import i18n from '../mixin/i18n.js'
 import BaseInput from './base/BaseInput.vue'
 import LoadingBar from './base/BaseLoadingBar.vue'
@@ -67,7 +68,7 @@ export default {
       }
       this.$refs.loadingBar.doAjax(true);
       try {
-        const user = await this.$Amplify.Auth.signIn(this.form.username, this.form.password)
+        const user = await Auth.signIn(this.form.username, this.form.password)
         this.$store.dispatch('setIsAuthenticated', true)
         this.$store.dispatch('setUser', user)
         this.$router.push('/')
