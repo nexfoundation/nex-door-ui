@@ -1,15 +1,18 @@
 <template>
-  <div class="card w-96 mx-auto shadow-xl">
+  <div
+    ref="formContainer"
+    class="card w-96 mx-auto shadow-xl"
+  >
     <div class="card-body">
       <h1 class="card-title">
         登入 Sign In
       </h1>
       <div
-        v-if="errorMessage"
+        v-if="state.errorMessage"
         class="alert alert-error"
         role="alert"
       >
-        {{ errorMessage }}
+        {{ state.errorMessage }}
       </div>
       <Form
         v-slot="{ meta, isSubmitting }"
@@ -49,35 +52,44 @@
 
 <script setup>
 import { Auth } from 'aws-amplify';
-import { reactive } from 'vue'
+import { reactive, ref} from 'vue'
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { useLoading } from 'vue-loading-overlay';
 import { Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
 import { useI18n } from '../mixin/i18n.js'
 import BaseInput from './base/BaseInput.vue'
 
+const router = useRouter()
+const store = useStore()
+const $loading = useLoading();
 const { geti18nAuthenticationErrorMessage } = useI18n()
 
 defineRule('required', required)
 
-const errorMessage = reactive('')
+const formContainer = ref(null)
+const state = reactive({
+  errorMessage: ''
+})
 
-async function onSubmit() {
-  if (this.form.username == '' || this.form.password == '') {
-    this.errorMessage = '請填寫用戶名稱或密碼！'
-    return
-  }
-  // this.$refs.loadingBar.doAjax(true);
+async function onSubmit(values) {
+  const loader = $loading.show({
+    container: formContainer.value
+  })
+  const { username, password } = values
+
   try {
-    const user = await Auth.signIn(this.form.username, this.form.password)
-    this.$store.dispatch('setIsAuthenticated', true)
-    this.$store.dispatch('setUser', user)
-    this.$router.push('/')
-    // this.$refs.loadingBar.doAjax(false);
+    const user = await Auth.signIn(username, password)
+    store.dispatch('setIsAuthenticated', true)
+    store.dispatch('setUser', user)
+    router.push('/')
+
   } catch (err) {
-    // this.$refs.loadingBar.doAjax(false);
-    console.error(err)
-    console.log('error: ', err)
-    this.errorMessage = geti18nAuthenticationErrorMessage(err.message)
+    state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
+
+  } finally {
+    loader.hide()
   }
 }
 </script>

@@ -78,7 +78,6 @@ async function signUp(form) {
     confirmationCodeCooldownCountdown()
 
   } catch (err) {
-    console.error('error signing up...', err)
     state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
 
   } finally {
@@ -95,7 +94,6 @@ async function confirmSignUp(form) {
     await Auth.confirmSignUp(state.username, form.authCode)
 
   } catch (err) {
-    console.error('error signing up...', err)
     state.errorMessage = err
 
   } finally {
@@ -114,7 +112,7 @@ async function resendConfirmationCode() {
   try {
     await Auth.resendSignUp(state.username);
   } catch (err) {
-    console.error('error resending code: ', err);
+    state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
   }
 }
 </script>
