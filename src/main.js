@@ -6,6 +6,9 @@ import { Amplify, Auth, Hub } from 'aws-amplify';
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
 
+// loading
+import 'vue-loading-overlay/dist/css/index.css';
+
 // Vue components
 import App from './components/App.vue'
 import AuthPage from './components/AuthPage.vue'

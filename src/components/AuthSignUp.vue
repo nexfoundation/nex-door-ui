@@ -1,118 +1,120 @@
 <template>
-  <div>
-    <div class="card w-96 mx-auto shadow-xl">
-      <div class="card-body">
-        <h1 class="card-title">
-          註冊 Sign Up
-        </h1>
-        <AuthSignUpFormCredential
-          v-if="phase === AuthSignUpPhases.CREDENTIAL"
-          :error-message="errorMessage"
-          @submit="signUp"
-        />
-        <AuthSignUpFormConfirmation
-          v-if="phase === AuthSignUpPhases.CONFIRMATION"
-          :confirmation-code-cooldown-second="confirmationCodeCooldownSecond"
-          :error-message="errorMessage"
-          @submit="confirmSignUp"
-          @resend-confirmation-code="resendConfirmationCode"
-        />
-      </div>
+  <div
+    ref="formContainer"
+    class="card w-96 mx-auto shadow-xl"
+  >
+    <div class="card-body">
+      <h1 class="card-title">
+        註冊 Sign Up
+      </h1>
+      <AuthSignUpFormCredential
+        v-if="state.phase === AuthSignUpPhases.CREDENTIAL"
+        :error-message="state.errorMessage"
+        @submit="signUp"
+      />
+      <AuthSignUpFormConfirmation
+        v-if="state.phase === AuthSignUpPhases.CONFIRMATION"
+        :confirmation-code-cooldown-second="state.confirmationCodeCooldownSecond"
+        :error-message="state.errorMessage"
+        @submit="confirmSignUp"
+        @resend-confirmation-code="resendConfirmationCode"
+      />
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { Auth } from 'aws-amplify';
-import i18n from '../mixin/i18n'
-import LoadingBar from './base/BaseLoadingBar'
+import { reactive, ref } from 'vue';
+import { useLoading } from 'vue-loading-overlay';
+import { useI18n } from '../mixin/i18n'
 import AuthSignUpFormCredential from './AuthSignUpFormCredential'
 import AuthSignUpFormConfirmation from './AuthSignUpFormConfirmation'
+
+
+const { geti18nAuthenticationErrorMessage } = useI18n()
+
+const $loading = useLoading();
 
 const AuthSignUpPhases = Object.freeze({
   CREDENTIAL: 'credntial',
   CONFIRMATION: 'confirmation',
-});
+})
 
-export default {
-  components: {
-    LoadingBar,
-    AuthSignUpFormCredential,
-    AuthSignUpFormConfirmation,
-  },
-  mixins: [i18n],
-  data() {
-    return {
-      AuthSignUpPhases,
-      phase: AuthSignUpPhases.CREDENTIAL,
-      username: '',
-      confirmationCodeCooldownSecond: 30,
-      errorMessage: '',
-    }
-  },
-  methods: {
-    async signUp(form) {
-      this.errorMessage = ''
-      // need a validation before triggering loading bar
-      // this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
-      try {
-        this.username = form.username
-        await Auth.signUp({
-          ...form,
-          autoSignIn: {
-            enabled: true,
-          },
-        })
+function confirmationCodeCooldownCountdown() {
+  if (state.confirmationCodeCooldownSecond > 0) {
+    setTimeout(() => {
+      state.confirmationCodeCooldownSecond -= 1
+      confirmationCodeCooldownCountdown()
+    }, 1000)
+  }
+}
 
-        this.phase = AuthSignUpPhases.CONFIRMATION
-        this.confirmationCodeCooldownCountdown()
+const formContainer = ref(null)
+const state = reactive({
+  phase: AuthSignUpPhases.CREDENTIAL,
+  username: '',
+  errorMessage: '',
+  confirmationCodeCooldownSecond: 30
+})
 
-        // this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
 
-      } catch (err) {
-        // this.$refs.loadingBar.doAjax(false);
-        console.error('error signing up...', err)
-        this.errorMessage = this.geti18nAuthenticationErrorMessage(err.message)
-      } finally{
-        // this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
-      }
-    },
-    async confirmSignUp(form) {
-      // this.$refs.loadingBar.doAjax(true);
-      try {
-        await Auth.confirmSignUp(this.username, form.authCode)
-        // this.$refs.loadingBar.doAjax(false);
+async function signUp(form) {
+  const loader = $loading.show({
+    container: formContainer.value
+  })
 
-      } catch (err) {
-        // this.$refs.loadingBar.doAjax(false);
-        console.error('error signing up...', err)
-        this.errorMessage = err
-      } finally{
-        // this.$refs.loadingBar.doAjax(false);
-      }
-    },
-    async resendConfirmationCode() {
-      // Ignore the request if it is still in the resend confirmation code cooldown period
-      if (this.confirmationCodeCooldownSecond > 0) {
-        return
-      }
+  state.errorMessage = ''
+  try {
+    state.username = form.username
+    await Auth.signUp({
+      ...form,
+      autoSignIn: {
+        enabled: true,
+      },
+    })
 
-      this.confirmationCodeCooldownSecond = 90
-      this.confirmationCodeCooldownCountdown()
-      try {
-        await Auth.resendSignUp(this.username);
-      } catch (err) {
-        console.error('error resending code: ', err);
-      }
-    },
-    confirmationCodeCooldownCountdown() {
-      if (this.confirmationCodeCooldownSecond > 0) {
-        setTimeout(() => {
-          this.confirmationCodeCooldownSecond -= 1
-          this.confirmationCodeCooldownCountdown()
-        }, 1000)
-      }
-    }
+    state.phase = AuthSignUpPhases.CONFIRMATION
+    confirmationCodeCooldownCountdown()
+
+  } catch (err) {
+    console.error('error signing up...', err)
+    state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
+
+  } finally {
+    loader.hide()
+  }
+}
+
+async function confirmSignUp(form) {
+  const loader = $loading.show({
+    container: formContainer.value
+  })
+
+  try {
+    await Auth.confirmSignUp(state.username, form.authCode)
+
+  } catch (err) {
+    console.error('error signing up...', err)
+    state.errorMessage = err
+
+  } finally {
+    loader.hide()
+  }
+}
+
+async function resendConfirmationCode() {
+  // Ignore the request if it is still in the resend confirmation code cooldown period
+  if (state.confirmationCodeCooldownSecond > 0) {
+    return
+  }
+
+  this.confirmationCodeCooldownSecond = 90
+  confirmationCodeCooldownCountdown()
+  try {
+    await Auth.resendSignUp(state.username);
+  } catch (err) {
+    console.error('error resending code: ', err);
   }
 }
 </script>

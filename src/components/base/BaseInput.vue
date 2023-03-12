@@ -69,7 +69,7 @@ defineProps({
   },
   readonly: Boolean,
   rules: {
-    type: Function,
+    type: String,
     default() {
       return true
     }
