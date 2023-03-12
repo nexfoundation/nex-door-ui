@@ -50,27 +50,23 @@ Hub.listen('auth', ({ payload }) => {
 })
 
 // implement protected routes for only signed in users
-router.beforeResolve((to, _, next) => {
+router.beforeResolve(async (to, _, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    Auth.currentAuthenticatedUser()
-      .then((data) => {
-        if (data && data.signInUserSession) {
-          next()
-        }
+    try {
+      const data = await Auth.currentAuthenticatedUser()
+      if (data && data.signInUserSession) {
+        next()
+      }
+    } catch (err) {
+      next({
+        path: '/auth',
+        query: {
+          redirect: to.fullPath,
+        },
       })
-      .catch(() => {
-        console.log(
-          'You are trying to access a protected route. Please sign in.'
-        )
-        next({
-          path: '/',
-          query: {
-            redirect: to.fullPath,
-          },
-        })
-      })
+    }
   }
-  next();
+  else next();
 });
 
 app.use(store)

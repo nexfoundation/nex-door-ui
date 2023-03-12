@@ -2956,6 +2956,15 @@ html {
   outline-offset: 2px;
 }
 
+.select-error {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--er) / var(--tw-border-opacity));
+}
+
+.select-error:focus {
+  outline: 2px solid hsl(var(--er));
+}
+
 .select-disabled,
   .select[disabled] {
   cursor: not-allowed;
@@ -3124,6 +3133,15 @@ html {
 .textarea:focus {
   outline: 2px solid hsla(var(--bc) / 0.2);
   outline-offset: 2px;
+}
+
+.textarea-error {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--er) / var(--tw-border-opacity));
+}
+
+.textarea-error:focus {
+  outline: 2px solid hsl(var(--er));
 }
 
 .textarea-disabled,

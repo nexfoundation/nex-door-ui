@@ -1,12 +1,5 @@
 <template>
   <div class="container my-20">
-    <div
-      v-if="errorMessage"
-      class="alert alert-danger"
-      role="alert"
-    >
-      {{ errorMessage }}
-    </div>
     <h1 class="text-5xl font-bold leading-relaxed">
       歡迎回來！
     </h1>
@@ -21,8 +14,6 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
 import ProfileForm from './ProfileForm'
 
-const errorMessage = reactive('')
 </script>
