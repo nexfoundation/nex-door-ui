@@ -1,5 +1,12 @@
 <template>
-  <div class="mb-4">
+  <div class="form-control w-full max-w-xs">
+    <label
+      v-if="label"
+      class="label cursor-pointer"
+      :for="id"
+    >
+      <span class="label-text">{{ label }}</span>
+    </label>
     <Field
       v-slot="{ field, meta }"
       :name="name"
@@ -10,14 +17,18 @@
         v-bind="field"
         :autocomplete="autocomplete"
         :readonly="readonly"
-        class="input input-bordered w-full max-w-xs"
-        :class="{ 'input-error': meta.touched && !meta.valid }"
+        class="input input-bordered"
+        :class="{
+          'input-disabled': disabled,
+          'input-error': meta.touched && !meta.valid,
+        }"
         :type="type"
         :placeholder="placeholder"
+        :disabled="disabled"
       >
     </Field>
     <label class="label">
-      <span class="label-text-alt"><ErrorMessage :name="name" /></span>
+      <span class="label-text-alt text-error"><ErrorMessage :name="name" /></span>
     </label>
   </div>
 </template>
@@ -27,6 +38,10 @@ import { Field, ErrorMessage } from 'vee-validate'
 
 defineProps({
   id: {
+    type: String,
+    default: undefined,
+  },
+  label: {
     type: String,
     default: undefined,
   },
@@ -58,7 +73,8 @@ defineProps({
     default() {
       return true
     }
-  }
+  },
+  disabled: Boolean,
 })
 
 defineEmits(['update:modelValue'])

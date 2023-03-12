@@ -12,6 +12,7 @@
         />
         <AuthSignUpFormConfirmation
           v-if="phase === AuthSignUpPhases.CONFIRMATION"
+          :confirmation-code-cooldown-second="confirmationCodeCooldownSecond"
           :error-message="errorMessage"
           @submit="confirmSignUp"
           @resend-confirmation-code="resendConfirmationCode"
@@ -40,7 +41,6 @@ export default {
     AuthSignUpFormConfirmation,
   },
   mixins: [i18n],
-  emits: ["set-current-tab"],
   data() {
     return {
       AuthSignUpPhases,
@@ -52,17 +52,23 @@ export default {
   },
   methods: {
     async signUp(form) {
+      this.errorMessage = ''
       // need a validation before triggering loading bar
       // this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
       try {
         this.username = form.username
-        await Auth.signUp(form)
+        await Auth.signUp({
+          ...form,
+          autoSignIn: {
+            enabled: true,
+          },
+        })
 
         this.phase = AuthSignUpPhases.CONFIRMATION
         this.confirmationCodeCooldownCountdown()
 
         // this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
-        console.log('user successfully signed up!')
+
       } catch (err) {
         // this.$refs.loadingBar.doAjax(false);
         console.error('error signing up...', err)
@@ -75,9 +81,8 @@ export default {
       // this.$refs.loadingBar.doAjax(true);
       try {
         await Auth.confirmSignUp(this.username, form.authCode)
-        this.toggleForm('signIn')
         // this.$refs.loadingBar.doAjax(false);
-        console.log('user successfully signed up!')
+
       } catch (err) {
         // this.$refs.loadingBar.doAjax(false);
         console.error('error signing up...', err)
@@ -85,9 +90,6 @@ export default {
       } finally{
         // this.$refs.loadingBar.doAjax(false);
       }
-    },
-    toggleForm(val) {
-      this.$emit("set-current-tab", val);
     },
     async resendConfirmationCode() {
       // Ignore the request if it is still in the resend confirmation code cooldown period
@@ -98,8 +100,7 @@ export default {
       this.confirmationCodeCooldownSecond = 90
       this.confirmationCodeCooldownCountdown()
       try {
-        await Auth.resendSignUp(this.form.username);
-        console.log('code resent successfully');
+        await Auth.resendSignUp(this.username);
       } catch (err) {
         console.error('error resending code: ', err);
       }

@@ -12,12 +12,12 @@
         <h1 class="card-title">
           登入 Sign In
         </h1>
-        <base-input
+        <BaseInput
           v-model="form.username"
           placeholder="用戶名稱 (Username)"
           autocomplete="username"
         />
-        <base-input
+        <BaseInput
           v-model="form.password"
           placeholder="密碼 (Password)"
           type="password"

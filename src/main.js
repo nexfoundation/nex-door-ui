@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
 
 // amplify configuration
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify, Auth, Hub } from 'aws-amplify';
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
 
@@ -31,6 +31,20 @@ const router = VueRouter.createRouter({
 })
 
 const app = createApp(App)
+
+
+Hub.listen('auth', ({ payload }) => {
+  console.debug('Hub', 'auth triggered')
+  const { event } = payload;
+  if (event === 'autoSignIn') {
+      const user = payload.data;
+      store.dispatch('setIsAuthenticated', true)
+      store.dispatch('setUser', user)
+      router.push('/profile')
+  } else if (event === 'autoSignIn_failure') {
+      // redirect to sign in page
+  }
+})
 
 // implement protected routes for only signed in users
 router.beforeResolve((to, _, next) => {

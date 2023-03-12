@@ -12,22 +12,28 @@
       {{ errorMessage }}
     </div>
     <BaseInput
-      name="form.attributes.email"
+      id="email"
+      name="attributes.email"
+      label="信箱 (Email)"
       placeholder="信箱 (Email)"
-      :rules="isRequired"
+      rules="required|email"
     />
     <BaseInput
-      name="form.username"
+      id="name"
+      name="username"
+      label="用戶名稱 (Username)"
       placeholder="用戶名稱 (Username)"
       autocomplete="username"
-      :rules="isRequired"
+      rules="required"
     />
     <BaseInput
-      name="form.password"
+      id="password"
+      name="password"
+      label="密碼 (Password)"
       placeholder="密碼 (Password)"
       type="password"
       autocomplete="new-password"
-      :rules="isRequired"
+      rules="required|min:8"
     />
     <div class="card-actions justify-end">
       <button
@@ -43,8 +49,14 @@
 
 <script setup>
 import { defineProps } from 'vue'
-import { Form } from 'vee-validate'
+import { Form, defineRule } from 'vee-validate'
+import { required, email, min, regex } from '@vee-validate/rules'
 import BaseInput from './base/BaseInput.vue'
+
+defineRule('required', required)
+defineRule('email', email)
+defineRule('min', min)
+defineRule('regex', regex)
 
 defineProps({
   errorMessage: {
@@ -53,19 +65,9 @@ defineProps({
   },
 })
 
-function isRequired(value) {
-  if (value && value.trim()) {
-    return true;
-  }
-  return 'This is required';
-}
-
-// const isValid = useIsFormValid();
-
 const emit = defineEmits(['submit'])
 function onSubmit(values) {
-  console.log(JSON.stringify(values, null, 2));
-  // emit('submit', values);
+  emit('submit', values)
 }
 
 </script>

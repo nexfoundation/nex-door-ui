@@ -6,7 +6,7 @@
           Reset Password
         </h1>
         <template v-if="formState === 'resetPassword'">
-          <base-input
+          <BaseInput
             v-model="form.username"
             placeholder="Username"
           />
@@ -20,11 +20,11 @@
           </div>
         </template>
         <template v-if="formState === 'resetPasswordConfirm'">
-          <base-input
+          <BaseInput
             v-model="form.authCode"
             placeholder="Verification Code"
           />
-          <base-input
+          <BaseInput
             v-model="form.password"
             type="password"
             autocomplete="new-password"
