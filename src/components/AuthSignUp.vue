@@ -60,11 +60,11 @@ const state = reactive({
 
 
 async function signUp(form) {
+  state.errorMessage = ''
   const loader = $loading.show({
     container: formContainer.value
   })
 
-  state.errorMessage = ''
   try {
     state.username = form.username
     await Auth.signUp({
@@ -86,6 +86,8 @@ async function signUp(form) {
 }
 
 async function confirmSignUp(form) {
+  state.errorMessage = ''
+
   const loader = $loading.show({
     container: formContainer.value
   })
@@ -102,6 +104,8 @@ async function confirmSignUp(form) {
 }
 
 async function resendConfirmationCode() {
+  state.errorMessage = ''
+
   // Ignore the request if it is still in the resend confirmation code cooldown period
   if (state.confirmationCodeCooldownSecond > 0) {
     return

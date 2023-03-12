@@ -1,94 +1,147 @@
 <template>
-  <div>
-    <div class="card w-96 mx-auto shadow-xl">
-      <div class="card-body">
-        <h1 class="card-title">
-          Reset Password
-        </h1>
-        <template v-if="formState === 'resetPassword'">
+  <div
+    ref="formContainer"
+    class="card w-96 mx-auto shadow-xl"
+  >
+    <div class="card-body">
+      <h1 class="card-title">
+        Reset Password
+      </h1>
+      <template v-if="state.formState === AuthForgotPasswordState.INITIAL">
+        <Form
+          v-slot="{ meta, isSubmitting }"
+          @submit="onSubmitForgotPassword"
+        >
+          <div
+            v-if="state.errorMessage"
+            class="alert alert-error"
+            role="alert"
+          >
+            {{ state.errorMessage }}
+          </div>
           <BaseInput
-            v-model="form.username"
+            name="username"
+            label="Username"
             placeholder="Username"
+            autocomplete="username"
+            rules="required"
           />
           <div class="card-actions justify-end">
-            <div
-              class="btn btn-primary mt-4"
-              @click="forgotPassword"
+            <button
+              type="submit"
+              class="btn btn-primary"
+              :disabled="!meta.valid || isSubmitting"
             >
               Send verification code
-            </div>
+            </button>
           </div>
-        </template>
-        <template v-if="formState === 'resetPasswordConfirm'">
+        </Form>
+      </template>
+      <template v-if="state.formState === AuthForgotPasswordState.CONFIRMATION">
+        <Form
+          v-slot="{ meta, isSubmitting }"
+          @submit="onSubmitForgotPasswordConfirm"
+        >
+          <div
+            v-if="state.errorMessage"
+            class="alert alert-error"
+            role="alert"
+          >
+            {{ state.errorMessage }}
+          </div>
           <BaseInput
-            v-model="form.authCode"
+            name="authCode"
+            autocomplete="one-time-code"
+            label="Verification Code"
             placeholder="Verification Code"
+            rules="required"
           />
           <BaseInput
-            v-model="form.password"
+            name="password"
             type="password"
             autocomplete="new-password"
+            label="New Password"
             placeholder="New Password"
+            rules="required|min:8"
           />
           <div class="card-actions justify-end">
-            <div
+            <button
+              type="submit"
               class="btn btn-primary"
-              @click="forgotPasswordSubmit"
+              :disabled="!meta.valid || isSubmitting"
             >
               Set new password
-            </div>
+            </button>
           </div>
-        </template>
-      </div>
+        </Form>
+      </template>
     </div>
   </div>
 </template>
 
-<script>
-import { Auth } from 'aws-amplify';
-import BaseInput from './base/BaseInput.vue'
+<script setup>
+import { Auth } from 'aws-amplify'
+import { reactive, ref } from 'vue'
+import { useLoading } from 'vue-loading-overlay';
+import { Form, defineRule } from 'vee-validate'
+import { required } from '@vee-validate/rules'
+import { useI18n } from '../mixin/i18n'
+import BaseInput from './base/BaseInput'
 
-const form = {
+defineRule('required', required)
+
+
+const { geti18nAuthenticationErrorMessage } = useI18n()
+
+const $loading = useLoading();
+
+const AuthForgotPasswordState = Object.freeze({
+  INITIAL: 'resetPassword',
+  CONFIRMATION: 'resetPasswordConfirm',
+})
+
+const formContainer = ref(null)
+const state = reactive({
   username: '',
-  password: '',
-  authCode: ''
+  formState: AuthForgotPasswordState.INITIAL,
+})
+
+async function onSubmitForgotPassword(values) {
+  state.errorMessage = ''
+  const loader = $loading.show({
+    container: formContainer.value
+  })
+
+  try {
+    await Auth.forgotPassword(values.username)
+
+    state.username = values.username
+    state.formState = AuthForgotPasswordState.CONFIRMATION
+
+  } catch (err) {
+    state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
+
+  } finally {
+    loader.hide()
+  }
 }
 
-export default {
-  components: {
-    BaseInput,
-  },
-  props: {
-    toggleForm: {
-      type: Function,
-      default: () => {},
-    },
-  },
-  data() {
-  return {
-    formState: 'resetPassword',
-    form
-  }
-},
-  methods: {
-    async forgotPassword() {
-      try {
-        await Auth.forgotPassword(this.form.username)
-        this.formState = 'resetPasswordConfirm'
-      } catch (err) {
-        console.error(err)
-      }
-    },
-    async forgotPasswordSubmit() {
-      try {
-        await Auth.forgotPasswordSubmit(this.form.username, this.form.authCode, this.form.password)
-        this.form = form
-        alert('Successfully reset password1')
-        this.toggleForm('signIn')
-      } catch (err) {
-        console.error(err)
-      }
-    }
+const emit = defineEmits(['resetCompleted'])
+async function onSubmitForgotPasswordConfirm(values) {
+  state.errorMessage = ''
+  const loader = $loading.show({
+    container: formContainer.value
+  })
+
+  try {
+    await Auth.forgotPasswordSubmit(state.username, values.authCode, values.password)
+    emit('resetCompleted')
+  } catch (err) {
+    state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
+
+  } finally {
+    loader.hide()
   }
 }
+
 </script>

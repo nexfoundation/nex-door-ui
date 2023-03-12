@@ -50,13 +50,12 @@
 <script setup>
 import { defineProps } from 'vue'
 import { Form, defineRule } from 'vee-validate'
-import { required, email, min, regex } from '@vee-validate/rules'
+import { required, email, min } from '@vee-validate/rules'
 import BaseInput from './base/BaseInput.vue'
 
 defineRule('required', required)
 defineRule('email', email)
 defineRule('min', min)
-defineRule('regex', regex)
 
 defineProps({
   errorMessage: {

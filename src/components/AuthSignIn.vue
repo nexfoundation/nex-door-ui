@@ -74,6 +74,7 @@ const state = reactive({
 })
 
 async function onSubmit(values) {
+  state.errorMessage = ''
   const loader = $loading.show({
     container: formContainer.value
   })
