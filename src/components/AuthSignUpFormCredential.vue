@@ -1,7 +1,7 @@
 <template>
   <Form
     v-slot="{ meta, isSubmitting }"
-    class="flex flex-col gap-2"
+    class="flex flex-col"
     @submit="onSubmit"
   >
     <div

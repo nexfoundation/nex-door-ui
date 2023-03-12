@@ -2596,6 +2596,13 @@ html {
   color: hsl(var(--bc) / var(--tw-text-opacity));
 }
 
+.label-text-alt {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  --tw-text-opacity: 1;
+  color: hsl(var(--bc) / var(--tw-text-opacity));
+}
+
 .label a:hover {
   --tw-text-opacity: 1;
   color: hsl(var(--bc) / var(--tw-text-opacity));
@@ -2612,6 +2619,15 @@ html {
 .input:focus {
   outline: 2px solid hsla(var(--bc) / 0.2);
   outline-offset: 2px;
+}
+
+.input-error {
+  --tw-border-opacity: 1;
+  border-color: hsl(var(--er) / var(--tw-border-opacity));
+}
+
+.input-error:focus {
+  outline: 2px solid hsl(var(--er));
 }
 
 .input-disabled,
@@ -3473,6 +3489,10 @@ html {
 
 .mt-8 {
   margin-top: 2rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
 }
 
 .flex {

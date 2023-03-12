@@ -1,17 +1,25 @@
 <template>
-  <Field
-    :id="id"
-    class="input input-bordered w-full max-w-xs"
-    :autocomplete="autocomplete"
-    :name="name"
-    :placeholder="placeholder"
-    :readonly="readonly"
-    :rules="rules"
-    :type="type"
-    :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
-  />
-  <ErrorMessage :name="name" />
+  <div class="mb-4">
+    <Field
+      v-slot="{ field, meta }"
+      :name="name"
+      :rules="rules"
+    >
+      <input
+        :id="id"
+        v-bind="field"
+        :autocomplete="autocomplete"
+        :readonly="readonly"
+        class="input input-bordered w-full max-w-xs"
+        :class="{ 'input-error': meta.touched && !meta.valid }"
+        :type="type"
+        :placeholder="placeholder"
+      >
+    </Field>
+    <label class="label">
+      <span class="label-text-alt"><ErrorMessage :name="name" /></span>
+    </label>
+  </div>
 </template>
 
 <script setup>
@@ -32,7 +40,7 @@ defineProps({
   },
   name: {
     type: String,
-    default: undefined,
+    required: true,
   },
   autocomplete: {
     type: String,
