@@ -1,11 +1,9 @@
 <template>
   <div class="container my-20">
-    <form>
-      <component
-        :is="currentTab"
-        @to-sign-in="toSignIn"
-      />
-    </form>
+    <component
+      :is="currentTab"
+      @to-sign-in="toSignIn"
+    />
     <div class="tabs tabs-boxed w-96 mx-auto mt-8">
       <div
         v-for="tab in tabs"

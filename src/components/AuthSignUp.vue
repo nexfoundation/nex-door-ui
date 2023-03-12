@@ -1,139 +1,89 @@
 <template>
   <div>
-    <div
-      v-if="errorMessage"
-      class="alert alert-danger"
-      role="alert"
-    >
-      {{ errorMessage }}
-    </div>
     <div class="card w-96 mx-auto shadow-xl">
       <div class="card-body">
         <h1 class="card-title">
           註冊 Sign Up
         </h1>
-        <template v-if="phase === Number(0)">
-          <base-input
-            v-model="form.attributes.email"
-            placeholder="信箱 (Email)"
-          />
-          <base-input
-            v-model="form.username"
-            placeholder="用戶名稱 (Username)"
-            autocomplete="username"
-          />
-          <base-input
-            v-model="form.password"
-            placeholder="密碼 (Password)"
-            type="password"
-            autocomplete="new-password"
-          />
-          <div class="card-actions justify-end">
-            <ValidateBtn
-              :form-array="[form.username, form.password, form.attributes.email]"
-              @click="signUp"
-              @update="isLoading = $event"
-            >
-              註冊 (Sign Up)
-            </ValidateBtn>
-          </div>
-        </template>
-
-        <template v-else-if="phase === Number(1)">
-          <p>(請確認您的 Email 或是簡訊的 OTP 驗證碼)</p>
-          <base-input
-            v-model="authCode"
-            placeholder="請輸入臨時性驗證碼 (Authentication code)"
-          />
-
-          <div class="text-xs">
-            沒收到驗證碼？
-            <a
-              class="link"
-              @click="resendConfirmationCode"
-            >
-              點我重新發送驗證碼 {{ `(${confirmationCodeCooldownSecond} 秒)` }}
-            </a>
-          </div>
-          <div class="card-actions justify-end">
-            <ValidateBtn
-              :form-array="[form.username, form.password, form.attributes.email]"
-              @click="confirmSignUp"
-            >
-              確認 (Confirm Sign Up)
-            </ValidateBtn>
-          </div>
-        </template>
+        <AuthSignUpFormCredential
+          v-if="phase === AuthSignUpPhases.CREDENTIAL"
+          :error-message="errorMessage"
+          @submit="signUp"
+        />
+        <AuthSignUpFormConfirmation
+          v-if="phase === AuthSignUpPhases.CONFIRMATION"
+          :error-message="errorMessage"
+          @submit="confirmSignUp"
+          @resend-confirmation-code="resendConfirmationCode"
+        />
       </div>
     </div>
-    <LoadingBar ref="loadingBar" />
   </div>
 </template>
 
 <script>
 import { Auth } from 'aws-amplify';
-import i18n from '../mixin/i18n.js'
-import BaseInput from './base/BaseInput.vue'
-import LoadingBar from './base/BaseLoadingBar.vue'
-import ValidateBtn from './base/BaseValidateBtn.vue'
+import i18n from '../mixin/i18n'
+import LoadingBar from './base/BaseLoadingBar'
+import AuthSignUpFormCredential from './AuthSignUpFormCredential'
+import AuthSignUpFormConfirmation from './AuthSignUpFormConfirmation'
+
+const AuthSignUpPhases = Object.freeze({
+  CREDENTIAL: 'credntial',
+  CONFIRMATION: 'confirmation',
+});
 
 export default {
   components: {
-    BaseInput,
     LoadingBar,
-    ValidateBtn
+    AuthSignUpFormCredential,
+    AuthSignUpFormConfirmation,
   },
   mixins: [i18n],
   emits: ["set-current-tab"],
   data() {
     return {
-      form: {
-        username: '',
-        password: '',
-        attributes: {
-          email: '',
-          phone_number: '',
-        }
-      },
-      authCode: '',
-      phase: 0,
-      errorMessage: undefined,
+      AuthSignUpPhases,
+      phase: AuthSignUpPhases.CREDENTIAL,
+      username: '',
       confirmationCodeCooldownSecond: 30,
+      errorMessage: '',
     }
   },
   methods: {
-    async signUp() {
+    async signUp(form) {
       // need a validation before triggering loading bar
-      this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
+      // this.$refs.loadingBar.doAjax(true); // activate loading bar when clicking
       try {
-        await Auth.signUp(this.form)
+        this.username = form.username
+        await Auth.signUp(form)
 
-        this.phase = 1
+        this.phase = AuthSignUpPhases.CONFIRMATION
         this.confirmationCodeCooldownCountdown()
 
-        this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
+        // this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
         console.log('user successfully signed up!')
       } catch (err) {
-        this.$refs.loadingBar.doAjax(false);
+        // this.$refs.loadingBar.doAjax(false);
         console.error('error signing up...', err)
         this.errorMessage = this.geti18nAuthenticationErrorMessage(err.message)
       } finally{
-        this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
+        // this.$refs.loadingBar.doAjax(false); // disable loading bar no matter sign up successfully or not
       }
     },
-    async confirmSignUp() {
-      this.$refs.loadingBar.doAjax(true);
+    async confirmSignUp(form) {
+      // this.$refs.loadingBar.doAjax(true);
       try {
-        await Auth.confirmSignUp(this.form.username, this.authCode)
+        await Auth.confirmSignUp(this.username, form.authCode)
         this.toggleForm('signIn')
-        this.$refs.loadingBar.doAjax(false);
+        // this.$refs.loadingBar.doAjax(false);
         console.log('user successfully signed up!')
       } catch (err) {
-        this.$refs.loadingBar.doAjax(false);
+        // this.$refs.loadingBar.doAjax(false);
         console.error('error signing up...', err)
         this.errorMessage = err
       } finally{
-        this.$refs.loadingBar.doAjax(false);
+        // this.$refs.loadingBar.doAjax(false);
       }
     },
     toggleForm(val) {
