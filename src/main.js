@@ -2,9 +2,12 @@ import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
 
 // amplify configuration
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify, Auth, Hub } from 'aws-amplify';
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
+
+// loading
+import 'vue-loading-overlay/dist/css/index.css';
 
 // Vue components
 import App from './components/App.vue'
@@ -32,28 +35,38 @@ const router = VueRouter.createRouter({
 
 const app = createApp(App)
 
-// implement protected routes for only signed in users
-router.beforeResolve((to, _, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    Auth.currentAuthenticatedUser()
-      .then((data) => {
-        if (data && data.signInUserSession) {
-          next()
-        }
-      })
-      .catch(() => {
-        console.log(
-          'You are trying to access a protected route. Please sign in.'
-        )
-        next({
-          path: '/',
-          query: {
-            redirect: to.fullPath,
-          },
-        })
-      })
+
+Hub.listen('auth', ({ payload }) => {
+  console.debug('Hub', 'auth triggered')
+  const { event } = payload;
+  if (event === 'autoSignIn') {
+      const user = payload.data;
+      store.dispatch('setIsAuthenticated', true)
+      store.dispatch('setUser', user)
+      router.push('/profile')
+  } else if (event === 'autoSignIn_failure') {
+      // redirect to sign in page
   }
-  next();
+})
+
+// implement protected routes for only signed in users
+router.beforeResolve(async (to, _, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    try {
+      const data = await Auth.currentAuthenticatedUser()
+      if (data && data.signInUserSession) {
+        next()
+      }
+    } catch (err) {
+      next({
+        path: '/auth',
+        query: {
+          redirect: to.fullPath,
+        },
+      })
+    }
+  }
+  else next();
 });
 
 app.use(store)
