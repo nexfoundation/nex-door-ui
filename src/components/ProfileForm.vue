@@ -74,27 +74,31 @@
         </template>
       </BaseInput>
 
-      <!-- <div class="form-control">
+
+      <div class="form-control w-full max-w-xs">
         <label class="label">
-          <span class="label-text">諮詢類別 Tags</span>
+          <span class="label-text">諮詢類別</span>
         </label>
-        <VueTagsInput
-          v-model="tag"
-          :tags="tags"
-          :autocomplete-items="availableMentoringTags"
-          @tags-changed="newTags => tags = newTags"
+        <Field
+          v-slot="{ field }"
+          name="tags"
         >
-          <template #auto-complete>
-            <strong>選擇你可以提供的諮詢項目</strong>
-          </template>
+          <VueMultiselect
+            v-bind="field"
+            v-model="field.value"
+            :options="state.options"
+            :multiple="true"
+            :close-on-select="false"
+            placeholder="選擇你可以提供的諮詢項目"
           />
-        </vuetagsinput>
-      </div> -->
+        </Field>
+      </div>
+
       <BaseTextarea
         id="profileBio"
         name="profile"
         label="個人簡介 Bio"
-        rows="5"
+        :rows="5"
       />
       <button
         type="submit"
@@ -112,9 +116,9 @@ import { Auth } from 'aws-amplify'
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { Form, defineRule } from 'vee-validate'
+import VueMultiselect from 'vue-multiselect'
+import { Field, Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
-// import VueTagsInput from '@sipec/vue3-tags-input'
 import BaseInput from './base/BaseInput'
 import BaseSelect from './base/BaseSelect'
 import BaseTextarea from './base/BaseTextarea'
@@ -125,17 +129,23 @@ const store = useStore()
 const router = useRouter()
 
 
-
-// helper functions for converting tag values to VueTagsInput format
-// const cleanupTagValue = t => t.text;
-// const wrapTagValue = t => ( { text: t });
-
 const state = reactive({
   user: await Auth.currentAuthenticatedUser(),
+  options: [
+    '稅務簽證',
+    '職涯發展',
+    '商業創業',
+    '租屋買房',
+    '旅行生活',
+    '人生相談',
+    '興趣分享',
+    '設計美學',
+    '海外婚姻',
+  ],
   errorMessage: '',
 })
 
-const { username } = state.user;
+const { username } = state.user
 const {
   email,
   name,
@@ -144,8 +154,8 @@ const {
   website,
   'custom:accept_mentoring': acceptMentoring,
   'custom:calendly_url': calendlyUrl,
-  // 'custom:tags': tags,
-} = state.user.attributes;
+  'custom:tags': tags,
+} = state.user.attributes
 
 const formValues = {
   acceptMentoring: acceptMentoring || '0',
@@ -154,26 +164,12 @@ const formValues = {
   name: name || '',
   picture: picture || '',
   profile: profile || '',
-  tag: '',
-  // tags: tags ? JSON.parse(tags).map(wrapTagValue) : [],
+  tags: tags ? JSON.parse(tags) : [],
   username,
   website: website || '',
 }
 
-// const availableMentoringTags = reactive([
-//   { text: '稅務簽證' },
-//   { text: '職涯發展' },
-//   { text: '商業創業' },
-//   { text: '租屋買房' },
-//   { text: '旅行生活' },
-//   { text: '人生相談' },
-//   { text: '興趣分享' },
-//   { text: '設計美學' },
-//   { text: '海外婚姻' },
-// ])
-
 async function onSubmit(values) {
-
   try {
     const data = {
       name: values.name,
@@ -181,11 +177,10 @@ async function onSubmit(values) {
       profile: values.profile,
       website: values.website,
       'custom:accept_mentoring': values.acceptMentoring,
-      // 'custom:tags': JSON.stringify(values.tags.map(cleanupTagValue)),
+      'custom:tags': JSON.stringify(values.tags),
       'custom:calendy_url': values.calendlyUrl,
     }
 
-    // const user = await Auth.currentAuthenticatedUser();
     await Auth.updateUserAttributes(state.user, data)
 
     // Refresh local current user session and state

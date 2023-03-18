@@ -9,6 +9,9 @@ Amplify.configure(awsExports);
 // loading
 import 'vue-loading-overlay/dist/css/index.css';
 
+// multiselect
+import 'vue-multiselect/dist/vue3-multiselect.css';
+
 // Vue components
 import App from './components/App.vue'
 import AuthPage from './components/AuthPage.vue'
@@ -37,7 +40,6 @@ const app = createApp(App)
 
 
 Hub.listen('auth', ({ payload }) => {
-  console.debug('Hub', 'auth triggered')
   const { event } = payload;
   if (event === 'autoSignIn') {
       const user = payload.data;
