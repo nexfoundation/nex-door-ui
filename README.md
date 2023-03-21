@@ -1,13 +1,5 @@
 ## Deployment steps
 
-### Pull the code and update necessary information in src/aws-exports.js
-
-After pulling the code, we have to update the aws-exports.js with required [backend configurations](https://github.com/nexfoundation/nex-door-ui/blob/master/src/aws-exports.js).
-
-Just copy paste the value in each key.
-
-----
-
 ### Local Deployment
 
 There are 2 approaches to deploy and you can pick either one to do it.
