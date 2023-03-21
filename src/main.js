@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
+import './style.css';
 
 // amplify configuration
 import { Amplify, Auth, Hub } from 'aws-amplify';
