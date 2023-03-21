@@ -1,5 +1,3 @@
-import { Auth } from 'aws-amplify';
-
 const awsauth = {
     Auth: {
 
