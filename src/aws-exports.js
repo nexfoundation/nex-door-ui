@@ -13,7 +13,16 @@ const awsauth = {
         userPoolWebClientId: process.env.VUE_APP_COG_CLIENT_ID,
 
         // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
-        mandatorySignIn: process.env.VUE_APP_MANDATORY_SIGNIN
+        mandatorySignIn: process.env.VUE_APP_MANDATORY_SIGNIN,
+
+        // OPTIONAL - Hosted UI configuration
+        oauth: {
+            domain: process.env.VUE_APP_COGNITO_OAUTH_UI_DOMAIN,
+            scope: ['email', 'profile', 'openid', 'aws.cognito.signin.user.admin'],
+            redirectSignIn: process.env.VUE_APP_COGNITO_OAUTH_REDIRECT_SIGNIN_URL,
+            redirectSignOut: process.env.VUE_APP_COGNITO_OAUTH_REDIRECT_SIGNOUT_URL,
+            responseType: 'code' // or 'token', note that REFRESH token will only be generated when the responseType is code
+        }
     },
     API: {
         endpoints: [
@@ -30,4 +39,3 @@ const awsauth = {
 }
 
 export default awsauth
-Auth.configure(awsauth)
