@@ -39,7 +39,7 @@
           關於我
         </label>
       </p>
-      <p :id="`about-${sub}`">
+      <p :id="`about-${id}`">
         {{ profile }}
       </p>
     </div>
