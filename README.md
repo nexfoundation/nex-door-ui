@@ -1,59 +1,38 @@
-## Deployment steps
+## Deployment Steps
 
-### Local Deployment
+There are two ways to deploy your web application using Docker.
 
-There are 2 approaches to deploy and you can pick either one to do it.
-The final goal is the same. We're going to launch the docker container in which our web application is gonna run.
+### VS Code Remote Container
 
- 1. VSCode Remote Container
- 2. Create container by shell script
+With Remote Container, you can use a Docker container as your development environment without the need for a complicated set-up. Here's how to set it up:
 
-#### 1. VS Code Remote Container
+1. Make sure **Docker** and **Visual Studio Code Dev Containers** extension are installed.
+2. Open the project folder in VS Code and the remote container dialog will  pop-up in the bottom right corner.
+3. Select to open the project folder with Remote Container.
+4. The container will install and build the necessary environment.
+5. You should then see the application running at [[http://localhost:8080/](http://localhost:8080/)]. If not, follow the steps below:
+6. Press F5 for debug (Task: npm run serve).
 
-What is Remote Container? It let us use a Docker container as a full-featured development environment. We can jump in development without the need of cumbersome environment set-up.
+*> Note: You can ignore the "no debugger installed" alert after exiting debugging.*
 
-Ref: (https://code.visualstudio.com/docs/remote/containers)
+### Create Container by Shell Script
 
+1. Launch the container by running the following command under your project folder:
 
-##### Prerequiste
-- Docker Desktop installed
-- VSCode Remote Container installed
+    ```
+    docker run -it -p 8080:8080 --rm -v $PWD:/app node:14.17.0-alpine3.13 sh
+    ```
 
-##### Setup
-1. Make sure your docker engine is running.
-2. Open the code folder in VS Code, and then click the special button 「 」at bottom right (or left). It's a button to launch remote container command pallate.
-3. Select open the code folder with Remote Container.
-4. The container will then installing and building the necessary environment.
-5. Supposedly, you will then see the application is running and you can access it at http://localhost:8080/
+1. Install the necessary libraries and run the application:
 
-If not, follow below steps:
+    ```
+    $ cd ./app
 
-5. Press F5 for debug(npm run serve)
-6. ...or run scripts from *NPM Scripts* at *Explorer* Activity(Side) Bar
-7. ...or "Task: run task" in Command Palette
-8. ...or directly interact terminal💻
+    $ npm install
 
-> Note: vscode may show alert "no debugger installed" after exit debugging. You can ignore it.
+    $ npm run serve
+    ```
 
-#### 2. Create container by shell script
+## Building Tailwind CSS
 
-1. Launch container by command line:
-
-Run below command under your app folder. This will launch and enter into the docker container.
-
-```
-docker run -it -p 8080:8080 --rm -v $PWD:/app node:14.17.0-alpine3.13 sh
-```
-
-2. Now you're in the container. What we then need to do is install the necessary libraries and run the application.
-
-```
-$ cd ./app  # move to the app folder, which is where we clone our repo in the container
-$ npm install
-$ npm run serve
-```
-
-
-##### Building tailwind css
-
-Go into the docker container, in `./app`, run `npx tailwindcss -i ./src/assets/main.css  -o ./public/main.css --watch` to start watching for css changes.
+To build Tailwind CSS, go to the Docker container, navigate to `./app`, and run `npx tailwindcss -i ./src/assets/main.css -o ./public/main.css --watch`.
