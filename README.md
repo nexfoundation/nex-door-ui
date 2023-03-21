@@ -60,8 +60,3 @@ $ cd ./app  # move to the app folder, which is where we clone our repo in the co
 $ npm install
 $ npm run serve
 ```
-
-
-##### Building tailwind css
-
-Go into the docker container, in `./app`, run `npx tailwindcss -i ./src/assets/main.css  -o ./public/main.css --watch` to start watching for css changes.
