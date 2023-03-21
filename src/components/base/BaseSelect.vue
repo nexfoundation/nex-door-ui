@@ -1,33 +1,34 @@
 <template>
-  <div class="form-control w-full max-w-xs">
+  <div class="form-control">
     <label
       v-if="label"
       class="label cursor-pointer"
       :for="id"
     >
-      <span class="label-text">
-        <slot name="label">{{ label }}</slot>
-      </span>
+      <span class="label-text">{{ label }}</span>
     </label>
     <Field
       v-slot="{ field, meta }"
       :name="name"
       :rules="rules"
     >
-      <input
+      <select
         :id="id"
         v-bind="field"
-        :autocomplete="autocomplete"
-        :readonly="readonly"
-        class="input input-bordered"
+        class="select select-bordered w-full max-w-xs"
         :class="{
-          'input-disabled': disabled,
-          'input-error': meta.touched && !meta.valid,
+          'select-disabled': disabled,
+          'select-error': meta.touched && !meta.valid,
         }"
-        :type="type"
-        :placeholder="placeholder"
-        :disabled="disabled"
       >
+        <option
+          v-for="option in options"
+          :key="option.value"
+          :value="option.value"
+        >
+          {{ option.text }}
+        </option>
+      </select>
     </Field>
     <label class="label">
       <span class="label-text-alt text-error"><ErrorMessage :name="name" /></span>
@@ -63,18 +64,15 @@ defineProps({
     type: String,
     default: undefined,
   },
-  type: {
-    type: String,
-    default() {
-      return 'text'
-    }
-  },
-  readonly: Boolean,
   rules: {
     type: String,
     default: undefined,
   },
   disabled: Boolean,
+  options: {
+    type: Array[Object],
+    default: [],
+  },
 })
 
 defineEmits(['update:modelValue'])

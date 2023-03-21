@@ -1,47 +1,51 @@
 <template>
   <div class="container my-20">
-    <form>
-      <component
-        :is="currentTab"
-        @to-sign-in="toSignIn"
-      />
-    </form>
+    <AuthSignIn v-if="state.currentTab === Tabs.SIGN_IN" />
+    <AuthSignUp v-if="state.currentTab === Tabs.SIGN_UP" />
+    <AuthForgotPassword
+      v-if="state.currentTab === Tabs.FORGOT_PASSWORD"
+      @reset-completed="state.currentTab = Tabs.SIGN_IN"
+    />
     <div class="tabs tabs-boxed w-96 mx-auto mt-8">
       <div
-        v-for="tab in tabs"
+        v-for="tab in Tabs"
         :key="tab"
-        :class="['tab', { 'tab-active': currentTab === tab }]"
-        @click="currentTab = tab"
+        class="tab"
+        :class="{ 'tab-active': state.currentTab === tab }"
+        @click="state.currentTab = tab"
       >
-        {{ tab }}
+        {{ getTabDisplayName(tab) }}
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { reactive } from 'vue'
 import AuthSignIn from './AuthSignIn.vue'
 import AuthSignUp from './AuthSignUp.vue'
 import AuthForgotPassword from './AuthForgotPassword.vue'
 
-export default {
-  name: 'AuthPage',
-  components: {
-    AuthSignIn,
-    AuthSignUp,
-    AuthForgotPassword,
-  },
-  data() {
-    return {
-      currentTab: 'AuthSignUp',
-      tabs: ['AuthSignIn', 'AuthSignUp', 'AuthForgotPassword'],
-    }
-  },
+const Tabs = Object.freeze({
+  SIGN_UP: 'signUp',
+  SIGN_IN: 'signIn',
+  FORGOT_PASSWORD: 'forgotPassword',
+})
 
-	methods: {
-		toSignIn(val) {
-			this.currentTab = val;
-		}
-	}
+const state = reactive({
+  currentTab: Tabs.SIGN_UP,
+})
+
+function getTabDisplayName(tab) {
+  switch(tab) {
+    case Tabs.SIGN_UP:
+      return 'Sign Up'
+    case Tabs.SIGN_IN:
+      return 'Sign In'
+    case Tabs.FORGOT_PASSWORD:
+      return 'Forgot Password'
+    default:
+      return ''
+  }
 }
 </script>
