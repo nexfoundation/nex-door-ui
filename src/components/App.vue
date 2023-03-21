@@ -128,9 +128,8 @@ export default {
       const user = await Auth.currentAuthenticatedUser()
       this.$store.dispatch('setIsAuthenticated', true)
       this.$store.dispatch('setUser', user)
-      // this.$router.push('profile')
     } catch (err) {
-      console.log('guest user')
+      // guest user
     }
   },
   mounted() {

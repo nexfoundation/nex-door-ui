@@ -68,7 +68,6 @@ export default {
         };
 
         try {
-            console.log('start fetching');
             const response = await API.get(apiName, path, myInit);
             this.users = response;
         } catch(error) {
