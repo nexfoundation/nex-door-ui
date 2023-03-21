@@ -119,6 +119,7 @@ import { useRouter } from 'vue-router'
 import VueMultiselect from 'vue-multiselect'
 import { Field, Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
+import { UserAttributes } from '../constants'
 import BaseInput from './base/BaseInput'
 import BaseSelect from './base/BaseSelect'
 import BaseTextarea from './base/BaseTextarea'
@@ -152,9 +153,9 @@ const {
   picture,
   profile,
   website,
-  'custom:accept_mentoring': acceptMentoring,
-  'custom:calendly_url': calendlyUrl,
-  'custom:tags': tags,
+  [UserAttributes.ACCEPT_MENTORING]: acceptMentoring,
+  [UserAttributes.CALENDLY_URL]: calendlyUrl,
+  [UserAttributes.TAGS]: tags,
 } = state.user.attributes
 
 const formValues = {
@@ -176,9 +177,9 @@ async function onSubmit(values) {
       picture: values.picture,
       profile: values.profile,
       website: values.website,
-      'custom:accept_mentoring': values.acceptMentoring,
-      'custom:tags': JSON.stringify(values.tags),
-      'custom:calendy_url': values.calendlyUrl,
+      [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
+      [UserAttributes.TAGS]: JSON.stringify(values.tags),
+      [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
     }
 
     await Auth.updateUserAttributes(state.user, data)

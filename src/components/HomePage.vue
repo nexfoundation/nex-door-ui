@@ -22,26 +22,43 @@
       />
     </div>
 
-    <div
-      id="modal"
-      ref="my-modal"
-      class="modal"
-      title="關於我"
+    <!--
+      This is special way of making modal open/close using only daisyUI.
+      Using hidden checkbox control open/close state, and wrap modal using label
+      so that clicking outside of the modal close the modal.
+      We can wrap this component to its own component in the future if more places use this.
+    -->
+    <input
+      id="profile-modal"
+      type="checkbox"
+      class="modal-toggle"
     >
-      <div>
+    <label
+      class="modal"
+      for="profile-modal"
+    >
+      <label
+        class="modal-box flex"
+        for=""
+      >
         <img
-          :src="'https://www.gravatar.com/avatar/' + modalCurrentUser['picture'] + '?s=80'"
+          :src="`https://www.gravatar.com/avatar/${modalCurrentUserAttributes.picture}?s=80`"
           class="mr-3"
         >
         <div>
-          <h5 class="mt-0">
-            {{ modalCurrentUser['name'] }}
-          </h5>
-          <p>網站:<a :href="modalCurrentUser['website']">{{ modalCurrentUser['website'] }}</a></p>
+          <h3 class="font-bold text-lg">
+            {{ modalCurrentUserAttributes.name }}
+          </h3>
+          <p v-if="modalCurrentUserAttributes.website">
+            網站: <a
+              :href="modalCurrentUserAttributes.website"
+              class="link"
+              target="_blank"
+            >{{ modalCurrentUserAttributes.website }}</a>
+          </p>
         </div>
-      </div>
-      <hr>
-    </div>
+      </label>
+    </label>
   </div>
 </template>
 
@@ -49,43 +66,56 @@
 import { API } from 'aws-amplify';
 import HomeCard from './HomeCard.vue';
 export default {
-    name: 'HomePage',
-	components: {
-        HomeCard,
-	},
-    data() {
-        return {
-            users: undefined,
-            intro: [],
-            modalCurrentUser: {'name': '', 'picture': '', website: ''}
-        }
-    },
-    async created() {
-        const apiName = 'ServiceEndpoint'
-        const path = '/query'
-        const myInit = { // OPTIONAL
-            headers: {}, // OPTIONAL
-        };
-
-        try {
-            const response = await API.get(apiName, path, myInit);
-            this.users = response;
-        } catch(error) {
-            console.error(error);
-        }
-	},
-    methods: {
-        showIntroModal(e) {
-            const userid = e.currentTarget.getAttribute('data-userid')
-
-            this.modalCurrentUser['name'] = e.currentTarget.getAttribute('data-username')
-            this.modalCurrentUser['picture'] = e.currentTarget.getAttribute('data-userpicture')
-			this.modalCurrentUser['website'] = e.currentTarget.getAttribute('data-userUrl')
-
-			// this.intro = document.getElementById('about-' + userid).innerHTML
-			this.intro = document.getElementById(`about-${userid}`).innerHTML.split('\n')
-			this.$refs['my-modal'].show()
-        },
+  name: 'HomePage',
+  components: {
+    HomeCard,
+  },
+  data() {
+    return {
+      users: [],
+      intro: [],
+      modalCurrentUser: undefined,
     }
+  },
+  computed: {
+    modalCurrentUserAttributes() {
+      if (!this.modalCurrentUser) {
+        return {
+          name: '',
+          picture: '',
+          website: '',
+        }
+      }
+      const {name, picture, website} = this.modalCurrentUser.Attributes.reduce((result, a) => {
+        result[a.Name] = a.Value;
+        return result;
+      }, {});
+
+      return {
+        name,
+        picture,
+        website,
+      }
+    }
+  },
+  async created() {
+    const apiName = 'ServiceEndpoint'
+    const path = '/query'
+    const myInit = { // OPTIONAL
+      headers: {}, // OPTIONAL
+    };
+
+    try {
+      const response = await API.get(apiName, path, myInit);
+      this.users = response;
+    } catch(error) {
+      console.error(error);
+    }
+  },
+  methods: {
+    showIntroModal(user) {
+      this.modalCurrentUser = user
+    },
+  }
 }
 </script>
