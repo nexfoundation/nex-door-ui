@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:dist": "serve -s dist",
     "build": "vue-cli-service build",
     "build:staging": "vue-cli-service build --mode staging",
     "lint": "vue-cli-service lint"
@@ -25,6 +26,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
+    "serve": "^14.2.0",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {
