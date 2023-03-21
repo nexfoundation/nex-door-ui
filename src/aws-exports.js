@@ -39,8 +39,3 @@ const awsauth = {
 }
 
 export default awsauth
-// Need to disable this as it can have multiple request for IDP token endpoints
-// https://github.com/aws-amplify/amplify-js/issues/5829#issuecomment-649895170
-// https://github.com/aws-amplify/amplify-js/issues/3185
-// https://github.com/aws-amplify/amplify-js/issues/6330
-// Auth.configure(awsauth)
