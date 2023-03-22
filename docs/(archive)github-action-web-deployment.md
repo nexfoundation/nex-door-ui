@@ -1,4 +1,4 @@
-專案 GitHub action 自動化部署設置
+專案 GitHub action 自動化部署設置(archive)
 ---
 
 這篇文件旨在說明目前 NEX Door UI 專案使用的自動化部署流程。
