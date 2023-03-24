@@ -9,18 +9,9 @@
       <hr>
     </article>
 
-
-    <div
-      v-if="users"
-      class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-12"
-    >
-      <HomeCard
-        v-for="user in users"
-        :key="user.id"
-        :user="user"
-        :show-intro-modal="showIntroModal"
-      />
-    </div>
+    <Suspense>
+      <HomeCardGrid @show-profile-modal="u => state.user = u" />
+    </Suspense>
 
     <!--
       This is special way of making modal open/close using only daisyUI.
@@ -41,81 +32,70 @@
         class="modal-box flex"
         for=""
       >
-        <img
-          :src="`https://www.gravatar.com/avatar/${modalCurrentUserAttributes.picture}?s=80`"
-          class="mr-3"
-        >
-        <div>
-          <h3 class="font-bold text-lg">
-            {{ modalCurrentUserAttributes.name }}
-          </h3>
-          <p v-if="modalCurrentUserAttributes.website">
-            網站: <a
-              :href="modalCurrentUserAttributes.website"
-              class="link"
-              target="_blank"
-            >{{ modalCurrentUserAttributes.website }}</a>
-          </p>
-        </div>
+        <template v-if="state.user">
+          <div class="flex flex-col w-full gap-6">
+            <div class="flex flex-row gap-4 items-start">
+              <BaseAvatar
+                :src="state.user.picture ? `https://www.gravatar.com/avatar/${state.user.picture}?s=80` : undefined"
+                :text="getIntials(state.user.name)"
+              />
+              <div>
+                <h3 class="font-bold text-lg">
+                  {{ state.user.name }}
+                </h3>
+                <div
+                  v-if="state.user[UserAttributes.TAGS]"
+                  class="flex flex-wrap gap-2"
+                >
+                  <div
+                    v-for="tag in JSON.parse(state.user[UserAttributes.TAGS])"
+                    :key="tag"
+                    class="badge"
+                  >
+                    {{ tag }}
+                  </div>
+                </div>
+                <p v-if="state.user.website">
+                  網站: <a
+                    :href="state.user.website"
+                    class="link"
+                    target="_blank"
+                  >{{ state.user.website }}</a>
+                </p>
+              </div>
+            </div>
+            <div>
+              <p v-if="state.user.profile">
+                {{ state.user.profile }}
+              </p>
+            </div>
+          </div>
+        </template>
       </label>
     </label>
   </div>
 </template>
 
-<script>
-import { API } from 'aws-amplify';
-import HomeCard from './HomeCard.vue';
-export default {
-  name: 'HomePage',
-  components: {
-    HomeCard,
-  },
-  data() {
-    return {
-      users: [],
-      intro: [],
-      modalCurrentUser: undefined,
-    }
-  },
-  computed: {
-    modalCurrentUserAttributes() {
-      if (!this.modalCurrentUser) {
-        return {
-          name: '',
-          picture: '',
-          website: '',
-        }
-      }
-      const {name, picture, website} = this.modalCurrentUser.Attributes.reduce((result, a) => {
-        result[a.Name] = a.Value;
-        return result;
-      }, {});
+<script setup>
+import { reactive } from 'vue'
+import { UserAttributes } from '../constants'
+import BaseAvatar from './base/BaseAvatar'
+import HomeCardGrid from './HomeCardGrid'
 
-      return {
-        name,
-        picture,
-        website,
-      }
-    }
-  },
-  async created() {
-    const apiName = 'ServiceEndpoint'
-    const path = '/query'
-    const myInit = { // OPTIONAL
-      headers: {}, // OPTIONAL
-    };
+const state = reactive({
+  user: undefined,
+})
 
-    try {
-      const response = await API.get(apiName, path, myInit);
-      this.users = response;
-    } catch(error) {
-      console.error(error);
+// get initials regex
+function getIntials(name) {
+  const allNames = name.trim().split(' ');
+  const initials = allNames.reduce((acc, curr, index) => {
+    if(index === 0 || index === allNames.length - 1){
+      acc = `${acc}${curr.charAt(0).toUpperCase()}`;
     }
-  },
-  methods: {
-    showIntroModal(user) {
-      this.modalCurrentUser = user
-    },
-  }
+    return acc;
+  }, '');
+  return initials;
 }
+
 </script>

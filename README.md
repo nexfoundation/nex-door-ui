@@ -32,7 +32,3 @@ With Remote Container, you can use a Docker container as your development enviro
 
     $ npm run serve
     ```
-
-## Building Tailwind CSS
-
-To build Tailwind CSS, go to the Docker container, navigate to `./app`, and run `npx tailwindcss -i ./src/assets/main.css -o ./public/main.css --watch`.

@@ -65,9 +65,7 @@ defineProps({
   },
   type: {
     type: String,
-    default() {
-      return 'text'
-    }
+    default: 'text',
   },
   readonly: Boolean,
   rules: {
