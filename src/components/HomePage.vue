@@ -1,0 +1,101 @@
+<template>
+  <div class="container my-20">
+    <article class="prose mx-auto my-12">
+      <h1>關於 NEX Door</h1>
+      <span>串連世界各地的專家 解決各種疑難雜症</span>
+      <hr>
+      <p>NEX Door 是一個非營利線上導師領航平台，連結世界各地菁英，創造團結互助的力量，建立台灣人互助網路。讓台灣人陪著台灣人在國際路上打開第一扇門或衝刺最後一哩路。</p>
+      <p>「今日的路人是明日的引路人」，延續 Give and Take 的精神，讓我們啟動正向迴圈，幫助更多台灣人走向世界，讓回家的路變得更好。</p>
+      <hr>
+    </article>
+
+    <Suspense>
+      <HomeCardGrid @show-profile-modal="u => state.user = u" />
+    </Suspense>
+
+    <!--
+      This is special way of making modal open/close using only daisyUI.
+      Using hidden checkbox control open/close state, and wrap modal using label
+      so that clicking outside of the modal close the modal.
+      We can wrap this component to its own component in the future if more places use this.
+    -->
+    <input
+      id="profile-modal"
+      type="checkbox"
+      class="modal-toggle"
+    >
+    <label
+      class="modal"
+      for="profile-modal"
+    >
+      <label
+        class="modal-box flex"
+        for=""
+      >
+        <template v-if="state.user">
+          <div class="flex flex-col w-full gap-6">
+            <div class="flex flex-row gap-4 items-start">
+              <BaseAvatar
+                :src="state.user.picture ? `https://www.gravatar.com/avatar/${state.user.picture}?s=80` : undefined"
+                :text="getIntials(state.user.name)"
+              />
+              <div>
+                <h3 class="font-bold text-lg">
+                  {{ state.user.name }}
+                </h3>
+                <div
+                  v-if="state.user[UserAttributes.TAGS]"
+                  class="flex flex-wrap gap-2"
+                >
+                  <div
+                    v-for="tag in JSON.parse(state.user[UserAttributes.TAGS])"
+                    :key="tag"
+                    class="badge"
+                  >
+                    {{ tag }}
+                  </div>
+                </div>
+                <p v-if="state.user.website">
+                  網站: <a
+                    :href="state.user.website"
+                    class="link"
+                    target="_blank"
+                  >{{ state.user.website }}</a>
+                </p>
+              </div>
+            </div>
+            <div>
+              <p v-if="state.user.profile">
+                {{ state.user.profile }}
+              </p>
+            </div>
+          </div>
+        </template>
+      </label>
+    </label>
+  </div>
+</template>
+
+<script setup>
+import { reactive } from 'vue'
+import { UserAttributes } from '../constants'
+import BaseAvatar from './base/BaseAvatar'
+import HomeCardGrid from './HomeCardGrid'
+
+const state = reactive({
+  user: undefined,
+})
+
+// get initials regex
+function getIntials(name) {
+  const allNames = name.trim().split(' ');
+  const initials = allNames.reduce((acc, curr, index) => {
+    if(index === 0 || index === allNames.length - 1){
+      acc = `${acc}${curr.charAt(0).toUpperCase()}`;
+    }
+    return acc;
+  }, '');
+  return initials;
+}
+
+</script>
