@@ -19,7 +19,6 @@ import AuthPage from './components/AuthPage.vue'
 import HomePage from './components/HomePage.vue'
 import ProfilePage from './components/ProfilePage.vue'
 
-
 // Vuex store
 import store from './store'
 
@@ -40,9 +39,10 @@ const router = VueRouter.createRouter({
 const app = createApp(App)
 
 
+// Hub is also detecting Social IDP Login (Google)
 Hub.listen('auth', ({ payload }) => {
   const { event } = payload;
-  if (event === 'autoSignIn') {
+  if (event === 'autoSignIn' || event === 'signIn') {
       const user = payload.data;
       store.dispatch('setIsAuthenticated', true)
       store.dispatch('setUser', user)

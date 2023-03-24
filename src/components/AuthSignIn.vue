@@ -44,6 +44,13 @@
           >
             登入 (Sign In)
           </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="googleIDPLogin"
+          >
+            Google 登入 (Google Login)
+          </button>
         </div>
       </Form>
     </div>
@@ -92,6 +99,10 @@ async function onSubmit(values) {
   } finally {
     loader.hide()
   }
+}
+
+async function googleIDPLogin() {
+  Auth.federatedSignIn({provider: 'Google'})
 }
 </script>
 
