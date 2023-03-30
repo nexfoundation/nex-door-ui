@@ -28,8 +28,7 @@
       <p>
         <a
           class="btn btn-primary mr-2"
-          :class="{ 'btn-disabled': !user[UserAttributes.CALENDLY_URL] }"
-          :href="user[UserAttributes.CALENDLY_URL]"
+          :href="user[UserAttributes.CALENDLY_URL] || `mailto:${user.email}`"
           target="_blank"
         >
           預約
