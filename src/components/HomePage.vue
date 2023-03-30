@@ -34,15 +34,35 @@
       >
         <template v-if="state.user">
           <div class="flex flex-col w-full gap-6">
-            <div class="flex flex-row gap-4 items-start">
+            <div class="flex gap-4 items-start">
               <BaseAvatar
                 :src="state.user.picture ? `https://www.gravatar.com/avatar/${state.user.picture}?s=80` : undefined"
                 :text="getIntials(state.user.name)"
               />
-              <div>
-                <h3 class="font-bold text-lg">
+              <div class="flex flex-col gap-2">
+                <h3 class="font-bold text-2xl">
                   {{ state.user.name }}
                 </h3>
+                <div class="flex gap-2">
+                  <a
+                    v-if="state.user[UserAttributes.LINKEDIN_URL]"
+                    :href="state.user[UserAttributes.LINKEDIN_URL]"
+                  >
+                    <img src="../assets/linkedin-logo.svg">
+                  </a>
+                  <a
+                    v-if="state.user[UserAttributes.FACEBOOK_URL]"
+                    :href="state.user[UserAttributes.FACEBOOK_URL]"
+                  >
+                    <img src="../assets/facebook-logo.svg">
+                  </a>
+                  <a
+                    v-if="state.user[UserAttributes.INSTAGRAM_URL]"
+                    :href="state.user[UserAttributes.INSTAGRAM_URL]"
+                  >
+                    <img src="../assets/instagram-logo.svg">
+                  </a>
+                </div>
                 <div
                   v-if="state.user[UserAttributes.TAGS]"
                   class="flex flex-wrap gap-2"

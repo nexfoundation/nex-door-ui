@@ -53,6 +53,24 @@
         name="website"
         placeholder="https://example.com"
       />
+      <BaseInput
+        id="linkedin"
+        label="LinkedIn"
+        name="linkedin"
+        placeholder="https://www.linkedin.com/in/profile/"
+      />
+      <BaseInput
+        id="facebook"
+        label="Facebook"
+        name="facebook"
+        placeholder="https://www.facebook.com/profile"
+      />
+      <BaseInput
+        id="instagram"
+        label="Instagram"
+        name="instagram"
+        placeholder="https://www.instagram.com/profile"
+      />
       <BaseSelect
         id="acceptMentoring"
         name="acceptMentoring"
@@ -156,6 +174,9 @@ const {
   [UserAttributes.ACCEPT_MENTORING]: acceptMentoring,
   [UserAttributes.CALENDLY_URL]: calendlyUrl,
   [UserAttributes.TAGS]: tags,
+  [UserAttributes.LINKEDIN_URL]: linkedInUrl,
+  [UserAttributes.FACEBOOK_URL]: facebookUrl,
+  [UserAttributes.INSTAGRAM_URL]: instagramUrl,
 } = state.user.attributes
 
 const formValues = {
@@ -168,6 +189,9 @@ const formValues = {
   tags: tags ? JSON.parse(tags) : [],
   username,
   website: website || '',
+  linkedInUrl: linkedInUrl || '',
+  facebookUrl: facebookUrl || '',
+  instagramUrl: instagramUrl || '',
 }
 
 async function onSubmit(values) {
@@ -180,6 +204,9 @@ async function onSubmit(values) {
       [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
       [UserAttributes.TAGS]: JSON.stringify(values.tags),
       [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
+      // [UserAttributes.LINKEDIN_URL]: values.linkedInUrl,
+      // [UserAttributes.FACEBOOK_URL]: values.facebookUrl,
+      // [UserAttributes.INSTAGRAM_URL]: values.instagramUrl,
     }
 
     await Auth.updateUserAttributes(state.user, data)
