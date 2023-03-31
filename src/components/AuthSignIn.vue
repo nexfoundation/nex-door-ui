@@ -59,7 +59,7 @@
 
 <script setup>
 import { Auth } from 'aws-amplify';
-import { reactive, ref} from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { useLoading } from 'vue-loading-overlay';

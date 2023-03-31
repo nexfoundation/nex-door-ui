@@ -1,5 +1,5 @@
 <template>
-  <div class="container my-20">
+  <div class="md:container my-20">
     <h1 class="text-5xl font-bold leading-relaxed">
       歡迎回來！
     </h1>
