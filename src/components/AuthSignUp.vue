@@ -24,9 +24,9 @@
 </template>
 
 <script setup>
-import { Auth } from 'aws-amplify';
-import { reactive, ref } from 'vue';
-import { useLoading } from 'vue-loading-overlay';
+import { Auth } from 'aws-amplify'
+import { reactive, ref } from 'vue'
+import { useLoading } from 'vue-loading-overlay'
 import { useI18n } from '../mixin/i18n'
 import AuthSignUpFormCredential from './AuthSignUpFormCredential'
 import AuthSignUpFormConfirmation from './AuthSignUpFormConfirmation'
@@ -34,7 +34,7 @@ import AuthSignUpFormConfirmation from './AuthSignUpFormConfirmation'
 
 const { geti18nAuthenticationErrorMessage } = useI18n()
 
-const $loading = useLoading();
+const $loading = useLoading()
 
 const AuthSignUpPhases = Object.freeze({
   CREDENTIAL: 'credntial',
@@ -114,7 +114,7 @@ async function resendConfirmationCode() {
   this.confirmationCodeCooldownSecond = 90
   confirmationCodeCooldownCountdown()
   try {
-    await Auth.resendSignUp(state.username);
+    await Auth.resendSignUp(state.username)
   } catch (err) {
     state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
   }

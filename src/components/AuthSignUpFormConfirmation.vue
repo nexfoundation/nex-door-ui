@@ -40,7 +40,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
 import { Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
 import BaseInput from './base/BaseInput'

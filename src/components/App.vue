@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import { Auth } from 'aws-amplify';
-import { themeChange } from 'theme-change';
+import { Auth } from 'aws-amplify'
+import { themeChange } from 'theme-change'
 
 import AppNavbar from './AppNavbar'
 import AppFooter from './AppFooter'
@@ -32,7 +32,7 @@ export default {
     }
   },
   mounted() {
-    themeChange(false);
+    themeChange(false)
   },
 }
 </script>

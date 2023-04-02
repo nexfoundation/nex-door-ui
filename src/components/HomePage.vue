@@ -45,20 +45,20 @@
                 </h3>
                 <div class="flex gap-2">
                   <a
-                    v-if="state.user[UserAttributes.LINKEDIN_URL]"
-                    :href="state.user[UserAttributes.LINKEDIN_URL]"
+                    v-if="state.user[UserAttributes.LINKEDIN]"
+                    :href="state.user[UserAttributes.LINKEDIN]"
                   >
                     <img src="../assets/linkedin-logo.svg">
                   </a>
                   <a
-                    v-if="state.user[UserAttributes.FACEBOOK_URL]"
-                    :href="state.user[UserAttributes.FACEBOOK_URL]"
+                    v-if="state.user[UserAttributes.FACEBOOK]"
+                    :href="state.user[UserAttributes.FACEBOOK]"
                   >
                     <img src="../assets/facebook-logo.svg">
                   </a>
                   <a
-                    v-if="state.user[UserAttributes.INSTAGRAM_URL]"
-                    :href="state.user[UserAttributes.INSTAGRAM_URL]"
+                    v-if="state.user[UserAttributes.INSTAGRAM]"
+                    :href="state.user[UserAttributes.INSTAGRAM]"
                   >
                     <img src="../assets/instagram-logo.svg">
                   </a>
@@ -108,14 +108,14 @@ const state = reactive({
 
 // get initials regex
 function getIntials(name) {
-  const allNames = name.trim().split(' ');
+  const allNames = name.trim().split(' ')
   const initials = allNames.reduce((acc, curr, index) => {
     if(index === 0 || index === allNames.length - 1){
-      acc = `${acc}${curr.charAt(0).toUpperCase()}`;
+      acc = `${acc}${curr.charAt(0).toUpperCase()}`
     }
-    return acc;
-  }, '');
-  return initials;
+    return acc
+  }, '')
+  return initials
 }
 
 </script>

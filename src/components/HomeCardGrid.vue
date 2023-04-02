@@ -20,9 +20,6 @@ import HomeCard from './HomeCard'
 
 const apiName = 'ServiceEndpoint'
 const path = '/query'
-const myInit = { // OPTIONAL
-  headers: {}, // OPTIONAL
-};
 
 const state = reactive({
   users: [],
@@ -30,14 +27,14 @@ const state = reactive({
 })
 
 try {
-  const response = await API.get(apiName, path, myInit);
+  const response = await API.get(apiName, path)
   const users = response.map(u => u.Attributes.reduce((result, a) => {
-    result[a.Name] = a.Value;
-    return result;
-  }, {}));
-  state.users = users;
+    result[a.Name] = a.Value
+    return result
+  }, {}))
+  state.users = users
 } catch(error) {
-  console.error(error);
+  console.error(error)
 }
 
 const usersAcceptMentoring = computed(() =>

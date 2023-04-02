@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="state.errorMessage"
-      class="alert alert-danger"
+      class="alert alert-error"
       role="alert"
     >
       {{ state.errorMessage }}
@@ -33,19 +33,34 @@
         rules="required"
       />
 
-      <BaseInput
-        id="picture"
-        name="picture"
-        label="個人頭像 Photo (Gravatar)"
-        placeholder="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
-      >
-        <template #label>
-          個人頭像 Photo (<a
-            class="link"
-            href="https://www.gravatar.com/"
-          >Gravatar</a>)
-        </template>
-      </BaseInput>
+
+      <div class="form-control w-full max-w-xs">
+        <label
+          for="picture"
+          class="label cursor-pointer"
+        >
+          <span class="label-text">
+            個人頭像
+          </span>
+        </label>
+        <Field
+          v-slot="{ handleChange, handleBlur }"
+          name="pictureFile"
+          rules="maxFileSize"
+        >
+          <input
+            id="picture"
+            type="file"
+            accept="image/png, image/jpeg"
+            class="file-input file-input-bordered w-full max-w-xs"
+            @change="handleChange"
+            @blur="handleBlur"
+          >
+        </Field>
+        <label class="label">
+          <span class="label-text-alt text-error"><ErrorMessage name="pictureFile" /></span>
+        </label>
+      </div>
 
       <BaseInput
         id="website"
@@ -130,22 +145,32 @@
 </template>
 
 <script setup>
+import axios from 'axios'
 import { Auth } from 'aws-amplify'
-import { reactive } from 'vue'
+import { inject, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import VueMultiselect from 'vue-multiselect'
-import { Field, Form, defineRule } from 'vee-validate'
+import { ErrorMessage, Field, Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
+
 import { UserAttributes } from '../constants'
 import BaseInput from './base/BaseInput'
 import BaseSelect from './base/BaseSelect'
 import BaseTextarea from './base/BaseTextarea'
 
 defineRule('required', required)
+defineRule('maxFileSize', value => {
+  if (value?.size > 1024*1024*5) { // 5mb
+    return '頭像圖片尺寸不能超過 5MB'
+  }
+  return true
+})
 
 const store = useStore()
 const router = useRouter()
+
+const appServiceEndpoint = inject('appServiceEndpoint')
 
 
 const state = reactive({
@@ -174,9 +199,9 @@ const {
   [UserAttributes.ACCEPT_MENTORING]: acceptMentoring,
   [UserAttributes.CALENDLY_URL]: calendlyUrl,
   [UserAttributes.TAGS]: tags,
-  [UserAttributes.LINKEDIN_URL]: linkedInUrl,
-  [UserAttributes.FACEBOOK_URL]: facebookUrl,
-  [UserAttributes.INSTAGRAM_URL]: instagramUrl,
+  [UserAttributes.LINKEDIN]: linkedIn,
+  [UserAttributes.FACEBOOK]: facebook,
+  [UserAttributes.INSTAGRAM]: instagram,
 } = state.user.attributes
 
 const formValues = {
@@ -189,26 +214,50 @@ const formValues = {
   tags: tags ? JSON.parse(tags) : [],
   username,
   website: website || '',
-  linkedInUrl: linkedInUrl || '',
-  facebookUrl: facebookUrl || '',
-  instagramUrl: instagramUrl || '',
+  linkedIn: linkedIn || '',
+  facebook: facebook || '',
+  instagram: instagram || '',
 }
 
 async function onSubmit(values) {
-  try {
-    const data = {
-      name: values.name,
-      picture: values.picture,
-      profile: values.profile,
-      website: values.website,
-      [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
-      [UserAttributes.TAGS]: JSON.stringify(values.tags),
-      [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
-      // [UserAttributes.LINKEDIN_URL]: values.linkedInUrl,
-      // [UserAttributes.FACEBOOK_URL]: values.facebookUrl,
-      // [UserAttributes.INSTAGRAM_URL]: values.instagramUrl,
-    }
+  const data = {
+    name: values.name,
+    picture: values.picture,
+    profile: values.profile,
+    website: values.website,
+    [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
+    [UserAttributes.TAGS]: JSON.stringify(values.tags),
+    [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
+    // [UserAttributes.LINKEDIN]: values.linkedIn,
+    // [UserAttributes.FACEBOOK]: values.facebook,
+    // [UserAttributes.INSTAGRAM]: values.instagram,
+  }
 
+
+  if (values.pictureFile) {
+    const file = values.pictureFile
+
+    try {
+      const url = `${appServiceEndpoint}user/${username}/picture/${file.name}`
+      await axios({
+        method: 'put',
+        maxBodyLength: file.size,
+        url,
+        headers: {
+          'Content-Type': file.type
+        },
+        data: file
+      })
+      data.picture = url
+
+    } catch (err) {
+      console.error(err)
+      state.errorMessage = err
+      return
+    }
+  }
+
+  try {
     await Auth.updateUserAttributes(state.user, data)
 
     // Refresh local current user session and state

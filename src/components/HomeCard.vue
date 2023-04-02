@@ -3,7 +3,7 @@
     <div class="card-body flex-grow-0">
       <div>
         <BaseAvatar
-          :src="user.picture ? `https://www.gravatar.com/avatar/${user.picture}?s=80` : undefined"
+          :src="user.picture"
           :text="getIntials(user.name)"
         />
         <div>

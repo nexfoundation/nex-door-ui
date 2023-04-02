@@ -82,7 +82,7 @@
 <script setup>
 import { Auth } from 'aws-amplify'
 import { reactive, ref } from 'vue'
-import { useLoading } from 'vue-loading-overlay';
+import { useLoading } from 'vue-loading-overlay'
 import { Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
 import { useI18n } from '../mixin/i18n'
@@ -93,7 +93,7 @@ defineRule('required', required)
 
 const { geti18nAuthenticationErrorMessage } = useI18n()
 
-const $loading = useLoading();
+const $loading = useLoading()
 
 const AuthForgotPasswordState = Object.freeze({
   INITIAL: 'resetPassword',

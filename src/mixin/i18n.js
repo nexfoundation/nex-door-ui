@@ -25,7 +25,7 @@ export function useI18n() {
     // Detect the browser default language
     const lang = window.navigator.language || 'en'
 
-    let errori18nMessage = originalRawMessage;
+    let errori18nMessage = originalRawMessage
     if (messages[lang] && messages[lang][originalRawMessage]) {
         errori18nMessage = messages[lang][originalRawMessage]
     }

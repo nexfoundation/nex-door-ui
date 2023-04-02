@@ -22,9 +22,9 @@
 
 <script setup>
 import { reactive } from 'vue'
-import AuthSignIn from './AuthSignIn.vue'
-import AuthSignUp from './AuthSignUp.vue'
-import AuthForgotPassword from './AuthForgotPassword.vue'
+import AuthSignIn from './AuthSignIn'
+import AuthSignUp from './AuthSignUp'
+import AuthForgotPassword from './AuthForgotPassword'
 
 const Tabs = Object.freeze({
   SIGN_UP: 'signUp',
