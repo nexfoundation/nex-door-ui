@@ -58,19 +58,19 @@
 </template>
 
 <script setup>
-import { Auth } from 'aws-amplify';
+import { Auth } from 'aws-amplify'
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
-import { useLoading } from 'vue-loading-overlay';
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useLoading } from 'vue-loading-overlay'
 import { Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
 import { useI18n } from '../mixin/i18n.js'
-import BaseInput from './base/BaseInput.vue'
+import BaseInput from './base/BaseInput'
 
 const router = useRouter()
 const store = useStore()
-const $loading = useLoading();
+const $loading = useLoading()
 const { geti18nAuthenticationErrorMessage } = useI18n()
 
 defineRule('required', required)

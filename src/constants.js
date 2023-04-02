@@ -1,5 +1,8 @@
 export const UserAttributes = {
   ACCEPT_MENTORING: 'custom:accept_mentoring',
   TAGS: 'custom:tags',
-  CALENDLY_URL: 'custom:calendy_url'
+  CALENDLY_URL: 'custom:calendy_url',
+  LINKEDIN: 'custom:linkedin',
+  FACEBOOK: 'custom:facebook',
+  INSTAGRAM: 'custom:instagram',
 }

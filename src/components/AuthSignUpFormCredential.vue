@@ -51,7 +51,7 @@
 import { defineProps } from 'vue'
 import { Form, defineRule } from 'vee-validate'
 import { required, email, min } from '@vee-validate/rules'
-import BaseInput from './base/BaseInput.vue'
+import BaseInput from './base/BaseInput'
 
 defineRule('required', required)
 defineRule('email', email)

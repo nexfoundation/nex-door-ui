@@ -94,7 +94,7 @@
 import { Auth } from 'aws-amplify'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 const store = useStore()
 const router = useRouter()
 

@@ -1,17 +1,17 @@
 import { createApp } from 'vue'
 import * as VueRouter from 'vue-router'
-import './style.css';
+import './style.css'
 
 // amplify configuration
-import { Amplify, Auth, Hub } from 'aws-amplify';
-import awsExports from './aws-exports';
-Amplify.configure(awsExports);
+import { Amplify, Auth, Hub } from 'aws-amplify'
+import awsExports from './aws-exports'
+Amplify.configure(awsExports)
 
 // loading
-import 'vue-loading-overlay/dist/css/index.css';
+import 'vue-loading-overlay/dist/css/index.css'
 
 // multiselect
-import 'vue-multiselect/dist/vue3-multiselect.css';
+import 'vue-multiselect/dist/vue3-multiselect.css'
 
 // Vue components
 import App from './components/App.vue'
@@ -37,13 +37,14 @@ const router = VueRouter.createRouter({
 })
 
 const app = createApp(App)
+app.provide('appServiceEndpoint', process.env.VUE_APP_SERVICE_ENDPOINT)
 
 
 // Hub is also detecting Social IDP Login (Google)
 Hub.listen('auth', ({ payload }) => {
-  const { event } = payload;
+  const { event } = payload
   if (event === 'autoSignIn' || event === 'signIn') {
-      const user = payload.data;
+      const user = payload.data
       store.dispatch('setIsAuthenticated', true)
       store.dispatch('setUser', user)
       router.push('/profile')
@@ -69,8 +70,8 @@ router.beforeResolve(async (to, _, next) => {
       })
     }
   }
-  else next();
-});
+  else next()
+})
 
 app.use(store)
 app.use(router)
