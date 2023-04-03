@@ -36,7 +36,7 @@
           <div class="flex flex-col w-full gap-6">
             <div class="flex gap-4 items-start">
               <BaseAvatar
-                :src="state.user.picture ? `https://www.gravatar.com/avatar/${state.user.picture}?s=80` : undefined"
+                :src="state.user.picture"
                 :text="getIntials(state.user.name)"
               />
               <div class="flex flex-col gap-2">

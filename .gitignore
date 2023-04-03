@@ -23,9 +23,6 @@ yarn-error.log*
 *.sln
 *.sw*
 
-yarn.lock
-package-lock.json
-
 # amplify optional
 amplify/team-provider-info.json
 
