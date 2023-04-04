@@ -69,9 +69,9 @@
         placeholder="https://example.com"
       />
       <BaseInput
-        id="linkedin"
+        id="linkedIn"
         label="LinkedIn"
-        name="linkedin"
+        name="linkedIn"
         placeholder="https://www.linkedin.com/in/profile/"
       />
       <BaseInput
@@ -228,9 +228,9 @@ async function onSubmit(values) {
     [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
     [UserAttributes.TAGS]: JSON.stringify(values.tags),
     [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
-    // [UserAttributes.LINKEDIN]: values.linkedIn,
-    // [UserAttributes.FACEBOOK]: values.facebook,
-    // [UserAttributes.INSTAGRAM]: values.instagram,
+    [UserAttributes.LINKEDIN]: values.linkedIn,
+    [UserAttributes.FACEBOOK]: values.facebook,
+    [UserAttributes.INSTAGRAM]: values.instagram,
   }
 
 
