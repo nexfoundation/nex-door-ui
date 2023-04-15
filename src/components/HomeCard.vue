@@ -1,6 +1,6 @@
 <template>
-  <div class="card card-bordered shadow-xl w-full">
-    <div class="card-body flex-grow-0">
+  <div class="card card-bordered shadow-xl w-full h-96">
+    <div class="card-body flex-grow-0 overflow-hidden">
       <div>
         <BaseAvatar
           :src="user.picture"
@@ -41,7 +41,10 @@
           關於我
         </label>
       </p>
-      <p :id="`about-${user.sub}`">
+      <p
+        :id="`about-${user.sub}`"
+        class="overflow-hidden"
+      >
         {{ user.profile }}
       </p>
     </div>
