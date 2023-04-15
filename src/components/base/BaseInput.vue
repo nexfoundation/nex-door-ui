@@ -1,7 +1,7 @@
 <template>
   <div class="form-control w-full max-w-xs">
     <label
-      v-if="label"
+      v-if="label || $slots.label"
       class="label cursor-pointer"
       :for="id"
     >
@@ -10,7 +10,7 @@
       </span>
     </label>
     <Field
-      v-slot="{ field, meta }"
+      v-slot="{ field, meta, errorMessage }"
       :name="name"
       :rules="rules"
     >
@@ -28,15 +28,26 @@
         :placeholder="placeholder"
         :disabled="disabled"
       >
+      <label
+        v-if="helpText || $slots.helpText"
+        class="label"
+      >
+        <span class="label-text-alt">
+          <slot name="helpText">{{ helpText }}</slot>
+        </span>
+      </label>
+      <label
+        v-if="errorMessage && meta.touched"
+        class="label"
+      >
+        <span class="label-text-alt text-error">{{ errorMessage }}</span>
+      </label>
     </Field>
-    <label class="label">
-      <span class="label-text-alt text-error"><ErrorMessage :name="name" /></span>
-    </label>
   </div>
 </template>
 
 <script setup>
-import { Field, ErrorMessage } from 'vee-validate'
+import { Field } from 'vee-validate'
 
 defineProps({
   id: {
@@ -73,6 +84,10 @@ defineProps({
     default: undefined,
   },
   disabled: Boolean,
+  helpText: {
+    type: String,
+    default: undefined,
+  },
 })
 
 defineEmits(['update:modelValue'])
