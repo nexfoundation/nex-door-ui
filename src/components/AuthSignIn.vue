@@ -5,7 +5,7 @@
   >
     <div class="card-body">
       <h1 class="card-title">
-        登入 Sign In
+        登入
       </h1>
       <div
         v-if="state.errorMessage"
@@ -22,34 +22,39 @@
         <BaseInput
           id="username"
           name="username"
-          label="用戶名稱 (Username)"
-          placeholder="用戶名稱 (Username)"
+          label="用戶名稱"
           autocomplete="username"
           rules="required"
         />
         <BaseInput
           id="password"
           name="password"
-          label="密碼 (Password)"
-          placeholder="密碼 (Password)"
+          label="密碼"
           type="password"
           autocomplete="current-password"
           rules="required"
         />
-        <div class="card-actions justify-end">
+
+
+        <div class="card-actions flex-col items-center mt-2">
+          <a
+            class="link"
+            @click="$emit('forgotPassword')"
+          >忘記密碼？</a>
           <button
             type="submit"
-            class="btn btn-primary"
+            class="btn btn-primary w-full"
             :disabled="!meta.valid || isSubmitting"
           >
-            登入 (Sign In)
+            登入
           </button>
+          <span>或</span>
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-primary btn-outline w-full"
             @click="googleIDPLogin"
           >
-            Google 登入 (Google Login)
+            Google 登入
           </button>
         </div>
       </Form>
@@ -104,5 +109,7 @@ async function onSubmit(values) {
 async function googleIDPLogin() {
   Auth.federatedSignIn({provider: 'Google'})
 }
+
+defineEmits(['forgotPassword'])
 </script>
 

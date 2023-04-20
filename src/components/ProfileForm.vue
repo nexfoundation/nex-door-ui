@@ -113,7 +113,7 @@
       </BaseInput>
 
 
-      <div class="form-control w-full max-w-xs">
+      <div class="form-control w-full max-w-md">
         <label class="label">
           <span class="label-text">諮詢類別</span>
         </label>
@@ -140,10 +140,10 @@
       />
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-primary mt-2"
         :disabled="!meta.valid || isSubmitting"
       >
-        Update
+        更新
       </button>
     </Form>
   </div>

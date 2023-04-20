@@ -5,7 +5,7 @@
   >
     <div class="card-body">
       <h1 class="card-title">
-        Reset Password
+        重設密碼
       </h1>
       <template v-if="state.formState === AuthForgotPasswordState.INITIAL">
         <Form
@@ -21,18 +21,17 @@
           </div>
           <BaseInput
             name="username"
-            label="Username"
-            placeholder="Username"
+            label="用戶名稱"
             autocomplete="username"
             rules="required"
           />
-          <div class="card-actions justify-end">
+          <div class="card-actions flex-col items-center mt-2">
             <button
               type="submit"
-              class="btn btn-primary"
+              class="btn btn-primary w-full"
               :disabled="!meta.valid || isSubmitting"
             >
-              Send verification code
+              發送驗證碼
             </button>
           </div>
         </Form>
@@ -52,25 +51,23 @@
           <BaseInput
             name="authCode"
             autocomplete="one-time-code"
-            label="Verification Code"
-            placeholder="Verification Code"
+            label="驗證碼"
             rules="required"
           />
           <BaseInput
             name="password"
             type="password"
             autocomplete="new-password"
-            label="New Password"
-            placeholder="New Password"
+            label="新密碼"
             rules="required|min:8"
           />
-          <div class="card-actions justify-end">
+          <div class="card-actions flex-col items-center mt-2">
             <button
               type="submit"
-              class="btn btn-primary"
+              class="btn btn-primary w-full"
               :disabled="!meta.valid || isSubmitting"
             >
-              Set new password
+              重設密碼
             </button>
           </div>
         </Form>

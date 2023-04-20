@@ -1,5 +1,5 @@
 <template>
-  <div class="form-control w-full max-w-xs">
+  <div class="form-control w-full max-w-md">
     <label
       v-if="label || $slots.label"
       class="label cursor-pointer"
