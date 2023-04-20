@@ -1,22 +1,30 @@
 <template>
   <div class="container my-20">
-    <AuthSignIn v-if="state.currentTab === Tabs.SIGN_IN" />
+    <div class="tabs tabs-boxed w-96 mx-auto mt-8 justify-center bg-transparent">
+      <div
+        class="tab"
+        :class="{ 'tab-active': state.currentTab === Tabs.SIGN_IN }"
+        @click="state.currentTab = Tabs.SIGN_IN"
+      >
+        登入
+      </div>
+      <div
+        class="tab"
+        :class="{ 'tab-active': state.currentTab === Tabs.SIGN_UP }"
+        @click="state.currentTab = Tabs.SIGN_UP"
+      >
+        註冊
+      </div>
+    </div>
+    <AuthSignIn
+      v-if="state.currentTab === Tabs.SIGN_IN"
+      @forgot-password="state.currentTab = Tabs.FORGOT_PASSWORD"
+    />
     <AuthSignUp v-if="state.currentTab === Tabs.SIGN_UP" />
     <AuthForgotPassword
       v-if="state.currentTab === Tabs.FORGOT_PASSWORD"
       @reset-completed="state.currentTab = Tabs.SIGN_IN"
     />
-    <div class="tabs tabs-boxed w-96 mx-auto mt-8">
-      <div
-        v-for="tab in Tabs"
-        :key="tab"
-        class="tab"
-        :class="{ 'tab-active': state.currentTab === tab }"
-        @click="state.currentTab = tab"
-      >
-        {{ getTabDisplayName(tab) }}
-      </div>
-    </div>
   </div>
 </template>
 
@@ -35,17 +43,4 @@ const Tabs = Object.freeze({
 const state = reactive({
   currentTab: Tabs.SIGN_UP,
 })
-
-function getTabDisplayName(tab) {
-  switch(tab) {
-    case Tabs.SIGN_UP:
-      return 'Sign Up'
-    case Tabs.SIGN_IN:
-      return 'Sign In'
-    case Tabs.FORGOT_PASSWORD:
-      return 'Forgot Password'
-    default:
-      return ''
-  }
-}
 </script>

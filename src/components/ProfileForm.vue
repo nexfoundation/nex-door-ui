@@ -14,7 +14,7 @@
     >
       <BaseInput
         name="username"
-        label="用戶名稱 Username"
+        label="用戶名稱"
         disabled
       />
 
@@ -26,7 +26,7 @@
 
       <BaseInput
         id="name"
-        label="名稱 Name (必填)"
+        label="名稱 (必填)"
         name="name"
         placeholder="Name"
         required
@@ -64,7 +64,7 @@
 
       <BaseInput
         id="website"
-        label="個人網站 Website"
+        label="個人網站"
         name="website"
         placeholder="https://example.com"
       />
@@ -73,42 +73,47 @@
         label="LinkedIn"
         name="linkedIn"
         placeholder="https://www.linkedin.com/in/profile/"
+        rules="validLinkedIn"
       />
       <BaseInput
         id="facebook"
         label="Facebook"
         name="facebook"
         placeholder="https://www.facebook.com/profile"
+        rules="validFacebook"
       />
       <BaseInput
         id="instagram"
         label="Instagram"
         name="instagram"
         placeholder="https://www.instagram.com/profile"
+        rules="validInstagram"
       />
       <BaseSelect
         id="acceptMentoring"
         name="acceptMentoring"
-        label="開放其他人向你諮詢 Accept Mentoring"
-        :options="[{ value: '0', text: 'No' }, { value: '1', text: 'Yes' }]"
+        label="開放其他人向你諮詢"
+        help-text="若選「否」，您的資料將不會顯示在首頁"
+        :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]"
       />
 
       <BaseInput
         id="calendlyUrl"
         name="calendlyUrl"
-        label="個人預約連結 (Calendly)"
+        label="個人預約連結"
         placeholder="https://calendly.com/<username>"
       >
-        <template #label>
-          個人預約連結 (<a
+        <template #helpText>
+          若選擇不提供 Calendly 連結，我們將提供您的 Email 給預約者跟您預約。
+          <a
             class="link"
             href="https://calendly.com/"
-          >Calendly</a>)
+          >Calendly 連結可從這申請</a>
         </template>
       </BaseInput>
 
 
-      <div class="form-control w-full max-w-xs">
+      <div class="form-control w-full max-w-md">
         <label class="label">
           <span class="label-text">諮詢類別</span>
         </label>
@@ -135,10 +140,10 @@
       />
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-primary mt-2"
         :disabled="!meta.valid || isSubmitting"
       >
-        Update
+        更新
       </button>
     </Form>
   </div>
@@ -163,6 +168,36 @@ defineRule('required', required)
 defineRule('maxFileSize', value => {
   if (value?.size > 1024*1024*5) { // 5mb
     return '頭像圖片尺寸不能超過 5MB'
+  }
+  return true
+})
+defineRule('validLinkedIn', value => {
+  if (!value) {
+    return true;
+  }
+
+  if (!value.startsWith('https://www.linkedin.com/in/')) {
+    return 'LinkedIn 網址不正確'
+  }
+  return true
+})
+defineRule('validFacebook', value => {
+  if (!value) {
+    return true;
+  }
+
+  if (!value?.startsWith('https://www.facebook.com/')) {
+    return 'Facebook 網址不正確'
+  }
+  return true
+})
+defineRule('validInstagram', value => {
+  if (!value) {
+    return true;
+  }
+
+  if (!value?.startsWith('https://www.instagram.com/')) {
+    return 'Instagram 網址不正確'
   }
   return true
 })

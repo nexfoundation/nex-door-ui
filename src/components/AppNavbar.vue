@@ -1,7 +1,7 @@
 <template>
   <div class="navbar bg-white px-4 py-2 md:px-6 md:py-3 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-    <div class="navbar-start">
-      <div class="dropdown">
+    <div class="md:navbar-start">
+      <div class="dropdown mr-2 lg:mr-0">
         <label
           tabindex="0"
           class="btn btn-ghost lg:hidden"
@@ -19,31 +19,7 @@
             d="M4 6h16M4 12h8m-8 6h16"
           /></svg>
         </label>
-        <ul
-          tabindex="0"
-          class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-        >
-          <li>
-            <router-link to="/">
-              Home
-            </router-link>
-          </li>
-          <li v-if="isAuthenticated">
-            <p @click="signOut">
-              Sign Out
-            </p>
-          </li>
-          <li v-if="!isAuthenticated">
-            <router-link to="/auth">
-              Sign In
-            </router-link>
-          </li>
-          <li v-if="isAuthenticated">
-            <router-link to="/profile">
-              Profile
-            </router-link>
-          </li>
-        </ul>
+        <AppNavbarMenu is-mobile />
       </div>
       <router-link
         to="/"
@@ -56,60 +32,18 @@
       </router-link>
     </div>
     <div class="navbar-end hidden lg:flex">
-      <div v-if="$route.path !== '/auth'">
-        <ul class="menu menu-horizontal px-1">
-          <li>
-            <router-link to="/">
-              Home
-            </router-link>
-          </li>
-          <li v-if="isAuthenticated">
-            <p @click="signOut">
-              Sign Out
-            </p>
-          </li>
-          <li v-if="!isAuthenticated">
-            <router-link to="/auth">
-              Sign In
-            </router-link>
-          </li>
-          <li v-if="isAuthenticated">
-            <router-link to="/profile">
-              Profile
-            </router-link>
-          </li>
-        </ul>
-      </div>
-      <input
+      <AppNavbarMenu v-if="$route.path !== '/auth'" />
+      <!-- TODO: Hide light/dark toggle for now until color palette defined -->
+      <!-- <input
         type="checkbox"
         class="toggle"
         data-toggle-theme="dark,light"
         data-act-class="ACTIVECLASS"
-      >
+      > -->
     </div>
   </div>
 </template>
 
 <script setup>
-import { Auth } from 'aws-amplify'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-const store = useStore()
-const router = useRouter()
-
-const isAuthenticated = computed(() => {
-  return store.state.isAuthenticated
-})
-
-async function signOut() {
-  try {
-    await Auth.signOut()
-    store.dispatch('setIsAuthenticated', false)
-    store.dispatch('setUser', {})
-    router.push('/')
-  } catch (err) {
-    console.error('error signing out:', err)
-  }
-}
+import AppNavbarMenu from './AppNavbarMenu'
 </script>

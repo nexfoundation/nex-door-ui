@@ -14,41 +14,47 @@
     <BaseInput
       id="email"
       name="attributes.email"
-      label="信箱 (Email)"
-      placeholder="信箱 (Email)"
+      label="電子信箱"
+      placeholder="abc@xyz.com"
       rules="required|email"
     />
     <BaseInput
       id="name"
       name="username"
-      label="用戶名稱 (Username)"
-      placeholder="用戶名稱 (Username)"
+      label="用戶名稱"
       autocomplete="username"
       rules="required"
     />
     <BaseInput
       id="password"
       name="password"
-      label="密碼 (Password)"
-      placeholder="密碼 (Password)"
+      label="密碼"
       type="password"
       autocomplete="new-password"
       rules="required|min:8"
     />
-    <div class="card-actions justify-end">
+    <div class="card-actions flex-col items-center mt-2">
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-primary w-full"
         :disabled="!meta.valid || isSubmitting"
       >
-        註冊 (Sign Up)
+        註冊
+      </button>
+      <span>或</span>
+      <button
+        type="button"
+        class="btn btn-primary btn-outline w-full"
+        @click="googleIDPLogin"
+      >
+        Google 註冊
       </button>
     </div>
   </Form>
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { Auth } from 'aws-amplify'
 import { Form, defineRule } from 'vee-validate'
 import { required, email, min } from '@vee-validate/rules'
 import BaseInput from './base/BaseInput'
@@ -67,6 +73,10 @@ defineProps({
 const emit = defineEmits(['submit'])
 function onSubmit(values) {
   emit('submit', values)
+}
+
+async function googleIDPLogin() {
+  Auth.federatedSignIn({provider: 'Google'})
 }
 
 </script>

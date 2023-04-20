@@ -1,5 +1,5 @@
 <template>
-  <div class="form-control">
+  <div class="form-control w-full max-w-xs">
     <label
       v-if="label"
       class="label cursor-pointer"
@@ -8,7 +8,7 @@
       <span class="label-text">{{ label }}</span>
     </label>
     <Field
-      v-slot="{ field, meta }"
+      v-slot="{ field, meta, errorMessage }"
       :name="name"
       :rules="rules"
     >
@@ -29,15 +29,24 @@
           {{ option.text }}
         </option>
       </select>
+      <label
+        v-if="helpText"
+        class="label"
+      >
+        <span class="label-text-alt">{{ helpText }}</span>
+      </label>
+      <label
+        v-if="errorMessage && meta.touched"
+        class="label"
+      >
+        <span class="label-text-alt text-error">{{ errorMessage }}</span>
+      </label>
     </Field>
-    <label class="label">
-      <span class="label-text-alt text-error"><ErrorMessage :name="name" /></span>
-    </label>
   </div>
 </template>
 
 <script setup>
-import { Field, ErrorMessage } from 'vee-validate'
+import { Field } from 'vee-validate'
 
 defineProps({
   id: {
@@ -72,6 +81,10 @@ defineProps({
   options: {
     type: Array[Object],
     default: [],
+  },
+  helpText: {
+    type: String,
+    default: undefined,
   },
 })
 

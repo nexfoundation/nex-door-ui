@@ -14,7 +14,7 @@
     <p>(請確認您的 Email OTP 驗證碼)</p>
     <BaseInput
       name="authCode"
-      placeholder="請輸入臨時性驗證碼 (Authentication code)"
+      placeholder="請輸入臨時性驗證碼"
       rules="required"
     />
 
@@ -27,13 +27,13 @@
         點我重新發送驗證碼 {{ `(${confirmationCodeCooldownSecond} 秒)` }}
       </a>
     </div>
-    <div class="card-actions justify-end">
+    <div class="card-actions flex-col items-center mt-2">
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-primary w-full"
         :disabled="!meta.valid || isSubmitting"
       >
-        確認 (Confirm Sign Up)
+        確認
       </button>
     </div>
   </Form>

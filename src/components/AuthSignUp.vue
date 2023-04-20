@@ -5,7 +5,7 @@
   >
     <div class="card-body">
       <h1 class="card-title">
-        註冊 Sign Up
+        註冊
       </h1>
       <AuthSignUpFormCredential
         v-if="state.phase === AuthSignUpPhases.CREDENTIAL"

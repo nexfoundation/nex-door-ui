@@ -1,6 +1,6 @@
 <template>
   <div class="md:container my-20">
-    <article class="prose mx-auto my-12">
+    <article class="prose mx-auto my-12 px-4 md:px-0">
       <h1>關於 NEX Door</h1>
       <span>串連世界各地的專家 解決各種疑難雜症</span>
       <hr>
