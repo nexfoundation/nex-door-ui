@@ -2,18 +2,12 @@
   <div class="card card-bordered shadow-xl w-full h-96">
     <div class="card-body flex-grow-0 overflow-hidden">
       <div>
-        <BaseAvatar
-          :src="user.picture"
-          :text="getIntials(user.name)"
-        />
+        <BaseAvatar :src="user.picture" :text="getIntials(user.name)" />
         <div>
           <h5 class="my-2 font-bold text-lg leading-relaxed">
             {{ user.name }}
           </h5>
-          <div
-            v-if="user[UserAttributes.TAGS]"
-            class="flex flex-wrap gap-2"
-          >
+          <div v-if="user[UserAttributes.TAGS]" class="flex flex-wrap gap-2">
             <div
               v-for="tag in JSON.parse(user[UserAttributes.TAGS])"
               :key="tag"
@@ -24,27 +18,24 @@
           </div>
         </div>
       </div>
-      <hr>
+      <hr />
       <p>
-        <a
+        <label
+          for="booking-modal"
           class="btn btn-primary mr-2"
-          :href="user[UserAttributes.CALENDLY_URL] || `mailto:${user.email}`"
-          target="_blank"
+          @click="$emit('showModal')"
         >
           預約
-        </a>
+        </label>
         <label
           for="profile-modal"
           class="btn btn-secondary"
-          @click="$emit('showProfileModal', user)"
+          @click="$emit('showModal', user)"
         >
           關於我
         </label>
       </p>
-      <p
-        :id="`about-${user.sub}`"
-        class="overflow-hidden"
-      >
+      <p :id="`about-${user.sub}`" class="overflow-hidden">
         {{ user.profile }}
       </p>
     </div>
@@ -52,28 +43,27 @@
 </template>
 
 <script setup>
-import { UserAttributes } from '../constants'
-import BaseAvatar from './base/BaseAvatar'
+import { UserAttributes } from '../constants';
+import BaseAvatar from './base/BaseAvatar';
 
 defineProps({
   user: {
     type: Object,
     required: true,
   },
-})
+});
 
 // get initials regex
 function getIntials(name) {
-  const allNames = name.trim().split(' ')
+  const allNames = name.trim().split(' ');
   const initials = allNames.reduce((acc, curr, index) => {
-    if(index === 0 || index === allNames.length - 1){
-      acc = `${acc}${curr.charAt(0).toUpperCase()}`
+    if (index === 0 || index === allNames.length - 1) {
+      acc = `${acc}${curr.charAt(0).toUpperCase()}`;
     }
-    return acc
-  }, '')
-  return initials
+    return acc;
+  }, '');
+  return initials;
 }
 
-defineEmits(['showProfileModal'])
-
+defineEmits(['showModal']);
 </script>
