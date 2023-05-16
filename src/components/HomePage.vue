@@ -146,8 +146,10 @@ async function onSubmit(values) {
   state.errorMessage = '';
 
   const info = {
-    recipient_uuid: state.user.sub,
-    message: values.note,
+    body: {
+      recipient_uuid: state.user.sub,
+      message: values.note,
+    },
   };
 
   try {
@@ -155,7 +157,7 @@ async function onSubmit(values) {
     console.log(response);
     document.getElementById('booking-modal').checked = false;
   } catch (err) {
-    console.log(123);
+    state.errorMessage = err;
   }
 }
 </script>
