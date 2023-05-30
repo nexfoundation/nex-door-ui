@@ -38,6 +38,7 @@ const router = VueRouter.createRouter({
 
 const app = createApp(App)
 app.provide('appServiceEndpoint', process.env.VUE_APP_SERVICE_ENDPOINT)
+app.provide('appUserPictureServiceEndpoint', process.env.VUE_APP_USER_PICTURE_SERVICE_ENDPOINT)
 
 
 // Hub is also detecting Social IDP Login (Google)
