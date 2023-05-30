@@ -205,8 +205,7 @@ defineRule('validInstagram', value => {
 const store = useStore()
 const router = useRouter()
 
-const appServiceEndpoint = inject('appServiceEndpoint')
-
+const appUserPictureServiceEndpoint = inject('appUserPictureServiceEndpoint')
 
 const state = reactive({
   user: await Auth.currentAuthenticatedUser(),
@@ -273,7 +272,7 @@ async function onSubmit(values) {
     const file = values.pictureFile
 
     try {
-      const url = `${appServiceEndpoint}user/${username}/picture/${file.name}`
+      const url = `${appUserPictureServiceEndpoint}user/${username}/picture/${file.name}`
       await axios({
         method: 'put',
         maxBodyLength: file.size,
