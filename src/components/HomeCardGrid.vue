@@ -1,14 +1,21 @@
 <template>
-  <div
+
+  <div>
+    <div class=" ">
+      <HomeCardGridFilter @selectedTags-updated="handleSelectedTagsUpdate">></HomeCardGridFilter>
+    </div>
+
+    <div
     v-if="state.users"
     class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12"
-  >
-    <HomeCard
+    >
+      <HomeCard
       v-for="user in usersAcceptMentoring"
       :key="user.sub"
       :user="user"
       @show-modal="$emit('showModal', user)"
-    />
+      />
+    </div>
   </div>
 </template>
 
@@ -17,6 +24,7 @@ import { reactive, computed } from 'vue';
 import { API } from 'aws-amplify';
 import { UserAttributes } from '../constants';
 import HomeCard from './HomeCard';
+import HomeCardGridFilter from "./HomeCardGridFilter.vue";
 
 const apiName = 'ServiceEndpoint';
 const path = '/query';
@@ -24,6 +32,10 @@ const path = '/query';
 const state = reactive({
   users: [],
   modalCurrentUser: undefined,
+  filters: {
+    country: '',
+    tags: ''
+  }
 });
 
 try {
@@ -38,10 +50,18 @@ try {
 } catch (error) {
   console.error(error);
 }
+const handleSelectedTagsUpdate = (selectedTags) => {
+  state.filters.tags = selectedTags
+  // console.log(selectedTags)
+  // console.log(state.filters)
+}
 
-const usersAcceptMentoring = computed(() =>
-  state.users.filter((u) => u[UserAttributes.ACCEPT_MENTORING] === '1')
-);
+const usersFiltered = computed(() => {
+  return state.users.filter((u) => 
+    u[UserAttributes.ACCEPT_MENTORING] === '1' &&
+    u[UserAttributes.TAGS].includes(state.filters.tags)
+  );
+});
 
 defineEmits(['showModal']);
 </script>
