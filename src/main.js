@@ -6,6 +6,20 @@ import './style.css'
 import { Amplify, Auth, Hub } from 'aws-amplify'
 import awsExports from './aws-exports'
 Amplify.configure(awsExports)
+Amplify.configure({
+    API: {
+        endpoints: [
+        {
+            name: 'ServiceEndpoint',
+            endpoint: process.env.VUE_APP_SERVICE_ENDPOINT,
+            custom_header: async () => {
+                // Alternatively, with Cognito User Pools use this:
+                return { Authorization: (await Auth.currentSession()).idToken.jwtToken }
+            }
+        },
+        ]
+    }
+})
 
 // loading
 import 'vue-loading-overlay/dist/css/index.css'
