@@ -97,6 +97,14 @@
         :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]"
       />
 
+      <BaseSelect
+        id="countryCode"
+        help-text=""
+        name="countryCode"
+        label="國家"
+        :options="countryOptions"
+      />
+
       <BaseInput
         id="calendlyUrl"
         name="calendlyUrl"
@@ -164,6 +172,8 @@ import BaseInput from './base/BaseInput'
 import BaseSelect from './base/BaseSelect'
 import BaseTextarea from './base/BaseTextarea'
 
+import jsonData from "../assets/country-iso-code-tw.json";
+
 defineRule('required', required)
 defineRule('maxFileSize', value => {
   if (value?.size > 1024*1024*5) { // 5mb
@@ -220,8 +230,13 @@ const state = reactive({
     '設計美學',
     '海外婚姻',
   ],
-  errorMessage: '',
-})
+// process country list
+const countryOptions = Object.entries(jsonData.countries).map(
+  ([key, value]) => ({
+    value: key,
+    text: value,
+  })
+);
 
 const { username } = state.user
 const {
@@ -236,22 +251,24 @@ const {
   [UserAttributes.LINKEDIN]: linkedIn,
   [UserAttributes.FACEBOOK]: facebook,
   [UserAttributes.INSTAGRAM]: instagram,
-} = state.user.attributes
+  [UserAttributes.COUNTRY_CODE]: countryCode,
+} = state.user.attributes;
 
 const formValues = {
-  acceptMentoring: acceptMentoring || '0',
-  calendlyUrl: calendlyUrl || '',
-  email: email || '',
-  name: name || '',
-  picture: picture || '',
-  profile: profile || '',
+  acceptMentoring: acceptMentoring || "0",
+  calendlyUrl: calendlyUrl || "",
+  email: email || "",
+  name: name || "",
+  picture: picture || "",
+  profile: profile || "",
   tags: tags ? JSON.parse(tags) : [],
+  countryCode: countryCode || "",
   username,
-  website: website || '',
-  linkedIn: linkedIn || '',
-  facebook: facebook || '',
-  instagram: instagram || '',
-}
+  website: website || "",
+  linkedIn: linkedIn || "",
+  facebook: facebook || "",
+  instagram: instagram || "",
+};
 
 async function onSubmit(values) {
   const data = {
@@ -261,6 +278,7 @@ async function onSubmit(values) {
     website: values.website,
     [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
     [UserAttributes.TAGS]: JSON.stringify(values.tags),
+    [UserAttributes.COUNTRY_CODE]: values.countryCode,
     [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
     [UserAttributes.LINKEDIN]: values.linkedIn,
     [UserAttributes.FACEBOOK]: values.facebook,
