@@ -1,5 +1,8 @@
 <template>
-  <div v-if="state.users" class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12">
+  <div
+    v-if="state.users"
+    class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12"
+  >
     <HomeCard
       v-for="user in usersAcceptMentoring"
       :key="user.sub"

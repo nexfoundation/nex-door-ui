@@ -2,12 +2,18 @@
   <div class="card card-bordered shadow-xl w-full h-96">
     <div class="card-body flex-grow-0 overflow-hidden">
       <div>
-        <BaseAvatar :src="user.picture" :text="getIntials(user.name)" />
+        <BaseAvatar
+          :src="user.picture"
+          :text="getIntials(user.name)"
+        />
         <div>
           <h5 class="my-2 font-bold text-lg leading-relaxed">
             {{ user.name }}
           </h5>
-          <div v-if="user[UserAttributes.TAGS]" class="flex flex-wrap gap-2">
+          <div
+            v-if="user[UserAttributes.TAGS]"
+            class="flex flex-wrap gap-2"
+          >
             <div
               v-for="tag in JSON.parse(user[UserAttributes.TAGS])"
               :key="tag"
@@ -18,11 +24,11 @@
           </div>
         </div>
       </div>
-      <hr />
-      <p>
+      <hr>
+      <div class="flex gap-2">
         <label
           for="booking-modal"
-          class="btn btn-primary mr-2"
+          class="btn btn-primary"
           @click="$emit('showModal')"
         >
           預約
@@ -30,12 +36,15 @@
         <label
           for="profile-modal"
           class="btn btn-secondary"
-          @click="$emit('showModal', user)"
+          @click="$emit('showModal')"
         >
           關於我
         </label>
-      </p>
-      <p :id="`about-${user.sub}`" class="overflow-hidden">
+      </div>
+      <p
+        :id="`about-${user.sub}`"
+        class="overflow-hidden"
+      >
         {{ user.profile }}
       </p>
     </div>
