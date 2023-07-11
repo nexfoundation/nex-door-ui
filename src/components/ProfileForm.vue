@@ -230,7 +230,8 @@ const state = reactive({
     '興趣分享',
     '設計美學',
     '海外婚姻',
-  ],
+  ],})
+  
 // process country list
 const countryOptions = Object.entries(jsonData.countries).map(
   ([key, value]) => ({
