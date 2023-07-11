@@ -97,7 +97,8 @@
         :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]"
       />
 
-      <BaseInput
+      <!-- 這版先不用 Calendly -->
+      <!-- <BaseInput
         id="calendlyUrl"
         name="calendlyUrl"
         label="個人預約連結"
@@ -110,7 +111,7 @@
             href="https://calendly.com/"
           >Calendly 連結可從這申請</a>
         </template>
-      </BaseInput>
+      </BaseInput> -->
 
 
       <div class="form-control w-full max-w-md">
@@ -231,7 +232,7 @@ const {
   profile,
   website,
   [UserAttributes.ACCEPT_MENTORING]: acceptMentoring,
-  [UserAttributes.CALENDLY_URL]: calendlyUrl,
+  // [UserAttributes.CALENDLY_URL]: calendlyUrl,
   [UserAttributes.TAGS]: tags,
   [UserAttributes.LINKEDIN]: linkedIn,
   [UserAttributes.FACEBOOK]: facebook,
@@ -240,7 +241,7 @@ const {
 
 const formValues = {
   acceptMentoring: acceptMentoring || '0',
-  calendlyUrl: calendlyUrl || '',
+  // calendlyUrl: calendlyUrl || '',
   email: email || '',
   name: name || '',
   picture: picture || '',
@@ -261,7 +262,7 @@ async function onSubmit(values) {
     website: values.website,
     [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
     [UserAttributes.TAGS]: JSON.stringify(values.tags),
-    [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
+    // [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
     [UserAttributes.LINKEDIN]: values.linkedIn,
     [UserAttributes.FACEBOOK]: values.facebook,
     [UserAttributes.INSTAGRAM]: values.instagram,
