@@ -56,7 +56,7 @@ const handleSelectedTagsUpdate = (selectedTags) => {
   // console.log(state.filters)
 }
 
-const usersFiltered = computed(() => {
+computed(() => {
   return state.users.filter((u) => 
     u[UserAttributes.ACCEPT_MENTORING] === '1' &&
     u[UserAttributes.TAGS].includes(state.filters.tags)
