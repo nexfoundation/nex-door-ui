@@ -42,7 +42,8 @@ defineRule('required', required);
 defineRule('email', email);
 
 const emit = defineEmits(['submit']);
-function onSubmit(values) {
+function onSubmit(values, { resetForm }) {
   emit('submit', values);
+  resetForm();
 }
 </script>
