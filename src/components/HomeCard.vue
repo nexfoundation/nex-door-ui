@@ -64,6 +64,11 @@ defineProps({
 
 // get initials regex
 function getIntials(name) {
+  // Adhoc fix: guard clause for no input cuz data wont show
+  if (!name || typeof name !== 'string') {
+    return '';
+  }
+
   const allNames = name.trim().split(' ');
   const initials = allNames.reduce((acc, curr, index) => {
     if (index === 0 || index === allNames.length - 1) {
