@@ -189,7 +189,10 @@ async function onSubmit(values) {
   const info = {
     body: {
       recipient_uuid: state.user.sub,
-      message: values.note,
+      message: `
+      ${values.note}
+      我有空的時間是: ${values.availableTime}
+      `,
     },
   };
 
