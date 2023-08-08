@@ -13,8 +13,17 @@ Amplify.configure({
             name: 'ServiceEndpoint',
             endpoint: process.env.VUE_APP_SERVICE_ENDPOINT,
             custom_header: async () => {
+                let currentUserSession;
+                try {
+                    currentUserSession = await Auth.currentSession()
+                } catch (e) {
+                    // Remove authorization header when user is not login or no user data
+                    console.log(e)
+                    return {}
+                }
+
                 // Alternatively, with Cognito User Pools use this:
-                return { Authorization: (await Auth.currentSession()).idToken.jwtToken }
+                return { Authorization: currentUserSession.idToken.jwtToken }
             }
         },
         ]

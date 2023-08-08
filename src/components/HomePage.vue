@@ -3,7 +3,7 @@
     <article class="prose mx-auto my-12 px-4 md:px-0">
       <h1>關於 NEX Door</h1>
       <span>串連世界各地的專家 解決各種疑難雜症</span>
-      <hr>
+      <hr />
       <p>
         NEX Door
         是一個非營利線上導師領航平台，連結世界各地菁英，創造團結互助的力量，建立台灣人互助網路。讓台灣人陪著台灣人在國際路上打開第一扇門或衝刺最後一哩路。
@@ -12,7 +12,7 @@
         「今日的路人是明日的引路人」，延續 Give and Take
         的精神，讓我們啟動正向迴圈，幫助更多台灣人走向世界，讓回家的路變得更好。
       </p>
-      <hr>
+      <hr />
     </article>
 
     <Suspense>
@@ -26,19 +26,9 @@
       We can wrap this component to its own component in the future if more places use this.
     -->
     <!-- Profile modal -->
-    <input
-      id="profile-modal"
-      type="checkbox"
-      class="modal-toggle"
-    >
-    <label
-      class="modal"
-      for="profile-modal"
-    >
-      <label
-        class="modal-box flex"
-        for=""
-      >
+    <input id="profile-modal" type="checkbox" class="modal-toggle" />
+    <label class="modal" for="profile-modal">
+      <label class="modal-box flex" for="">
         <template v-if="state.user">
           <div class="flex flex-col w-full gap-6">
             <div class="flex gap-4 items-start">
@@ -55,19 +45,19 @@
                     v-if="state.user[UserAttributes.LINKEDIN]"
                     :href="state.user[UserAttributes.LINKEDIN]"
                   >
-                    <img src="../assets/linkedin-logo.svg">
+                    <img src="../assets/linkedin-logo.svg" />
                   </a>
                   <a
                     v-if="state.user[UserAttributes.FACEBOOK]"
                     :href="state.user[UserAttributes.FACEBOOK]"
                   >
-                    <img src="../assets/facebook-logo.svg">
+                    <img src="../assets/facebook-logo.svg" />
                   </a>
                   <a
                     v-if="state.user[UserAttributes.INSTAGRAM]"
                     :href="state.user[UserAttributes.INSTAGRAM]"
                   >
-                    <img src="../assets/instagram-logo.svg">
+                    <img src="../assets/instagram-logo.svg" />
                   </a>
                 </div>
                 <div
@@ -84,11 +74,7 @@
                 </div>
                 <p v-if="state.user.website">
                   網站:
-                  <a
-                    :href="state.user.website"
-                    class="link"
-                    target="_blank"
-                  >{{
+                  <a :href="state.user.website" class="link" target="_blank">{{
                     state.user.website
                   }}</a>
                 </p>
@@ -106,31 +92,18 @@
     <!-- Profile modal -->
 
     <!-- Booking modal -->
-    <input
-      id="booking-modal"
-      type="checkbox"
-      class="modal-toggle"
-    >
-    <label
-      class="modal"
-      for="booking-modal"
-    >
+    <input id="booking-modal" type="checkbox" class="modal-toggle" />
+    <label class="modal" for="booking-modal">
       <label
         ref="formContainer"
         class="modal-box card w-full mx-auto shadow-xl flex flex-col"
         for=""
       >
-        <div
-          v-if="!isAuthenticated"
-          class="card-body"
-        >
+        <div v-if="!isAuthenticated" class="card-body">
           <h1 class="card-title">請先註冊/登入</h1>
 
           <div class="flex flex-col items-center gap-2 mt-8">
-            <router-link
-              class="btn btn-primary btn-wide"
-              to="/auth"
-            >
+            <router-link class="btn btn-primary btn-wide" to="/auth">
               註冊
             </router-link>
             <router-link
@@ -141,16 +114,9 @@
             </router-link>
           </div>
         </div>
-        <div
-          v-else
-          class="card-body"
-        >
+        <div v-else class="card-body">
           <h1 class="card-title">確認你的預約</h1>
-          <div
-            v-if="state.errorMessage"
-            class="alert alert-error"
-            role="alert"
-          >
+          <div v-if="state.errorMessage" class="alert alert-error" role="alert">
             {{ state.errorMessage }}
           </div>
           <BookingConfirmation @submit="onSubmit" />
@@ -158,19 +124,38 @@
       </label>
     </label>
     <!-- Booking modal -->
+    <!-- Email sent modal -->
+    <input id="email-sent-modal" type="checkbox" class="modal-toggle" />
+    <label class="modal" for="email-sent-modal">
+      <label
+        ref="formContainer"
+        class="modal-box card w-full mx-auto shadow-xl flex flex-col"
+        for=""
+      >
+        <div class="card-body">
+          <h1 class="card-title text-center block">信件已寄出!</h1>
+          <div class="mt-4 flex justify-center">
+            <button class="w-1/3 btn btn-primary" @click="closeEmailSentModal">
+              關閉
+            </button>
+          </div>
+        </div>
+      </label>
+    </label>
+    <!-- Email sent modal -->
   </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue'
-import { useStore } from 'vuex'
-import { UserAttributes } from '../constants'
-import { API } from 'aws-amplify'
-import BaseAvatar from './base/BaseAvatar'
-import HomeCardGrid from './HomeCardGrid'
-import BookingConfirmation from './BookingConfirmation'
+import { computed, reactive, ref } from 'vue';
+import { useStore } from 'vuex';
+import { UserAttributes } from '../constants';
+import { API } from 'aws-amplify';
+import BaseAvatar from './base/BaseAvatar';
+import HomeCardGrid from './HomeCardGrid';
+import BookingConfirmation from './BookingConfirmation';
 
-const store = useStore()
+const store = useStore();
 
 const formContainer = ref(null);
 
@@ -187,8 +172,8 @@ function getIntials(name) {
 }
 
 const isAuthenticated = computed(() => {
-  return store.state.isAuthenticated
-})
+  return store.state.isAuthenticated;
+});
 
 const apiName = 'ServiceEndpoint';
 const path = 'submit';
@@ -204,15 +189,23 @@ async function onSubmit(values) {
   const info = {
     body: {
       recipient_uuid: state.user.sub,
-      message: values.note,
+      message: `
+      ${values.note}
+      我有空的時間是: ${values.availableTime}
+      `,
     },
   };
 
   try {
     await API.post(apiName, path, info);
     document.getElementById('booking-modal').checked = false;
+    document.getElementById('email-sent-modal').checked = true;
   } catch (err) {
     state.errorMessage = err;
   }
 }
+
+const closeEmailSentModal = () => {
+  document.getElementById('email-sent-modal').checked = false;
+};
 </script>
