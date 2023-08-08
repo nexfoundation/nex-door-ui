@@ -45,18 +45,18 @@ try {
 }
 const handleSelectedTagsUpdate = (selectedTags) => {
   state.filters.tags = selectedTags
-  // console.log(selectedTags)
-  // console.log(state.filters)
 }
-const handleSelectedCountryTagsUpdate = (selectedTag) => {
-  state.filters.country = selectedTag
+const handleSelectedCountryTagsUpdate = (selectedCountryObj) => {
+  state.filters.country = selectedCountryObj
 }
 
 const usersFiltered = computed(() => {
   return state.users.filter((u) => 
     u[UserAttributes.ACCEPT_MENTORING] === '1' &&
-    u[UserAttributes.TAGS].includes(state.filters.tags) &&
-    u[UserAttributes.TAGS].includes(state.filters.country)
+    u[UserAttributes.TAGS]?.includes(state.filters.tags) &&
+    // state.filters.country will be *null* after re-toggle,  
+    // UserAttributes.COUNTRY_CODE === undifined, if empty(default) 
+    u[UserAttributes.COUNTRY_CODE]  == (state.filters.country? state.filters.country.value : null)
   );
 });
 
