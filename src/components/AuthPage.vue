@@ -30,9 +30,11 @@
 
 <script setup>
 import { reactive } from 'vue'
+import { useRoute } from 'vue-router'
 import AuthSignIn from './AuthSignIn'
 import AuthSignUp from './AuthSignUp'
 import AuthForgotPassword from './AuthForgotPassword'
+const route = useRoute()
 
 const Tabs = Object.freeze({
   SIGN_UP: 'signUp',
@@ -40,7 +42,20 @@ const Tabs = Object.freeze({
   FORGOT_PASSWORD: 'forgotPassword',
 })
 
+function currentTab() {
+  switch (route.query.tab) {
+    case Tabs.SIGN_UP:
+      return Tabs.SIGN_UP;
+    case Tabs.SIGN_IN:
+      return Tabs.SIGN_IN;
+    case Tabs.FORGOT_PASSWORD:
+      return Tabs.FORGOT_PASSWORD;
+    default:
+      return Tabs.SIGN_UP;
+  }
+}
+
 const state = reactive({
-  currentTab: Tabs.SIGN_UP,
+  currentTab: currentTab()
 })
 </script>

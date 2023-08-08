@@ -105,12 +105,13 @@
         :options="countryOptions"
       />
 
-      <BaseInput
+      <!-- 這版先不用 Calendly -->
+      <!-- <BaseInput
         id="calendlyUrl"
         name="calendlyUrl"
         label="個人預約連結"
         placeholder="https://calendly.com/<username>"
-      >
+      > 
         <template #helpText>
           若選擇不提供 Calendly 連結，我們將提供您的 Email 給預約者跟您預約。
           <a
@@ -118,7 +119,7 @@
             href="https://calendly.com/"
           >Calendly 連結可從這申請</a>
         </template>
-      </BaseInput>
+      </BaseInput> -->
 
 
       <div class="form-control w-full max-w-md">
@@ -230,6 +231,7 @@ const state = reactive({
     '設計美學',
     '海外婚姻',
   ],
+})
 // process country list
 const countryOptions = Object.entries(jsonData.countries).map(
   ([key, value]) => ({
@@ -246,7 +248,7 @@ const {
   profile,
   website,
   [UserAttributes.ACCEPT_MENTORING]: acceptMentoring,
-  [UserAttributes.CALENDLY_URL]: calendlyUrl,
+  // [UserAttributes.CALENDLY_URL]: calendlyUrl,
   [UserAttributes.TAGS]: tags,
   [UserAttributes.LINKEDIN]: linkedIn,
   [UserAttributes.FACEBOOK]: facebook,
@@ -256,7 +258,7 @@ const {
 
 const formValues = {
   acceptMentoring: acceptMentoring || "0",
-  calendlyUrl: calendlyUrl || "",
+  // calendlyUrl: calendlyUrl || "",
   email: email || "",
   name: name || "",
   picture: picture || "",
@@ -279,7 +281,7 @@ async function onSubmit(values) {
     [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
     [UserAttributes.TAGS]: JSON.stringify(values.tags),
     [UserAttributes.COUNTRY_CODE]: values.countryCode,
-    [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
+    // [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
     [UserAttributes.LINKEDIN]: values.linkedIn,
     [UserAttributes.FACEBOOK]: values.facebook,
     [UserAttributes.INSTAGRAM]: values.instagram,

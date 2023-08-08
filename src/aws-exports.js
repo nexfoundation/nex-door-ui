@@ -21,18 +21,6 @@ const awsauth = {
             redirectSignOut: process.env.VUE_APP_COGNITO_OAUTH_REDIRECT_SIGNOUT_URL,
             responseType: 'code' // or 'token', note that REFRESH token will only be generated when the responseType is code
         }
-    },
-    API: {
-        endpoints: [
-        {
-            name: 'ServiceEndpoint',
-            endpoint: process.env.VUE_APP_SERVICE_ENDPOINT
-            // custom_header: async () => {
-            //     // Alternatively, with Cognito User Pools use this:
-            //     return { Authorization: (await Auth.currentSession()).idToken.jwtToken }
-            // }
-        },
-        ]
     }
 }
 

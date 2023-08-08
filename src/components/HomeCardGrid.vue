@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class=" ">
-      <HomeCardGridFilter @selectedTags-updated="handleSelectedTagsUpdate">></HomeCardGridFilter>
+      <HomeCardGridFilterCountry @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
+      <HomeCardGridFilter @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilter>
     </div>
 
     <div v-if="state.users" class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12">
@@ -16,10 +17,11 @@ import { API } from 'aws-amplify';
 import { UserAttributes } from '../constants';
 import HomeCard from './HomeCard';
 import HomeCardGridFilter from "./HomeCardGridFilter.vue";
+import HomeCardGridFilterCountry from './HomeCardGridFilterCountry.vue';
 
 const apiName = 'ServiceEndpoint';
 const path = '/query';
-
+// console.log(process.env.VUE_APP_COG_CLIENT_ID);
 const state = reactive({
   users: [],
   modalCurrentUser: undefined,
@@ -46,11 +48,15 @@ const handleSelectedTagsUpdate = (selectedTags) => {
   // console.log(selectedTags)
   // console.log(state.filters)
 }
+const handleSelectedCountryTagsUpdate = (selectedTag) => {
+  state.filters.country = selectedTag
+}
 
 const usersFiltered = computed(() => {
   return state.users.filter((u) => 
     u[UserAttributes.ACCEPT_MENTORING] === '1' &&
-    u[UserAttributes.TAGS].includes(state.filters.tags)
+    u[UserAttributes.TAGS].includes(state.filters.tags) &&
+    u[UserAttributes.TAGS].includes(state.filters.country)
   );
 });
 
