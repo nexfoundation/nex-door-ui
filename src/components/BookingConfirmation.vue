@@ -43,7 +43,6 @@ defineRule('email', email);
 
 const emit = defineEmits(['submit']);
 function onSubmit(values, { resetForm }) {
-  window.gtag('event', 'mentoring_request', {}); // GA4 tracking event
   emit('submit', values);
   resetForm();
 }
