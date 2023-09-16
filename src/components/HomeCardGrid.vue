@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class=" ">
+    <div class="min-h-[80vh]">
       <HomeCardGridFilterCountry @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
       <HomeCardGridFilterTags @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilterTags>
 
