@@ -7,7 +7,7 @@
       <div v-if="state.users" class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12">
         <HomeCard v-for="user in usersFiltered" :key="user.sub" :user="user" @show-modal="$emit('showModal', user)" />
         <div v-if="usersFiltered.length == 0">
-          <p>篩選不到導師呦🫠</p>
+          <p>找不到符合條件的導師呦🫠</p>
         </div>
       </div>
       <div v-else>
@@ -57,13 +57,18 @@ const handleSelectedCountryTagsUpdate = (selectedCountryObj) => {
 }
 
 const usersFiltered = computed(() => {
-  return state.users.filter((u) =>
-    u[UserAttributes.ACCEPT_MENTORING] === '1' &&
-    u[UserAttributes.TAGS]?.includes(state.filters.tags) &&
-    // state.filters.country will be *null* after re-toggle,  
-    // UserAttributes.COUNTRY_CODE === undifined, if empty(default) 
-    u[UserAttributes.COUNTRY_CODE] == (state.filters.country ? state.filters.country.value : null)
-  );
+  return state.users.filter((u) => {
+    // Check if the user accepts mentoring and includes the necessary tags
+    const baseCheck = u[UserAttributes.ACCEPT_MENTORING] === '1' && u[UserAttributes.TAGS]?.includes(state.filters.tags);
+
+    // If country filter is null, ignore the country code check
+    if (!state.filters.country) {
+      return baseCheck;
+    }
+
+    // If country filter is not null, include the country code check
+    return baseCheck && u[UserAttributes.COUNTRY_CODE] == state.filters.country.value;
+  });
 });
 
 defineEmits(['showModal']);
