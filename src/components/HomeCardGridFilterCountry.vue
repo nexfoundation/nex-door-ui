@@ -1,6 +1,7 @@
 <template>
     <div class="">
-        <Multiselect v-model="state.selected" :options="state.options" :custom-label="customLabel" :show-labels="true">
+        <Multiselect v-model="state.selected" :options="state.options" :custom-label="customLabel" :show-labels="true"
+            placeholder="選擇地區">
         </Multiselect>
     </div>
 </template>
@@ -35,6 +36,6 @@ watch(
     (selected) => {
         emit('selectedTags-updated', selected);
     });
-    const emit = defineEmits(['selectedTags-updated']);
+const emit = defineEmits(['selectedTags-updated']);
 
 </script>
