@@ -1,31 +1,19 @@
 <template lang="">
-    <div>
-        <div class="">
-            <!-- <VueMultiselect
-            :options="availableTags"
-            :multiple="true"
-            :close-on-select="false"
-            placeholder="選擇你感興趣的諮詢項目"
-          /> -->
-
-          <!-- <button> -->
-                Filter tags:
-                <!-- <select v-model="selectedTags"> -->
-                  <!-- TODO: after clicked, blackout -->
-                <button class="btn btn-outline mr-2 hover:bg-blue-900 focus:shadow-outline"
-                v-for="option in availableTags"  :key="option" @click="selectOption(option)">{{ option }} </button>
-                <!-- </select> -->
-            <!-- </button> -->
-        </div>
+  <div>
+    <div class="">
+      <button class="btn btn-outline mr-2 hover:bg-blue-900 focus:shadow-outline"
+      v-for="option in availableTags"  :key="option" @click="selectOption(option)"
+      :class="{ 'bg-blue-500': selectedTag === option }"
+      >{{ option }}</button>
     </div>
+  </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
-      selectedTags: '',
-      toggled: false,
-      // selectedAttribute2: '',
+      selectedTag: '',
       availableTags: [
         '稅務簽證',
         '職涯發展',
@@ -39,36 +27,22 @@ export default {
       ],
     }
   },
-  // TODO: toggle and untoggle
   methods: {
     selectOption(option) {
-      if (this.selectedTags != ''){
-        this.selectedTags = ''
+      // ?adhoc: fix empty data from cognito 
+      // if (this.selectedTag != '') {
+      //   this.selectedTag = ''
+      //   this.$emit('selectedTags-updated', []);
+      // }
+      if (this.selectedTag == option) {
+        this.selectedTag = ''
         this.$emit('selectedTags-updated', []);
       }
-
-
-      this.selectedTags = option;
-      this.$emit('selectedTags-updated', this.selectedTags);
-      // if (this.toggled)
-      //   this.$emit('selectedTags-updated', "");
-
-      // this.$store.state.filters.tags = option;
-      // state.filters.tag = option
-
+      else {
+        this.selectedTag = option;
+        this.$emit('selectedTags-updated', this.selectedTag);
+      }
     },
   },
-  // computed: {
-  //   filteredTags() {
-  //     if (this.selectedTags === '') {
-  //       return this.availableTags;
-  //     } else {
-  //       return this.availableTags.filter(tag => this.selectedTags.includes(tag));
-  //     }
-  //   }
-  // }
 }
 </script>
-<style lang="">
-    
-</style>
