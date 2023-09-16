@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       selectedTags: '',
+      toggled: false,
       // selectedAttribute2: '',
       availableTags: [
         '稅務簽證',
@@ -41,10 +42,19 @@ export default {
   // TODO: toggle and untoggle
   methods: {
     selectOption(option) {
+      if (this.selectedTags != ''){
+        this.selectedTags = ''
+        this.$emit('selectedTags-updated', []);
+      }
+
+
       this.selectedTags = option;
-      // state.filters.tag = option
-      // this.$store.state.filters.tags = option;
       this.$emit('selectedTags-updated', this.selectedTags);
+      // if (this.toggled)
+      //   this.$emit('selectedTags-updated', "");
+
+      // this.$store.state.filters.tags = option;
+      // state.filters.tag = option
 
     },
   },

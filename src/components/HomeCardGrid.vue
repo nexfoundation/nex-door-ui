@@ -2,7 +2,7 @@
   <div>
     <div class=" ">
       <HomeCardGridFilterCountry @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
-      <HomeCardGridFilter @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilter>
+      <HomeCardGridFilterTags @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilterTags>
     </div>
 
     <div v-if="state.users" class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12">
@@ -16,7 +16,7 @@ import { reactive, computed } from 'vue';
 import { API } from 'aws-amplify';
 import { UserAttributes } from '../constants';
 import HomeCard from './HomeCard';
-import HomeCardGridFilter from "./HomeCardGridFilter.vue";
+import HomeCardGridFilterTags from "./HomeCardGridFilterTags.vue";
 import HomeCardGridFilterCountry from './HomeCardGridFilterCountry.vue';
 
 const apiName = 'ServiceEndpoint';
