@@ -26,9 +26,9 @@
       We can wrap this component to its own component in the future if more places use this.
     -->
     <!-- Profile modal -->
-    <input id="profile-modal" type="checkbox" class="modal-toggle" @change="modalChange">
+    <input id="profile-modal" ref="profileModalInput" type="checkbox" class="modal-toggle" @change="modalChange">
     <label class="modal" for="profile-modal">
-      <label class="modal-box flex" for="">
+      <label class="modal-box flex flex-col" for="">
         <template v-if="state.user">
           <div class="flex flex-col w-full gap-6">
             <div class="flex gap-4 items-start">
@@ -66,6 +66,26 @@
             </div>
           </div>
         </template>
+        <hr class="my-2">
+        <div v-if="!isAuthenticated" class="card-body">
+          <h1 class="card-title">請先註冊/登入</h1>
+
+          <div class="flex flex-col items-center gap-2 mt-8">
+            <router-link
+              class="btn btn-primary btn-wide"
+              :to="{ path: 'auth', query: { redirect: `/?mentor=${state.user?.sub}` } }"
+            >
+              註冊/登入
+            </router-link>
+          </div>
+        </div>
+        <div v-else class="card-body">
+          <h1 class="card-title">向 {{ state.user?.name }} 預約</h1>
+          <div v-if="state.errorMessage" class="alert alert-error" role="alert">
+            {{ state.errorMessage }}
+          </div>
+          <BookingConfirmation @submit="onSubmit" />
+        </div>
       </label>
     </label>
     <!-- Profile modal -->
@@ -115,7 +135,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { UserAttributes } from '../constants';
@@ -130,10 +150,8 @@ const router = useRouter();
 const store = useStore();
 
 const formContainer = ref(null);
+const profileModalInput = ref(null);
 
-if (route.query.mentor) {
-  fetchMentor(route.query.mentor);
-}
 
 // get initials regex
 function getIntials(name) {
@@ -155,6 +173,14 @@ const state = reactive({
   user: undefined,
   errorMessage: '',
 });
+
+
+onMounted(() => {
+  console.log('mounted');
+  if (route.query.mentor) {
+    fetchMentor(route.query.mentor);
+  }
+})
 
 async function onSubmit(values) {
   state.errorMessage = '';
@@ -182,7 +208,9 @@ async function fetchMentor(uuid) {
   try {
     const matches = await API.get('ServiceEndpoint', `user/${uuid}`);
     state.user = userToCard(matches[0]);
-    document.getElementById('booking-modal').checked = true;
+    if (profileModalInput.value) {
+      profileModalInput.value.checked = true;
+    }
   } catch (err) {
     console.debug(err);
   }
