@@ -21,6 +21,7 @@
 import { reactive, computed } from 'vue';
 import { API } from 'aws-amplify';
 import { UserAttributes } from '../constants';
+import { userToCard } from '../helpers';
 import HomeCard from './HomeCard';
 import HomeCardGridFilterTags from "./HomeCardGridFilterTags.vue";
 import HomeCardGridFilterCountry from './HomeCardGridFilterCountry.vue';
@@ -38,12 +39,7 @@ const state = reactive({
 
 try {
   const response = await API.get(apiName, path);
-  const users = response.map((u) =>
-    u.Attributes.reduce((result, a) => {
-      result[a.Name] = a.Value;
-      return result;
-    }, {})
-  );
+  const users = response.map(userToCard);
   state.users = users;
 } catch (error) {
   console.error(error);

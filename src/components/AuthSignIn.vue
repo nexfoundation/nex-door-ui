@@ -65,7 +65,7 @@
 <script setup>
 import { Auth } from 'aws-amplify'
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { useLoading } from 'vue-loading-overlay'
 import { Form, defineRule } from 'vee-validate'
@@ -74,6 +74,7 @@ import { useI18n } from '../mixin/i18n.js'
 import BaseInput from './base/BaseInput'
 
 const router = useRouter()
+const route = useRoute()
 const store = useStore()
 const $loading = useLoading()
 const { geti18nAuthenticationErrorMessage } = useI18n()
@@ -96,7 +97,11 @@ async function onSubmit(values) {
     const user = await Auth.signIn(username, password)
     store.dispatch('setIsAuthenticated', true)
     store.dispatch('setUser', user)
-    router.push('/')
+    if (route.query.redirect) {
+      router.push(route.query.redirect)
+    } else {
+      router.push('/')
+    }
 
   } catch (err) {
     state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
@@ -107,7 +112,7 @@ async function onSubmit(values) {
 }
 
 async function googleIDPLogin() {
-  Auth.federatedSignIn({provider: 'Google'})
+  Auth.federatedSignIn({ provider: 'Google' })
 }
 
 defineEmits(['forgotPassword'])
