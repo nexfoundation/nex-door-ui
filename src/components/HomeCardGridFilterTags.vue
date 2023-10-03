@@ -30,10 +30,6 @@ export default {
   methods: {
     selectOption(option) {
       // ?adhoc: fix empty data from cognito 
-      // if (this.selectedTag != '') {
-      //   this.selectedTag = ''
-      //   this.$emit('selectedTags-updated', []);
-      // }
       if (this.selectedTag == option) {
         this.selectedTag = ''
         this.$emit('selectedTags-updated', []);

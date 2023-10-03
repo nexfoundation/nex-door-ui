@@ -27,7 +27,6 @@ import HomeCardGridFilterCountry from './HomeCardGridFilterCountry.vue';
 
 const apiName = 'ServiceEndpoint';
 const path = '/query';
-// console.log(process.env.VUE_APP_COG_CLIENT_ID);
 const state = reactive({
   users: [],
   modalCurrentUser: undefined,
