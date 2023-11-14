@@ -13,12 +13,6 @@
       @submit="onSubmit"
     >
       <BaseInput
-        name="username"
-        label="用戶名稱"
-        disabled
-      />
-
-      <BaseInput
         name="email"
         label="Email"
         disabled
@@ -32,7 +26,6 @@
         required
         rules="required"
       />
-
 
       <div class="form-control w-full max-w-xs">
         <label
@@ -62,18 +55,60 @@
         </label>
       </div>
 
-      <BaseInput
-        id="website"
-        label="個人網站"
-        name="website"
-        placeholder="https://example.com"
+      <BaseSelect
+        id="countryCode"
+        help-text=""
+        name="countryCode"
+        label="國家"
+        :options="countryOptions"
+        required
       />
+
+      <!-- TODO 任職公司/就讀學校（必填） -->
+      <!-- TODO 職稱/科系（必填） -->
+
+      <BaseSelect
+        id="acceptMentoring"
+        name="acceptMentoring"
+        label="開放其他人向你諮詢"
+        help-text="若選「否」，您的資料將不會顯示在首頁"
+        :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]"
+        required
+      />
+
+      <div class="form-control w-full max-w-md">
+        <label class="label">
+          <span class="label-text">諮詢類別</span>
+        </label>
+        <Field
+          :rules="'required'"
+          v-slot="{ field }"
+          name="tags"
+        >
+          <VueMultiselect
+            v-bind="field"
+            v-model="field.value"
+            :options="state.options"
+            :multiple="true"
+            :close-on-select="false"
+            placeholder="選擇你可以提供的諮詢項目"
+          />
+          <ErrorMessage :name="field.name" class="text-red-500 text-sm" />
+        </Field>
+      </div>
+
       <BaseInput
         id="linkedIn"
         label="LinkedIn"
         name="linkedIn"
         placeholder="https://www.linkedin.com/in/profile/"
         rules="validLinkedIn"
+      />
+      <BaseInput
+        id="website"
+        label="個人網站"
+        name="website"
+        placeholder="https://example.com"
       />
       <BaseInput
         id="facebook"
@@ -88,21 +123,6 @@
         name="instagram"
         placeholder="https://www.instagram.com/profile"
         rules="validInstagram"
-      />
-      <BaseSelect
-        id="acceptMentoring"
-        name="acceptMentoring"
-        label="開放其他人向你諮詢"
-        help-text="若選「否」，您的資料將不會顯示在首頁"
-        :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]"
-      />
-
-      <BaseSelect
-        id="countryCode"
-        help-text=""
-        name="countryCode"
-        label="國家"
-        :options="countryOptions"
       />
 
       <!-- 這版先不用 Calendly -->
@@ -121,31 +141,12 @@
         </template>
       </BaseInput> -->
 
-
-      <div class="form-control w-full max-w-md">
-        <label class="label">
-          <span class="label-text">諮詢類別</span>
-        </label>
-        <Field
-          v-slot="{ field }"
-          name="tags"
-        >
-          <VueMultiselect
-            v-bind="field"
-            v-model="field.value"
-            :options="state.options"
-            :multiple="true"
-            :close-on-select="false"
-            placeholder="選擇你可以提供的諮詢項目"
-          />
-        </Field>
-      </div>
-
       <BaseTextarea
         id="profileBio"
         name="profile"
         label="個人簡介 Bio"
         :rows="5"
+        required 
       />
       <button
         type="submit"
