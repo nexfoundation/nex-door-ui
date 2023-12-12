@@ -318,8 +318,8 @@ async function onSubmit(values) {
     [UserAttributes.LINKEDIN]: values.linkedIn,
     [UserAttributes.FACEBOOK]: values.facebook,
     [UserAttributes.INSTAGRAM]: values.instagram,
-    [UserAttributes.AVAILABLE_TIME]: values.available_time,
-    [UserAttributes.TIMEZONE]: values.timezone,
+    [UserAttributes.AVAILABLE_TIME]: values.available_time.trim(),
+    [UserAttributes.TIMEZONE]: values.timezone.trim(),
   }
 
 
