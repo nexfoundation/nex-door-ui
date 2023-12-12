@@ -5,5 +5,7 @@ export const UserAttributes = {
   LINKEDIN: 'custom:linkedin',
   FACEBOOK: 'custom:facebook',
   INSTAGRAM: 'custom:instagram',
-  COUNTRY_CODE: 'custom:country_code'
+  COUNTRY_CODE: 'custom:country_code',
+  TIMEZONE: 'custom:timezone',
+  AVAILABLE_TIME: 'custom:available_time'
 }

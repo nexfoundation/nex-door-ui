@@ -121,6 +121,22 @@
         </template>
       </BaseInput> -->
 
+      # May can use zoneinfo attribute instead
+      <BaseInput
+      id="timezone"
+      label="時區"
+      name="timezone"
+      placeholder="UTC+8"
+      rules="validTimezone"
+      />
+
+      <BaseInput
+      id="available_time"
+      label="大致可行時間"
+      name="available_time"
+      placeholder="Every Fri-Sat, 7-8 PM, 1st week of each month"
+      rules="required"
+      />
 
       <div class="form-control w-full max-w-md">
         <label class="label">
@@ -140,7 +156,7 @@
           />
         </Field>
       </div>
-
+      
       <BaseTextarea
         id="profileBio"
         name="profile"
@@ -213,6 +229,19 @@ defineRule('validInstagram', value => {
   return true
 })
 
+defineRule('validTimezone', value => {
+  const regex = /^UTC([+-]\d{1,2})$/;
+  if (!value) {
+    return true;
+  }
+
+  if (!regex.test(value.trim())) {
+    return '時區格式不正確';
+  }
+
+  return true;
+})
+
 const store = useStore()
 const router = useRouter()
 
@@ -254,6 +283,8 @@ const {
   [UserAttributes.FACEBOOK]: facebook,
   [UserAttributes.INSTAGRAM]: instagram,
   [UserAttributes.COUNTRY_CODE]: countryCode,
+  [UserAttributes.TIMEZONE]: timezone,
+  [UserAttributes.AVAILABLE_TIME]: available_time,
 } = state.user.attributes;
 
 const formValues = {
@@ -270,6 +301,8 @@ const formValues = {
   linkedIn: linkedIn || "",
   facebook: facebook || "",
   instagram: instagram || "",
+  timezone: timezone || "",
+  available_time: available_time || "",
 };
 
 async function onSubmit(values) {
@@ -285,6 +318,8 @@ async function onSubmit(values) {
     [UserAttributes.LINKEDIN]: values.linkedIn,
     [UserAttributes.FACEBOOK]: values.facebook,
     [UserAttributes.INSTAGRAM]: values.instagram,
+    [UserAttributes.AVAILABLE_TIME]: values.available_time,
+    [UserAttributes.TIMEZONE]: values.timezone,
   }
 
 
