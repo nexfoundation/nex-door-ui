@@ -132,7 +132,7 @@
 
       <BaseInput
       id="available_time"
-      label="大致可行時間"
+      label="開放預約時間"
       name="available_time"
       placeholder="Every Fri-Sat, 7-8 PM, 1st week of each month"
       rules="required"
