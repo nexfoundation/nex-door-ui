@@ -230,6 +230,7 @@ const state = reactive({
     '興趣分享',
     '設計美學',
     '海外婚姻',
+    '海外留學',
   ],
 })
 // process country list
