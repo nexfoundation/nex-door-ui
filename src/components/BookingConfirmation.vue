@@ -16,7 +16,8 @@
     <BaseInput
       id="availableTime"
       name="availableTime"
-      label="有空時間"
+      :label="userToggled[UserAttributes.TIMEZONE] ? '欲預約諮詢時間 (' + userToggled[UserAttributes.TIMEZONE] + ')' : '欲預約諮詢時間'"
+      :help-text="userToggled[UserAttributes.AVAILABLE_TIME] ? userToggled.name + ' 提議: ' + userToggled[UserAttributes.AVAILABLE_TIME] : ''"
       placeholder="ex: Mon-Wed 9-12AM"
       rules="required"
     />
@@ -35,11 +36,18 @@
 <script setup>
 import { Form, defineRule } from 'vee-validate';
 import { required, email } from '@vee-validate/rules';
+import { UserAttributes } from '../constants';
 import BaseInput from './base/BaseInput';
 import BaseTextarea from './base/BaseTextarea';
 
 defineRule('required', required);
 defineRule('email', email);
+defineProps({
+  userToggled: {
+    type: Object,
+    default: () => ({ }),
+  }
+})
 
 const emit = defineEmits(['submit']);
 function onSubmit(values, { resetForm }) {

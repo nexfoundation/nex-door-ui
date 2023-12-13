@@ -84,7 +84,7 @@
           <div v-if="state.errorMessage" class="alert alert-error" role="alert">
             {{ state.errorMessage }}
           </div>
-          <BookingConfirmation @submit="onSubmit" />
+          <BookingConfirmation @submit="onSubmit" :userToggled="state.user"/>
         </div>
       </label>
     </label>
@@ -111,7 +111,7 @@
           <div v-if="state.errorMessage" class="alert alert-error" role="alert">
             {{ state.errorMessage }}
           </div>
-          <BookingConfirmation @submit="onSubmit" />
+          <BookingConfirmation @submit="onSubmit" :userToggled="state.user"/>
         </div>
       </label>
     </label>
