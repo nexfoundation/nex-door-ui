@@ -16,7 +16,7 @@
     <BaseInput
       id="availableTime"
       name="availableTime"
-      :label="userToggled[UserAttributes.TIMEZONE] ? '有空時間 (' + userToggled[UserAttributes.TIMEZONE] + ')' : '有空時間'"
+      :label="userToggled[UserAttributes.TIMEZONE] ? '欲預約諮詢時間 (' + userToggled[UserAttributes.TIMEZONE] + ')' : '欲預約諮詢時間'"
       :help-text="userToggled[UserAttributes.AVAILABLE_TIME] ? userToggled.name + ' 提議: ' + userToggled[UserAttributes.AVAILABLE_TIME] : ''"
       placeholder="ex: Mon-Wed 9-12AM"
       rules="required"

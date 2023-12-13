@@ -121,7 +121,7 @@
         </template>
       </BaseInput> -->
 
-      # May can use zoneinfo attribute instead
+      <!-- # May can use zoneinfo attribute instead -->
       <BaseInput
       id="timezone"
       label="時區"
