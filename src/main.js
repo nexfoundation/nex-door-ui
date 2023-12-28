@@ -33,8 +33,6 @@ Amplify.configure({
 // loading
 import 'vue-loading-overlay/dist/css/index.css'
 
-// multiselect
-import 'vue-multiselect/dist/vue3-multiselect.css'
 
 // Vue components
 import App from './components/App.vue'
