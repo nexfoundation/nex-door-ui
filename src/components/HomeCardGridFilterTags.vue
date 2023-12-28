@@ -1,16 +1,20 @@
 <template lang="">
   <div>
     <div class="">
-      <button class="btn btn-outline mr-2 hover:bg-blue-900 focus:shadow-outline"
-      v-for="option in availableTags"  :key="option" @click="selectOption(option)"
-      :class="{ 'bg-blue-500': selectedTag === option }"
-      >{{ option }}</button>
+      <button
+        v-for="option in availableTags"
+        :key="option" class="btn btn-outline mr-2 hover:bg-blue-900 focus:shadow-outline" :class="{ 'bg-blue-500': selectedTag === option }"
+        @click="selectOption(option)"
+      >
+        {{ option }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  emits: ['selected-tags-updated'],
   data() {
     return {
       selectedTag: '',
@@ -33,11 +37,11 @@ export default {
       // ?adhoc: fix empty data from cognito 
       if (this.selectedTag == option) {
         this.selectedTag = ''
-        this.$emit('selectedTags-updated', []);
+        this.$emit('selected-tags-updated', []);
       }
       else {
         this.selectedTag = option;
-        this.$emit('selectedTags-updated', this.selectedTag);
+        this.$emit('selected-tags-updated', this.selectedTag);
       }
     },
   },

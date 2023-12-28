@@ -123,19 +123,19 @@
 
       <!-- # May can use zoneinfo attribute instead -->
       <BaseInput
-      id="timezone"
-      label="時區"
-      name="timezone"
-      placeholder="UTC+8"
-      rules="validTimezone"
+        id="timezone"
+        label="時區"
+        name="timezone"
+        placeholder="UTC+8"
+        rules="validTimezone"
       />
 
       <BaseInput
-      id="available_time"
-      label="開放預約時間"
-      name="available_time"
-      placeholder="Every Fri-Sat, 7-8 PM, 1st week of each month"
-      rules="required"
+        id="available_time"
+        label="開放預約時間"
+        name="available_time"
+        placeholder="Every Fri-Sat, 7-8 PM, 1st week of each month"
+        rules="required"
       />
 
       <div class="form-control w-full max-w-md">

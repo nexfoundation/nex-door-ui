@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="min-h-[80vh]">
-      <HomeCardGridFilterCountry @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
-      <HomeCardGridFilterTags @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilterTags>
+      <HomeCardGridFilterCountry @selected-tags-updated="handleSelectedCountryTagsUpdate" />
+      <HomeCardGridFilterTags @selected-tags-updated="handleSelectedTagsUpdate" />
 
       <div v-if="state.users" class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12">
         <HomeCard v-for="user in usersFiltered" :key="user.sub" :user="user" @show-modal="$emit('showModal', user)" />
