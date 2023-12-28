@@ -43,7 +43,7 @@
       </div>
       <p
         :id="`about-${user.sub}`"
-        class="overflow-hidden"
+        class="overflow-hidden line-clamp-3 mt-4"
       >
         {{ user.profile }}
       </p>
