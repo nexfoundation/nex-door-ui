@@ -4,14 +4,6 @@
     class="flex flex-col"
     @submit="onSubmit"
   >
-    <BaseInput
-      id="email"
-      name="email"
-      label="信箱"
-      autocomplete="email"
-      placeholder="abc@xyz.com"
-      rules="required|email"
-    />
     <BaseTextarea id="note" name="note" label="留下訊息" :rows="5" />
     <BaseInput
       id="availableTime"
@@ -35,13 +27,12 @@
 
 <script setup>
 import { Form, defineRule } from 'vee-validate';
-import { required, email } from '@vee-validate/rules';
+import { required } from '@vee-validate/rules';
 import { UserAttributes } from '../constants';
 import BaseInput from './base/BaseInput';
 import BaseTextarea from './base/BaseTextarea';
 
 defineRule('required', required);
-defineRule('email', email);
 defineProps({
   userToggled: {
     type: Object,
