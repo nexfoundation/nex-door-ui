@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        body: ["Montserrat", "Noto Sans TC", "sans-serif"],
+      },
+    },
     container: {
       center: true,
     },
