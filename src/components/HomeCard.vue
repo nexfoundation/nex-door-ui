@@ -7,7 +7,7 @@
           :text="getIntials(user.name)"
         />
         <div>
-          <h5 class="my-2 font-bold text-lg leading-relaxed">
+          <h5 class="my-2 font-bold text-2xl leading-relaxed">
             {{ user.name }}
           </h5>
           <div

@@ -21,14 +21,9 @@
         </label>
         <AppNavbarMenu is-mobile />
       </div>
-      <router-link
-        to="/"
-        class="flex"
-      >
-        <img
-          class="w-10"
-          src="../assets/nex_logo_notext.svg"
-        > <span class="pl-2 self-center text-xl font-bold">NEX Door</span>
+      <router-link to="/" class="flex">
+        <img class="w-10" src="../assets/nex-door-logo.svg">
+        <div class="pl-2 self-center text-xl font-bold"><span class="font-bold">NEX</span><span class="font-medium"> Door</span></div>
       </router-link>
     </div>
     <div class="navbar-end hidden lg:flex">

@@ -1,17 +1,19 @@
 <template>
   <div class="md:container my-20">
     <article class="prose mx-auto my-12 px-4 md:px-0">
-      <h1>關於 NEX Door</h1>
-      <span>串連世界各地的專家 解決各種疑難雜症</span>
+      <h1 class="text-display font-bold">關於NEX Door</h1>
+      <span class="text-xl font-bold">串連世界各地的專家，解決各種疑難雜症</span>
       <hr>
-      <p>
-        NEX Door
-        是一個非營利線上導師領航平台，連結世界各地菁英，創造團結互助的力量，建立台灣人互助網路。讓台灣人陪著台灣人在國際路上打開第一扇門或衝刺最後一哩路。
-      </p>
-      <p>
-        「今日的路人是明日的引路人」，延續 Give and Take
-        的精神，讓我們啟動正向迴圈，幫助更多台灣人走向世界，讓回家的路變得更好。
-      </p>
+      <div class="text-lg font-medium">
+        <p>
+          NEX Door
+          是一個非營利線上導師領航平台，連結世界各地菁英，創造團結互助的力量，建立台灣人互助網路。讓台灣人陪著台灣人在國際路上打開第一扇門或衝刺最後一哩路。
+        </p>
+        <p>
+          「今日的路人是明日的引路人」，延續 Give and Take
+          的精神，讓我們啟動正向迴圈，幫助更多台灣人走向世界，讓回家的路變得更好。
+        </p>
+      </div>
       <hr>
     </article>
 
@@ -71,10 +73,8 @@
           <h1 class="card-title">請先註冊/登入</h1>
 
           <div class="flex flex-col items-center gap-2 mt-8">
-            <router-link
-              class="btn btn-primary btn-wide"
-              :to="{ path: 'auth', query: { redirect: `/?mentor=${state.user?.sub}` } }"
-            >
+            <router-link class="btn btn-primary btn-wide"
+              :to="{ path: 'auth', query: { redirect: `/?mentor=${state.user?.sub}` } }">
               註冊/登入
             </router-link>
           </div>
@@ -84,7 +84,7 @@
           <div v-if="state.errorMessage" class="alert alert-error" role="alert">
             {{ state.errorMessage }}
           </div>
-          <BookingConfirmation @submit="onSubmit" :userToggled="state.user"/>
+          <BookingConfirmation @submit="onSubmit" :userToggled="state.user" />
         </div>
       </label>
     </label>
@@ -111,7 +111,7 @@
           <div v-if="state.errorMessage" class="alert alert-error" role="alert">
             {{ state.errorMessage }}
           </div>
-          <BookingConfirmation @submit="onSubmit" :userToggled="state.user"/>
+          <BookingConfirmation @submit="onSubmit" :userToggled="state.user" />
         </div>
       </label>
     </label>

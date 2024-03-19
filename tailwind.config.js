@@ -11,6 +11,7 @@ module.exports = {
       xl: ['22px', '125%'],
       '2xl': ['24px', '125%'],
       '3xl': ['32px', '125%'],
+      'display': ['48px', '125%'],
       'caption': ['12px', '140%']
     },
     extend: {
