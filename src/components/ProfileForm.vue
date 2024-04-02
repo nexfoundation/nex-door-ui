@@ -28,10 +28,6 @@
       <BaseInput id="website" label="個人網站" name="website" placeholder="https://example.com" />
       <BaseInput id="linkedIn" label="LinkedIn" name="linkedIn" placeholder="https://www.linkedin.com/in/profile/"
         rules="validLinkedIn" />
-      <BaseInput id="facebook" label="Facebook" name="facebook" placeholder="https://www.facebook.com/profile"
-        rules="validFacebook" />
-      <BaseInput id="instagram" label="Instagram" name="instagram" placeholder="https://www.instagram.com/profile"
-        rules="validInstagram" />
       <BaseSelect id="acceptMentoring" name="acceptMentoring" label="開放其他人向你諮詢" help-text="若選「否」，您的資料將不會顯示在首頁"
         :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]" />
       <BaseSelect id="countryCode" help-text="" name="countryCode" label="國家" :options="countryOptions" />
@@ -90,26 +86,6 @@ defineRule('validLinkedIn', value => {
 
   if (!value.startsWith('https://www.linkedin.com/in/')) {
     return 'LinkedIn 網址不正確'
-  }
-  return true
-})
-defineRule('validFacebook', value => {
-  if (!value) {
-    return true;
-  }
-
-  if (!value?.startsWith('https://www.facebook.com/')) {
-    return 'Facebook 網址不正確'
-  }
-  return true
-})
-defineRule('validInstagram', value => {
-  if (!value) {
-    return true;
-  }
-
-  if (!value?.startsWith('https://www.instagram.com/')) {
-    return 'Instagram 網址不正確'
   }
   return true
 })
