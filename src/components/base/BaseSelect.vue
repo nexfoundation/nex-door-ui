@@ -1,11 +1,12 @@
 <template>
-  <div class="form-control w-full max-w-xs">
+  <div class="form-control">
     <label
       v-if="label"
       class="label cursor-pointer"
       :for="id"
     >
       <span class="label-text">{{ label }}</span>
+      <span class="label-text-alt" :class="{'hidden': !dataRequired}">必填</span>
     </label>
     <Field
       v-slot="{ field, meta, errorMessage }"
@@ -15,7 +16,7 @@
       <select
         :id="id"
         v-bind="field"
-        class="select select-bordered w-full max-w-xs"
+        class="select select-bordered w-full"
         :class="{
           'select-disabled': disabled,
           'select-error': meta.touched && !meta.valid,
@@ -76,6 +77,10 @@ defineProps({
   rules: {
     type: String,
     default: undefined,
+  },
+  dataRequired: {
+    type: Boolean,
+    default: false
   },
   disabled: Boolean,
   options: {

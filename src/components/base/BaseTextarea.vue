@@ -23,6 +23,7 @@
           'textarea-error': meta.touched && !meta.valid,
         }"
         :rows="rows"
+        :placeholder="placeholder"
       />
       <label
         v-if="helpText || $slots.helpText"
