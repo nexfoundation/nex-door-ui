@@ -11,7 +11,7 @@
         <BaseInput name="username" label="用戶名稱" disabled data-required />
         <BaseInput name="email" label="Email" disabled data-required />
         <BaseInput id="name" label="名稱" name="name" placeholder="名稱" rules="required" data-required />
-        <!-- TODO: experience field -->
+        <BaseInput name="title" id="title" label="職業或學歷" placeholder="職業＠公司名稱 or 碩士@台灣大學" rules="required" data-required />
         <BaseSelect id="countryCode" placeholder="選取國家" name="countryCode" label="所在國家" :options="countryOptions"
           data-required />
         <!-- avatar -->
@@ -142,6 +142,7 @@ const {
   [UserAttributes.INSTAGRAM]: instagram,
   [UserAttributes.COUNTRY_CODE]: countryCode,
   [UserAttributes.TIMEZONE]: timezone,
+  [UserAttributes.TITLE]: title,
   [UserAttributes.AVAILABLE_TIME]: available_time,
 } = state.user.attributes;
 
@@ -160,6 +161,7 @@ const formValues = {
   facebook: facebook || "",
   instagram: instagram || "",
   timezone: timezone || "",
+  title: title || "",
   available_time: available_time || "",
 };
 
@@ -178,6 +180,7 @@ async function onSubmit(values) {
     [UserAttributes.INSTAGRAM]: values.instagram,
     [UserAttributes.AVAILABLE_TIME]: values.available_time.trim(),
     [UserAttributes.TIMEZONE]: values.timezone.trim(),
+    [UserAttributes.TITLE]: values.title.trim(),
   }
 
 
