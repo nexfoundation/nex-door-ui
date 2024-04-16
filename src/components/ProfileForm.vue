@@ -51,11 +51,10 @@
 
         <h2 class="leading-normal font-medium !mt-5">3. 可預約時段</h2>
         <span>讓大家知道你的諮詢時段，請記得定期更新！</span>
-        <BaseSelect id="acceptMentoring" name="acceptMentoring" label="是否開放預約諮詢" help-text="*若選否，您的資料將不被公開"
+        <BaseSelect id="acceptMentoring" name="acceptMentoring" label="是否開放預約諮詢" help-text="*若選否，您的資料將不被公開" data-required
           :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]" />
-        <BaseInput id="timezone" label="所在時區" name="timezone" placeholder="例: 美東夏日時間(EST)" rules="validTimezone" />
-        <BaseInput id="available_time" label="開放預約時間" name="available_time" placeholder="例: 一月/週一到週五/16:00-19:00"
-          rules="required" />
+        <BaseInput id="timezone" label="所在時區" name="timezone" placeholder="例：美東夏日時間(EST)" />
+        <BaseInput id="available_time" label="開放預約時間" name="available_time" placeholder="例：一月／週一到週五／16:00-19:00" />
 
         <button type="submit" class="btn btn-primary !mt-5 rounded-[6.25rem] disabled:bg-[#EEE] disabled:text-[#666666]" :disabled="!meta.valid || isSubmitting">
           更新
@@ -98,19 +97,6 @@ defineRule('validLinkedIn', value => {
     return 'LinkedIn 網址不正確'
   }
   return true
-})
-
-defineRule('validTimezone', value => {
-  const regex = /^UTC([+-]\d{1,2})$/;
-  if (!value) {
-    return true;
-  }
-
-  if (!regex.test(value.trim())) {
-    return '時區格式不正確';
-  }
-
-  return true;
 })
 
 const store = useStore()
