@@ -7,5 +7,6 @@ export const UserAttributes = {
   INSTAGRAM: 'custom:instagram',
   COUNTRY_CODE: 'custom:country_code',
   TIMEZONE: 'custom:timezone',
+  TITLE: 'custom:title',
   AVAILABLE_TIME: 'custom:available_time'
 }
