@@ -8,6 +8,7 @@
       <span class="label-text">
         <slot name="label">{{ label }}</slot>
       </span>
+      <span class="label-text-alt" :class="{'hidden': !dataRequired}">必填</span>
     </label>
     <Field
       v-slot="{ field, meta, errorMessage }"
@@ -73,6 +74,10 @@ defineProps({
   autocomplete: {
     type: String,
     default: undefined,
+  },
+  dataRequired: {
+    type: Boolean,
+    default: false
   },
   type: {
     type: String,

@@ -1,175 +1,65 @@
 <template>
   <div>
-    <div
-      v-if="state.errorMessage"
-      class="alert alert-error"
-      role="alert"
-    >
+    <div v-if="state.errorMessage" class="alert alert-error" role="alert">
       {{ state.errorMessage }}
     </div>
-    <Form
-      v-slot="{ meta, isSubmitting }"
-      :initial-values="formValues"
-      @submit="onSubmit"
-    >
-      <BaseInput
-        name="username"
-        label="用戶名稱"
-        disabled
-      />
+    <Form v-slot="{ meta, isSubmitting }" :initial-values="formValues" @submit="onSubmit">
+      <div class="container shadow rounded-lg bordered bg-white p-9 space-y-3 [&>*]:w-full w-[520px] ">
+        <h1 class="leading-normal self-stretch text-lg leading-tight font-bold">在此進行註冊或編輯資料</h1>
 
-      <BaseInput
-        name="email"
-        label="Email"
-        disabled
-      />
+        <h2 class="py-0 px-1 font-medium mt-5">1. 基本資料</h2>
+        <BaseInput name="username" label="用戶名稱" disabled data-required />
+        <BaseInput name="email" label="Email" disabled data-required />
+        <BaseInput id="name" label="名稱" name="name" placeholder="名稱" rules="required" data-required />
+        <!-- TODO: experience field -->
+        <BaseSelect id="countryCode" placeholder="選取國家" name="countryCode" label="所在國家" :options="countryOptions"
+          data-required />
+        <!-- avatar -->
+        <div class="form-control mb-3">
+          <label for="picture" class="label cursor-pointer ">
+            <span class="label-text">
+              個人頭像
+            </span>
+          </label>
+          <Field v-slot="{ handleChange, handleBlur }" name="pictureFile" rules="maxFileSize">
+            <input id="picture" type="file" accept="image/png, image/jpeg" class="file-input file-input-bordered  "
+              @change="handleChange" @blur="handleBlur">
+          </Field>
+          <label class="label">
+            <span class="label-text-alt text-error">
+              <ErrorMessage name="pictureFile" />
+            </span>
+          </label>
+        </div>
 
-      <BaseInput
-        id="name"
-        label="名稱 (必填)"
-        name="name"
-        placeholder="Name"
-        required
-        rules="required"
-      />
+        <h2 class="py-0 px-1 leading-normal font-medium mt-5">2. 詳細資料</h2>
+        <span>分享更多個人資訊，讓大家了解你！</span>
+        <BaseInput id="linkedIn" label="LinkedIn" name="linkedIn" placeholder="https://www.linkedin.com/in/profile/"
+          rules="validLinkedIn" />
+        <BaseInput id="website" label="個人網站/blog" name="website" placeholder="https://www.portfolio.com" />
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">諮詢類別</span>
+          </label>
+          <Field v-slot="{ field }" name="tags">
+            <VueMultiselect v-bind="field" v-model="field.value" :options="state.options" :multiple="true"
+              :close-on-select="false" placeholder="選取你可以提供諮詢的項目" />
+            </Field>
+            <BaseTextarea id="profileBio" name="profile" label="個人簡介 Bio" :rows="5" placeholder="中英文皆可，建議300字以內" />
+        </div>
+        <!-- # May can use zoneinfo attribute instead -->
 
+        <h2 class="leading-normal font-medium !mt-5">3. 可預約時段</h2>
+        <span>讓大家知道你的諮詢時段，請記得定期更新！</span>
+        <BaseSelect id="acceptMentoring" name="acceptMentoring" label="是否開放預約諮詢" help-text="*若選否，您的資料將不被公開" data-required
+          :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]" />
+        <BaseInput id="timezone" label="所在時區" name="timezone" placeholder="例：美東夏日時間(EST)" />
+        <BaseInput id="available_time" label="開放預約時間" name="available_time" placeholder="例：一月／週一到週五／16:00-19:00" />
 
-      <div class="form-control w-full max-w-xs">
-        <label
-          for="picture"
-          class="label cursor-pointer"
-        >
-          <span class="label-text">
-            個人頭像
-          </span>
-        </label>
-        <Field
-          v-slot="{ handleChange, handleBlur }"
-          name="pictureFile"
-          rules="maxFileSize"
-        >
-          <input
-            id="picture"
-            type="file"
-            accept="image/png, image/jpeg"
-            class="file-input file-input-bordered w-full max-w-xs"
-            @change="handleChange"
-            @blur="handleBlur"
-          >
-        </Field>
-        <label class="label">
-          <span class="label-text-alt text-error"><ErrorMessage name="pictureFile" /></span>
-        </label>
+        <button type="submit" class="btn btn-primary !mt-5 rounded-[6.25rem] disabled:bg-[#EEE] disabled:text-[#666666]" :disabled="!meta.valid || isSubmitting">
+          更新
+        </button>
       </div>
-
-      <BaseInput
-        id="website"
-        label="個人網站"
-        name="website"
-        placeholder="https://example.com"
-      />
-      <BaseInput
-        id="linkedIn"
-        label="LinkedIn"
-        name="linkedIn"
-        placeholder="https://www.linkedin.com/in/profile/"
-        rules="validLinkedIn"
-      />
-      <BaseInput
-        id="facebook"
-        label="Facebook"
-        name="facebook"
-        placeholder="https://www.facebook.com/profile"
-        rules="validFacebook"
-      />
-      <BaseInput
-        id="instagram"
-        label="Instagram"
-        name="instagram"
-        placeholder="https://www.instagram.com/profile"
-        rules="validInstagram"
-      />
-      <BaseSelect
-        id="acceptMentoring"
-        name="acceptMentoring"
-        label="開放其他人向你諮詢"
-        help-text="若選「否」，您的資料將不會顯示在首頁"
-        :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]"
-      />
-
-      <BaseSelect
-        id="countryCode"
-        help-text=""
-        name="countryCode"
-        label="國家"
-        :options="countryOptions"
-      />
-
-      <!-- 這版先不用 Calendly -->
-      <!-- <BaseInput
-        id="calendlyUrl"
-        name="calendlyUrl"
-        label="個人預約連結"
-        placeholder="https://calendly.com/<username>"
-      > 
-        <template #helpText>
-          若選擇不提供 Calendly 連結，我們將提供您的 Email 給預約者跟您預約。
-          <a
-            class="link"
-            href="https://calendly.com/"
-          >Calendly 連結可從這申請</a>
-        </template>
-      </BaseInput> -->
-
-      <!-- # May can use zoneinfo attribute instead -->
-      <BaseInput
-      id="timezone"
-      label="時區"
-      name="timezone"
-      placeholder="UTC+8"
-      rules="validTimezone"
-      />
-
-      <BaseInput
-      id="available_time"
-      label="開放預約時間"
-      name="available_time"
-      placeholder="Every Fri-Sat, 7-8 PM, 1st week of each month"
-      rules="required"
-      />
-
-      <div class="form-control w-full max-w-md">
-        <label class="label">
-          <span class="label-text">諮詢類別</span>
-        </label>
-        <Field
-          v-slot="{ field }"
-          name="tags"
-        >
-          <VueMultiselect
-            v-bind="field"
-            v-model="field.value"
-            :options="state.options"
-            :multiple="true"
-            :close-on-select="false"
-            placeholder="選擇你可以提供的諮詢項目"
-          />
-        </Field>
-      </div>
-      
-      <BaseTextarea
-        id="profileBio"
-        name="profile"
-        label="個人簡介 Bio"
-        :rows="5"
-      />
-      <button
-        type="submit"
-        class="btn btn-primary mt-2"
-        :disabled="!meta.valid || isSubmitting"
-      >
-        更新
-      </button>
     </Form>
   </div>
 </template>
@@ -193,7 +83,7 @@ import jsonData from "../assets/country-iso-code-tw.json";
 
 defineRule('required', required)
 defineRule('maxFileSize', value => {
-  if (value?.size > 1024*1024*5) { // 5mb
+  if (value?.size > 1024 * 1024 * 5) { // 5MB
     return '頭像圖片尺寸不能超過 5MB'
   }
   return true
@@ -207,39 +97,6 @@ defineRule('validLinkedIn', value => {
     return 'LinkedIn 網址不正確'
   }
   return true
-})
-defineRule('validFacebook', value => {
-  if (!value) {
-    return true;
-  }
-
-  if (!value?.startsWith('https://www.facebook.com/')) {
-    return 'Facebook 網址不正確'
-  }
-  return true
-})
-defineRule('validInstagram', value => {
-  if (!value) {
-    return true;
-  }
-
-  if (!value?.startsWith('https://www.instagram.com/')) {
-    return 'Instagram 網址不正確'
-  }
-  return true
-})
-
-defineRule('validTimezone', value => {
-  const regex = /^UTC([+-]\d{1,2})$/;
-  if (!value) {
-    return true;
-  }
-
-  if (!regex.test(value.trim())) {
-    return '時區格式不正確';
-  }
-
-  return true;
 })
 
 const store = useStore()
