@@ -6,7 +6,7 @@
         <div class="flex flex-col self-stretch justify-center ">
           <h2 class="font-bold text-2xl">{{ user.name }}</h2>
           <span class="font-medium"> {{ user[UserAttributes.TITLE] }}</span>
-          <div class="flex flex-row space-x-1  disabled:hidden " :disabled="user[UserAttributes.COUNTRY_CODE]">
+          <div class="flex flex-row space-x-1 " :class="{ 'hidden': !user[UserAttributes.COUNTRY_CODE] }">
             <svg class="h-6 w-6 text-gray-500 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
               <path
                 d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z"
@@ -18,9 +18,9 @@
           </div>
         </div>
       </div>
-      <div v-if="user[UserAttributes.TAGS]" class="grid grid-rows-1 grid-cols-4  ">
+      <div v-if="user[UserAttributes.TAGS]" class="xl:grid xl:grid-rows-1 xl:grid-cols-4 xl:w-full flex flex-wrap gap-2 w-2/3">
         <div v-for="tag in JSON.parse(user[UserAttributes.TAGS])" :key="tag"
-          class="badge badge-primary rounded text-sm gap-[0.625rem] py-1 px-[0.63rem] [&:not(:nth-last-child(-n+4))]:mb-2 align-middle">
+          class="badge-lg badge-primary rounded text-sm gap-[0.625rem] py-1 px-[0.63rem] [&:not(:nth-last-child(-n+4))]:mb-2 align-middle ">
           {{ tag }}
         </div>
       </div>
