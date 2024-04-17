@@ -4,7 +4,7 @@
       <HomeCardGridFilterCountry @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
       <HomeCardGridFilterTags @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilterTags>
 
-      <div v-if="state.users" class="grid grid-cols-1 lg:grid-cols-3 gap-4 my-12">
+      <div v-if="state.users" class="flex flex-wrap gap-4 my-12 justify-center">
         <HomeCard v-for="user in usersFiltered" :key="user.sub" :user="user" @show-modal="$emit('showModal', user)" />
         <div v-if="usersFiltered.length == 0">
           <p>找不到符合條件的導師呦🫠</p>
