@@ -16,7 +16,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        body: ["Montserrat", "Noto Sans TC"],
+        body: ["Noto Sans TC", "Montserrat"],
       },
     },
     container: {

@@ -1,7 +1,7 @@
 <template>
   <div class="md:container my-20">
     <article class="prose mx-auto my-12 px-4 md:px-0">
-      <h1 class="text-display font-bold">關於NEX Door</h1>
+      <h1 class="text-[42px] font-bold font-logo">Welcome to NEX Door</h1>
       <span class="text-xl font-bold">串連世界各地的專家，解決各種疑難雜症</span>
       <hr>
       <div class="text-lg font-medium">
