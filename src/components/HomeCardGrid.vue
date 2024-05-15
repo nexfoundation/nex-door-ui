@@ -1,10 +1,14 @@
 <template>
   <div>
     <div class="min-h-[80vh]">
-      <HomeCardGridFilterCountry @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
-      <HomeCardGridFilterTags @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilterTags>
+      <div class="flex justify-center align-middle py-6 px-4">
+        <div class="flex flex-col bg-white rounded-xl py-6 px-4 xl:w-1/2 p-10 shadow-[0_10px_30px_0px_rgba(0,0,0,0.05)] gap-3">
+          <HomeCardGridFilterCountry class=" " @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
+          <HomeCardGridFilterTags class=" "  @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilterTags>
+        </div>
+      </div>
 
-      <div v-if="state.users" class="flex flex-wrap gap-4 my-12 justify-center">
+      <div v-if="state.users" class="flex flex-wrap gap-4 px-4 py-6 justify-center">
         <HomeCard v-for="user in usersFiltered" :key="user.sub" :user="user" @show-modal="$emit('showModal', user)" />
         <div v-if="usersFiltered.length == 0">
           <p>找不到符合條件的導師呦🫠</p>

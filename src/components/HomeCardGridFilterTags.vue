@@ -1,7 +1,7 @@
 <template lang="">
   <div>
-    <div class="">
-      <button class="btn btn-outline mr-2 hover:bg-blue-900 focus:shadow-outline"
+    <div class="flex  overflow-hidden text-lg text-center md:space-x-3 md:space-y-2 gap-3">
+      <button class="flex btn btn-outline px-3 py-4 hover:bg-secondary hover:text-[#000000DE] focus:shadow-outline border-[#C6CBD3] text-[#00000099]"
       v-for="option in availableTags"  :key="option" @click="selectOption(option)"
       :class="{ 'bg-blue-500': selectedTag === option }"
       >{{ option }}</button>

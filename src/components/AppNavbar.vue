@@ -1,6 +1,6 @@
 <template>
-  <div class="navbar bg-white px-4 py-2 md:px-6 md:py-3 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
-    <div class="md:navbar-start">
+  <div class="navbar bg-white px-4 py-2 lg:px-6 lg:py-3 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
+    <div class="lg:navbar-start">
       <div class="dropdown mr-2 lg:mr-0">
         <label
           tabindex="0"

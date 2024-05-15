@@ -1,9 +1,9 @@
 <template>
-  <div class="card card-bordered shadow-xl xl:w-[25rem] w-full h-80 gap-4">
-    <div class="card-body flex-grow-0 overflow-hidden space-y-4">
+  <div class="card card-bordered shadow-xl xl:w-[25rem] w-full h-80  bg-white">
+    <div class="card-body flex-grow-0 overflow-hidden lg:space-y-4 gap-4 p-6">
       <div class="flex flex-row  gap-4 self-stretch">
-        <BaseAvatar class="flex-none size-20 " :src="user.picture" :text="getIntials(user.name)" />
-        <div class="flex flex-col self-stretch justify-center ">
+        <BaseAvatar class="flex-none size-20 h-max" :src="user.picture" :text="getIntials(user.name)" />
+        <div class="flex flex-col self-stretch justify-center gap-1">
           <h2 class="font-bold text-2xl">{{ user.name }}</h2>
           <span class="font-medium"> {{ user[UserAttributes.TITLE] }}</span>
           <div class="flex flex-row space-x-1 " :class="{ 'hidden': !user[UserAttributes.COUNTRY_CODE] }">
@@ -18,9 +18,9 @@
           </div>
         </div>
       </div>
-      <div v-if="user[UserAttributes.TAGS]" class="xl:grid xl:grid-rows-1 xl:grid-cols-4 xl:w-full flex flex-wrap gap-2 w-2/3">
+      <div v-if="user[UserAttributes.TAGS]" class=" flex gap-2 w-3/4 overflow-hidden whitespace-nowrap">
         <div v-for="tag in JSON.parse(user[UserAttributes.TAGS])" :key="tag"
-          class="badge-lg badge-primary rounded text-sm gap-[0.625rem] py-1 px-[0.63rem] [&:not(:nth-last-child(-n+4))]:mb-2 align-middle ">
+          class="badge-lg badge-primary bg-secondary text-black-secondary rounded text-sm gap-[0.625rem] py-1 px-[0.63rem]">
           {{ tag }}
         </div>
       </div>

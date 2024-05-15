@@ -17,6 +17,15 @@ module.exports = {
     extend: {
       fontFamily: {
         body: ["Noto Sans TC", "Montserrat"],
+        logo: ["Montserrat"]
+      },
+      colors: {
+        "primary": '#9FE4FE',
+        "secondary": '#C6F5D5',
+        "gradient": ' bg-gradient-to-r from-[#C6F5D5] to-[#6fd7fd66] ',
+        "secondary-blue": '#6FD7FD',
+        "accent-blue": '#3D768B',
+        "black-secondary": '#000000DE'
       },
     },
     container: {

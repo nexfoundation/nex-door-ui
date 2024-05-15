@@ -1,22 +1,39 @@
 <template>
-  <div class="md:container my-20">
-    <article class="prose mx-auto my-12 px-4 md:px-0">
-      <h1 class="text-[42px] font-bold font-logo">Welcome to NEX Door</h1>
+  <section class="my-20 lg:container lg:px-60 md:px-30 px-4">
+    <article class="mx-auto my-12 px-4 lg:px-0 gap-9 flex flex-col ">
+      <h1 class="text-[3rem] font-bold font-logo">Welcome to NEX Door</h1>
       <span class="text-xl font-bold">串連世界各地的專家，解決各種疑難雜症</span>
       <hr>
       <div class="text-lg font-medium">
         <p>
           NEX Door
-          是一個非營利線上導師領航平台，連結世界各地菁英，創造團結互助的力量，建立台灣人互助網路。讓台灣人陪著台灣人在國際路上打開第一扇門或衝刺最後一哩路。
-        </p>
-        <p>
-          「今日的路人是明日的引路人」，延續 Give and Take
-          的精神，讓我們啟動正向迴圈，幫助更多台灣人走向世界，讓回家的路變得更好。
+          是一個非營利線上導師領航平台，連結世界各地菁英，創造團結互助的力量，建立台灣人互助網路。
         </p>
       </div>
-      <hr>
+      <div class="[&_*]:rounded-[6.25rem] [&_*]:w-[10rem] [&_*]:h-[3rem] [&_*]:text-black [&_*]:text-[1.25em] flex gap-[1.5rem] [&_*]:leading-7">
+        <button class="btn bg-gradient-to-r from-[#6FD7FD] to-[#47DE7899] border-none">立即登入</button>
+        <button class="btn bg-white border-secondary-blue border-[2px]">快速註冊</button>
+      </div>
     </article>
-
+  </section>
+  <div>
+    <div class=" w-screen bg-gradient-to-r from-[#C6F5D5] to-[#6fd7fd66] px-20 py-8 px-3 flex flex-col gap-6 ">
+      <h2 class="text-2xl font-bold text-center">三步驟幫你擴展海外人脈</h2>
+      <span class="join flex flex-col md:flex-row [&>*]:{w-[15rem]} gap-5 ">
+        <div class="avatar p-5 gap-6 font-medium backdrop-blur-[20px] bg-white/40 rounded-[0.5rem] ">
+          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center">1</div>
+          <p class="">透過篩選國家與諮詢主題，認識海外專業人才。</p>  
+        </div>
+        <div class="avatar p-5 gap-6 font-medium backdrop-blur-[20px] bg-white/40 rounded-[0.5rem]">
+          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center">2</div>
+          <p>點選導師簡介，深入了解經歷與可提供的諮詢方向。</p>  
+        </div>
+        <div class="avatar p-5 gap-6 font-medium backdrop-blur-[20px] bg-white/40 rounded-[0.5rem]">
+          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center">3</div>
+          <p>登入會員即可送出留言給導師，擴展你的海外人脈！</p>  
+        </div>
+      </span>
+    </div>
     <Suspense>
       <HomeCardGrid @show-modal="(u) => (state.user = u)" />
     </Suspense>
