@@ -11,16 +11,16 @@
         </p>
       </div>
       <div class="[&_*]:rounded-[6.25rem] [&_*]:w-[10rem] [&_*]:h-[3rem] [&_*]:text-black [&_*]:text-[1.25em] flex gap-[1.5rem] [&_*]:leading-7">
-        <button class="btn bg-gradient-to-r from-[#6FD7FD] to-[#47DE7899] border-none">立即登入</button>
-        <button class="btn bg-white border-secondary-blue border-[2px]">快速註冊</button>
+        <router-link to="/auth" class="btn bg-gradient-to-r from-[#6FD7FD] to-[#47DE7899] border-none" >立即登入</router-link>
+        <router-link to="/auth" class="btn bg-white border-secondary-blue border-[2px]">快速註冊</router-link>
       </div>
     </article>
   </section>
   <div>
-    <div class=" w-screen bg-gradient-to-r from-[#C6F5D5] to-[#6fd7fd66] px-20 py-8 px-3 flex flex-col gap-6 ">
+    <div class=" w-screen bg-gradient-to-r from-[#C6F5D5] to-[#6fd7fd66] px-20 py-8 px-3 flex flex-col gap-6 md:py-10 md:px-4 xl:px-60 xl:py-12 ">
       <h2 class="text-2xl font-bold text-center">三步驟幫你擴展海外人脈</h2>
-      <span class="join flex flex-col md:flex-row [&>*]:{w-[15rem]} gap-5 ">
-        <div class="avatar p-5 gap-6 font-medium backdrop-blur-[20px] bg-white/40 rounded-[0.5rem] ">
+      <span class="join flex flex-col md:flex-row [&>*]:{w-[15rem]} gap-5 self-stretch justify-center">
+        <div class="avatar p-5 gap-6 font-medium backdrop-blur-[20px] bg-white/40 rounded-[0.5rem]">
           <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center">1</div>
           <p class="">透過篩選國家與諮詢主題，認識海外專業人才。</p>  
         </div>

@@ -15,6 +15,12 @@ module.exports = {
       'caption': ['12px', '140%']
     },
     extend: {
+      screens: {
+        // 'xs': '375px', mobile-first, skip smallest
+        'sm': '568px',
+        'lg': '990px',
+        '2xl': '1440px'
+      },
       fontFamily: {
         body: ["Noto Sans TC", "Montserrat"],
         logo: ["Montserrat"]
