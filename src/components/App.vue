@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col min-h-screen font-body">
+  <div class="flex flex-col font-body w-screen bg-[#F4F6FA] ">
     <div class="flex-grow">
       <AppNavbar />
       <router-view />

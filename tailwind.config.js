@@ -18,7 +18,9 @@ module.exports = {
       screens: {
         // 'xs': '375px', mobile-first, skip smallest
         'sm': '568px',
-        'lg': '990px',
+        'md': '768px',
+        'lg': '990px', // may be deprecated
+        'xl': '1280px',
         '2xl': '1440px'
       },
       fontFamily: {
@@ -26,10 +28,11 @@ module.exports = {
         logo: ["Montserrat"]
       },
       colors: {
-        "primary": '#9FE4FE',
-        "secondary": '#C6F5D5',
+        "primary": '#9FE4FE', // primary blue
+        "secondary": '#C6F5D5', // primary green
         "gradient": ' bg-gradient-to-r from-[#C6F5D5] to-[#6fd7fd66] ',
         "secondary-blue": '#6FD7FD',
+        "secondary-green": '#47DE78',
         "accent-blue": '#3D768B',
         "black-secondary": '#000000DE'
       },
