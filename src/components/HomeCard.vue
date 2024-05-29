@@ -1,5 +1,5 @@
 <template>
-  <div class="card card-bordered shadow-xl w-[340px] 2xl:w-[400px] h-[420px] bg-white sm:mx-3 md:mx-0">
+  <label for="profile-modal" @click="$emit('showModal')" class="card card-bordered shadow-xl w-[340px] 2xl:w-[400px] h-[420px] bg-white sm:mx-3 md:mx-0">
     <div class="card-body flex-grow-0 overflow-hidden lg:space-y-4 gap-4 p-6">
       <div class="flex flex-row  gap-4 self-stretch">
         <BaseAvatar class="flex-none size-20 h-max" :src="user.picture" :text="getIntials(user.name)" />
@@ -18,26 +18,18 @@
           </div>
         </div>
       </div>
-      <div v-if="user[UserAttributes.TAGS]" class=" flex gap-2 w-3/4 overflow-hidden whitespace-nowrap">
+      <div v-if="user[UserAttributes.TAGS]" class="flex gap-2 w-3/4 overflow-hidden whitespace-nowrap">
         <div v-for="tag in JSON.parse(user[UserAttributes.TAGS])" :key="tag"
           class="badge-lg badge-primary bg-secondary text-black-secondary rounded text-sm gap-[0.625rem] py-1 px-[0.63rem]">
           {{ tag }}
         </div>
       </div>
       <hr>
-      <!-- <div class="flex gap-2">
-        <label for="booking-modal" class="btn btn-primary" @click="$emit('showModal')">
-          預約
-        </label>
-        <label for="profile-modal" class="btn btn-secondary" @click="$emit('showModal')">
-          關於我
-        </label>
-      </div> -->
       <p :id="`about-${user.sub}`" class="overflow-hidden line-clamp-3">
         {{ user.profile }}
       </p>
     </div>
-  </div>
+  </label>
 </template>
 
 <script setup>
