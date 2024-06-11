@@ -16,7 +16,7 @@ module.exports = {
     },
     extend: {
       screens: {
-        // 'xs': '375px', mobile-first, skip smallest
+        'xs': '376px', // mobile-first, skip smallest sometimes
         'sm': '568px',
         'md': '768px',
         'lg': '990px', // may be deprecated
@@ -30,7 +30,12 @@ module.exports = {
       colors: {
         "primary": '#9FE4FE', // primary blue
         "secondary": '#C6F5D5', // primary green
-        "gradient": ' bg-gradient-to-r from-[#C6F5D5] to-[#6fd7fd66] ',
+        "primary-green": '#C6F5D5',
+        "primary-blue": '#9FE4FE',
+        // functions seems not work here
+        // "gradient": ' bg-gradient-to-r from-[#C6F5D5] to-[#6fd7fd66] ',
+        // "gradient-btn-default": 'linear-gradient(to right, #6FD7FD, #47DE7899)',
+        // "gradient-btn-hover":  'bg-gradient-to-r from-9FE4FE to-C6F5D5',
         "secondary-blue": '#6FD7FD',
         "secondary-green": '#47DE78',
         "accent-blue": '#3D768B',
