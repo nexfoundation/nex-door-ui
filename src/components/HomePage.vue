@@ -44,7 +44,7 @@
       so that clicking outside of the modal close the modal.
       We can wrap this component to its own component in the future if more places use this.
     -->
-    <!-- Profile modal -->
+    <!-- Profile Card modal -->
     <input id="profile-modal" ref="profileModalInput" type="checkbox" class="modal-toggle" @change="modalChange">
     <label class="modal" for="profile-modal">
       <label class="modal-box flex flex-col sm:w-[520px] drop-shadow-[4_4px_4px_rgba(0,0,0,0.125)] " for="">
