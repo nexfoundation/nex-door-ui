@@ -5,7 +5,7 @@
         <BaseAvatar class="flex-none size-20 h-max" :src="user.picture" :text="getIntials(user.name)" />
         <div class="flex flex-col self-stretch justify-center gap-1">
           <h2 class="font-bold text-2xl">{{ user.name }}</h2>
-          <span class="font-medium"> {{ user[UserAttributes.TITLE] }}</span>
+          <span class="font-medium line-clamp-1"> {{ user[UserAttributes.TITLE] }}</span>
           <div class="flex flex-row space-x-1 " :class="{ 'hidden': !user[UserAttributes.COUNTRY_CODE] }">
             <svg class="h-6 w-6 text-gray-500 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
               <path
