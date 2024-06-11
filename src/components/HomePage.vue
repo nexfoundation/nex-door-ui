@@ -11,7 +11,7 @@
         </p>
       </div>
       <div class="[&_*]:rounded-[6.25rem] [&_*]:w-[10rem] [&_*]:h-[3rem] [&_*]:text-black [&_*]:text-[1.25em] flex gap-[1.5rem] [&_*]:leading-7">
-        <router-link to="/auth" class="btn bg-gradient-to-r from-[#6FD7FD] to-[#47DE7899] border-none" >立即登入</router-link>
+        <router-link to="/auth?tab=signIn" class="btn bg-gradient-to-r from-[#6FD7FD] to-[#47DE78] border-none">立即登入</router-link>
         <router-link to="/auth" class="btn bg-white border-secondary-blue border-[2px]">快速註冊</router-link>
       </div>
     </article>
