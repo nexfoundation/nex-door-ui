@@ -47,7 +47,7 @@
     <!-- Profile modal -->
     <input id="profile-modal" ref="profileModalInput" type="checkbox" class="modal-toggle" @change="modalChange">
     <label class="modal" for="profile-modal">
-      <label class="modal-box flex flex-col w-[520px]" for="">
+      <label class="modal-box flex flex-col sm:w-[520px] drop-shadow-[4_4px_4px_rgba(0,0,0,0.125)] " for="">
         <template v-if="state.user">
           <div class="flex flex-col w-full gap-4 xs:gap-6">
             <div class="flex flex-col xs:flex-row gap-4 items-start">
@@ -95,13 +95,13 @@
           </div>
         </template>
         <hr class="my-2">
-        <div v-if="!isAuthenticated" class="card-body">
-          <h1 class="card-title">請先註冊/登入</h1>
+        <div v-if="!isAuthenticated" class="">
+          <p class="text-sm text-start">欲諮詢者，請先登入或註冊</p>
 
           <div class="flex flex-col items-center gap-2 mt-8">
-            <router-link class="btn btn-primary btn-wide"
+            <router-link class="text-center content-center bg-gradient-to-r from-[#6FD7FD] to-[#47DE7899]/[0.6] hover:from-[#9FE4FE] hover:to-[#C6F5D5] border-none w-full h-[48px] rounded-[100px] text-black font-[20px] disabled:bg-[#E5E8EE]"
               :to="{ path: 'auth', query: { redirect: `/?mentor=${state.user?.sub}` } }">
-              註冊/登入
+              立即登入
             </router-link>
           </div>
         </div>
