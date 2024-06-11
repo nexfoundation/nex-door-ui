@@ -144,6 +144,11 @@ const {
   [UserAttributes.TIMEZONE]: timezone,
   [UserAttributes.TITLE]: title,
   [UserAttributes.AVAILABLE_TIME]: available_time,
+  [UserAttributes.DESC_WHAT_CAN_I_HELP]: desc_what_can_i_help, 
+  [UserAttributes.DESC_ACHIVEMENT]: desc_achivement, 
+  [UserAttributes.DESC_SKILL]: desc_skill, 
+  [UserAttributes.DESC_OTHER]: desc_other, 
+  [UserAttributes.DESC_MENTORS_NOTICE]: desc_mentors_notice, 
 } = state.user.attributes;
 
 const formValues = {
@@ -163,6 +168,11 @@ const formValues = {
   timezone: timezone || "",
   title: title || "",
   available_time: available_time || "",
+  desc_what_can_i_help: desc_what_can_i_help || "",
+  desc_achivement: desc_achivement || "",
+  desc_skill: desc_skill || "",
+  desc_other: desc_other || "",
+  desc_mentors_notice: desc_mentors_notice || "",
 };
 
 async function onSubmit(values) {
@@ -181,6 +191,11 @@ async function onSubmit(values) {
     [UserAttributes.AVAILABLE_TIME]: values.available_time.trim(),
     [UserAttributes.TIMEZONE]: values.timezone.trim(),
     [UserAttributes.TITLE]: values.title.trim(),
+    [UserAttributes.DESC_WHAT_CAN_I_HELP]: values.desc_what_can_i_help.trim(),
+    [UserAttributes.DESC_ACHIVEMENT]: values.desc_achivement.trim(),
+    [UserAttributes.DESC_SKILL]: values.desc_skill.trim(),
+    [UserAttributes.DESC_OTHER]: values.desc_other.trim(),
+    [UserAttributes.DESC_MENTORS_NOTICE]: values.desc_mentors_notice.trim(),
   }
 
 

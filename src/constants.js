@@ -8,5 +8,10 @@ export const UserAttributes = {
   COUNTRY_CODE: 'custom:country_code',
   TIMEZONE: 'custom:timezone',
   TITLE: 'custom:title',
-  AVAILABLE_TIME: 'custom:available_time'
+  AVAILABLE_TIME: 'custom:available_time',
+  DESC_WHAT_CAN_I_HELP: 'custom:desc_what_can_i_help',
+  DESC_ACHIVEMENT: 'custom:desc_achivement',
+  DESC_SKILL: 'custom:desc_skill',
+  DESC_OTHER: 'custom:desc_other',
+  DESC_MENTORS_NOTICE: 'custom:desc_mentors_notice',
 }
