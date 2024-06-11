@@ -14,7 +14,7 @@
             </svg>
             <!-- alt icon -->
             <!-- <svg class="h-4 w-4 text-gray-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />  <circle cx="12" cy="10" r="3" /></svg> -->
-            <span class="font-medium"> {{ user[UserAttributes.COUNTRY_CODE] }}</span>
+            <span class="font-medium"> {{ getCountryByCode(user[UserAttributes.COUNTRY_CODE]) }} </span>
           </div>
         </div>
       </div>
@@ -28,6 +28,10 @@
       <p :id="`about-${user.sub}`" class="overflow-hidden line-clamp-3">
         {{ user.profile }}
       </p>
+      <div class="bg-[#F4F6FA] rounded-[0.25rem] gap-4 flex flex-col p-2" :class="{ 'hidden': !user[UserAttributes.DESC_WHAT_CAN_I_HELP] }">
+        <h3 class=" font-bold text-lg">我可以提供哪些幫助?</h3>
+        <p class="line-clamp-3 text-base leading-[140%]">{{ user[UserAttributes.DESC_WHAT_CAN_I_HELP] }}</p>
+      </div>
     </div>
   </label>
 </template>
@@ -35,6 +39,7 @@
 <script setup>
 import { UserAttributes } from '../constants';
 import BaseAvatar from './base/BaseAvatar';
+import countryCodeJson from "../assets/country-iso-code-tw.json";
 
 defineProps({
   user: {
@@ -58,6 +63,13 @@ function getIntials(name) {
     return acc;
   }, '');
   return initials;
+}
+
+// process country list
+const countryOptions = JSON.parse(JSON.stringify(countryCodeJson));
+
+function getCountryByCode(code) {
+  return countryOptions.countries[code] || "Country not found";
 }
 
 defineEmits(['showModal']);
