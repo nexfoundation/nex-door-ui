@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="">
+    <div class="flex flex-col place-items-center">
       <div class="flex justify-center align-middle py-6 px-4 md:m-12 mx-4 my-6">
         <div class="flex flex-col bg-white rounded-xl py-6 px-4 md:w-[644px] p-10 shadow-[0_10px_30px_0px_rgba(0,0,0,0.05)] gap-3">
           <HomeCardGridFilterCountry class=" " @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
@@ -8,7 +8,7 @@
         </div>
       </div>
 
-      <div v-if="state.users" class="flex flex-wrap gap-4 px-4 py-6 justify-center mx-4 my-6 md:mx-4 md:my-12 xl:mx-20">
+      <div v-if="state.users" class="flex flex-wrap gap-4 px-4 py-6 justify-center mx-4 my-6 md:mx-4 md:my-12 xl:mx-20 max-w-[1280px] ">
         <HomeCard v-for="user in usersFiltered" :key="user.sub" :user="user" @show-modal="$emit('showModal', user)" />
         <div v-if="usersFiltered.length == 0">
           <p>找不到符合條件的導師呦🫠</p>
