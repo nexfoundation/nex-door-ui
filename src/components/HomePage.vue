@@ -86,10 +86,10 @@
               <p v-if="state.user.profile">
                 {{ state.user.profile }}
               </p>
-              <!-- repeated code on homecard.vue -->
+              <!-- almost repeated code on homecard.vue -->
               <div class="bg-[#F4F6FA] rounded-[0.25rem] gap-4 flex flex-col p-2" v-if="state.user[UserAttributes.DESC_WHAT_CAN_I_HELP]">
                 <h3 class=" font-bold text-lg">我可以提供哪些幫助?</h3>
-                <p class="line-clamp-3 text-base leading-[140%]">{{ state.user[UserAttributes.DESC_WHAT_CAN_I_HELP] }}</p>
+                <p class="text-base leading-[140%]">{{ state.user[UserAttributes.DESC_WHAT_CAN_I_HELP] }}</p>
               </div>
             </div>  
           </div>
