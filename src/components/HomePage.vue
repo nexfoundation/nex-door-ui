@@ -116,32 +116,6 @@
     </label>
     <!-- Profile modal -->
 
-    <!-- Booking modal -->
-    <input id="booking-modal" type="checkbox" class="modal-toggle" @change="modalChange">
-    <label class="modal" for="booking-modal">
-      <label ref="formContainer" class="modal-box card w-full mx-auto shadow-xl flex flex-col" for="">
-        <div v-if="!isAuthenticated" class="card-body">
-          <h1 class="card-title">請先註冊/登入</h1>
-
-          <div class="flex flex-col items-center gap-2 mt-8">
-            <router-link class="btn btn-primary btn-wide" to="/auth">
-              註冊
-            </router-link>
-            <router-link class="btn btn-secondary btn-wide" to="/auth?tab=signIn">
-              登入
-            </router-link>
-          </div>
-        </div>
-        <div v-else class="card-body">
-          <h1 class="card-title">向 {{ state.user?.name }} 預約</h1>
-          <div v-if="state.errorMessage" class="alert alert-error" role="alert">
-            {{ state.errorMessage }}
-          </div>
-          <BookingConfirmation @submit="onSubmit" :userToggled="state.user" />
-        </div>
-      </label>
-    </label>
-    <!-- Booking modal -->
     <!-- Email sent modal -->
     <input id="email-sent-modal" type="checkbox" class="modal-toggle">
     <label class="modal" for="email-sent-modal">
