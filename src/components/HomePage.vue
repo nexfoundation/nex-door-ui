@@ -57,6 +57,7 @@
                   {{ state.user.name }}
                 </h3>
                 <div class=" flex line-clamp-2 overflow-hidden">{{ state.user[UserAttributes.TITLE] }}</div>
+                <BaseCountryWidget :country-code="state.user[UserAttributes.COUNTRY_CODE]"></BaseCountryWidget>
                 <div class="flex flex-row self-stretch gap-2">
                   <a v-if="state.user.website" :href="state.user.website" class="w-[36px] h-[36px] bg-[#E5E8EE] rounded-full flex justify-center items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" >
@@ -169,6 +170,7 @@ import { API } from 'aws-amplify';
 import BaseAvatar from './base/BaseAvatar';
 import HomeCardGrid from './HomeCardGrid';
 import BookingConfirmation from './BookingConfirmation';
+import BaseCountryWidget from './base/BaseCountryWidget.vue';
 
 const route = useRoute();
 const router = useRouter();

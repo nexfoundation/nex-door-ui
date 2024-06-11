@@ -6,16 +6,7 @@
         <div class="flex flex-col self-stretch justify-center gap-1">
           <h2 class="font-bold text-2xl">{{ user.name }}</h2>
           <span class="font-medium line-clamp-1"> {{ user[UserAttributes.TITLE] }}</span>
-          <div class="flex flex-row space-x-1 " :class="{ 'hidden': !user[UserAttributes.COUNTRY_CODE] }">
-            <svg class="h-6 w-6 text-gray-500 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z"
-                fill="#666666" />
-            </svg>
-            <!-- alt icon -->
-            <!-- <svg class="h-4 w-4 text-gray-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />  <circle cx="12" cy="10" r="3" /></svg> -->
-            <span class="font-medium"> {{ getCountryByCode(user[UserAttributes.COUNTRY_CODE]) }} </span>
-          </div>
+          <CountryWidget :country-code="user[UserAttributes.COUNTRY_CODE]"></CountryWidget>
         </div>
       </div>
       <div v-if="user[UserAttributes.TAGS]" class="flex gap-2 w-3/4 overflow-hidden whitespace-nowrap">
@@ -28,7 +19,7 @@
       <p :id="`about-${user.sub}`" class="overflow-hidden line-clamp-3">
         {{ user.profile }}
       </p>
-      <div class="bg-[#F4F6FA] rounded-[0.25rem] gap-4 flex flex-col p-2" :class="{ 'hidden': !user[UserAttributes.DESC_WHAT_CAN_I_HELP] }">
+      <div class="bg-[#F4F6FA] rounded-[0.25rem] gap-4 flex flex-col p-2" v-if="user[UserAttributes.DESC_WHAT_CAN_I_HELP]">
         <h3 class=" font-bold text-lg">我可以提供哪些幫助?</h3>
         <p class="line-clamp-3 text-base leading-[140%]">{{ user[UserAttributes.DESC_WHAT_CAN_I_HELP] }}</p>
       </div>
@@ -39,7 +30,7 @@
 <script setup>
 import { UserAttributes } from '../constants';
 import BaseAvatar from './base/BaseAvatar';
-import countryCodeJson from "../assets/country-iso-code-tw.json";
+import CountryWidget from './base/BaseCountryWidget.vue'
 
 defineProps({
   user: {
@@ -63,13 +54,6 @@ function getIntials(name) {
     return acc;
   }, '');
   return initials;
-}
-
-// process country list
-const countryOptions = JSON.parse(JSON.stringify(countryCodeJson));
-
-function getCountryByCode(code) {
-  return countryOptions.countries[code] || "Country not found";
 }
 
 defineEmits(['showModal']);
