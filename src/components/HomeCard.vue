@@ -1,6 +1,6 @@
 <template>
   <label for="profile-modal" @click="$emit('showModal')" class="card card-bordered shadow-xl w-[340px] 2xl:w-[400px] h-[420px] bg-white sm:mx-3 md:mx-0">
-    <div class="card-body flex-grow-0 overflow-hidden lg:space-y-4 gap-4 p-6">
+    <div class="card-body flex-grow-0 overflow-hidden gap-4 p-6">
       <div class="flex flex-row  gap-4 self-stretch">
         <BaseAvatar class="flex-none size-20 h-max" :src="user.picture" :text="getIntials(user.name)" />
         <div class="flex flex-col self-stretch justify-center gap-1">
