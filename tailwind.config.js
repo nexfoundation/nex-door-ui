@@ -39,7 +39,7 @@ module.exports = {
         "secondary-blue": '#6FD7FD',
         "secondary-green": '#47DE78',
         "accent-blue": '#3D768B',
-        "black-secondary": '#000000DE'
+        "black-secondary": '#000000DE',
       },
     },
     container: {
@@ -53,8 +53,17 @@ module.exports = {
   ],
   daisyui: {
     themes: [
-      "dark",
-      "light",
+      {
+        dark: {}
+      },
+      {
+        light: {
+          ...require("daisyui/src/colors/themes")["[data-theme=light]"],
+          primary: "#47DE78",
+          secondary: "#6FD7FD",
+          // "--tw-bg-opacity": "0%"
+        }
+      }
     ]
   },
 }

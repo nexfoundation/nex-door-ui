@@ -11,8 +11,8 @@
         </p>
       </div>
       <div class="[&_*]:rounded-[6.25rem] [&_*]:w-[10rem] [&_*]:h-[3rem] [&_*]:text-black [&_*]:text-[1.25em] flex gap-[1.5rem] [&_*]:leading-7">
-        <router-link to="/auth?tab=signIn" class="btn bg-gradient-to-r from-[#6FD7FD] to-[#47DE78] border-none">立即登入</router-link>
-        <router-link to="/auth" class="btn bg-white border-secondary-blue border-[2px]">快速註冊</router-link>
+        <router-link to="/auth?tab=signIn" class="btn bg-gradient-to-r from-[#6FD7FD] to-[#47DE78] border-none !w-[200px]">立即登入</router-link>
+        <router-link to="/auth" class="btn bg-white border-secondary-blue border-[2px] !w-[200px]">快速註冊</router-link>
       </div>
     </article>
   </section>
@@ -21,15 +21,15 @@
       <h2 class="text-2xl font-bold text-center">三步驟幫你擴展海外人脈</h2>
       <span class="join flex flex-col md:flex-row [&>*]:{w-[15rem]} gap-5 self-stretch justify-center">
         <div class="avatar p-5 gap-6 font-medium backdrop-blur-[20px] bg-white/40 rounded-[0.5rem]">
-          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center">1</div>
+          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center self-center">1</div>
           <p class="">透過篩選國家與諮詢主題，認識海外專業人才。</p>  
         </div>
         <div class="avatar p-5 gap-6 font-medium backdrop-blur-[20px] bg-white/40 rounded-[0.5rem]">
-          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center">2</div>
+          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center self-center">2</div>
           <p>點選導師簡介，深入了解經歷與可提供的諮詢方向。</p>  
         </div>
         <div class="avatar p-5 gap-6 font-medium backdrop-blur-[20px] bg-white/40 rounded-[0.5rem]">
-          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center">3</div>
+          <div class="w-12 h-max rounded-full bg-white text-accent-blue p-[0.625rem] text-center self-center">3</div>
           <p>登入會員即可送出留言給導師，擴展你的海外人脈！</p>  
         </div>
       </span>
@@ -99,7 +99,7 @@
           <p class="text-sm text-start">欲諮詢者，請先登入或註冊</p>
 
           <div class="flex flex-col items-center gap-2 mt-8">
-            <router-link class="text-center content-center bg-gradient-to-r from-[#6FD7FD] to-[#47DE7899]/[0.6] hover:from-[#9FE4FE] hover:to-[#C6F5D5] border-none w-full h-[48px] rounded-[100px] text-black font-[20px] disabled:bg-[#E5E8EE]"
+            <router-link class="text-center content-center bg-gradient-to-r from-[#6FD7FD] to-[#47DE7899]/[0.6] hover:from-[#9FE4FE] hover:to-[#C6F5D5] border-none w-full h-[48px] rounded-[100px] text-black text-[20px] disabled:bg-[#E5E8EE] font-medium"
               :to="{ path: 'auth', query: { redirect: `/?mentor=${state.user?.sub}` } }">
               立即登入
             </router-link>
