@@ -1,40 +1,37 @@
+<!-- Information Card  -->
 <template>
-  <div class="card card-bordered shadow-xl w-full h-96">
-    <div class="card-body flex-grow-0 overflow-hidden">
-      <div>
-        <BaseAvatar :src="user.picture" :text="getIntials(user.name)" />
-        <div>
-          <h2 class="my-2 font-bold text-2xl leading-relaxed">
-            {{ user.name }}
-          </h2>
-          <p> {{ user[UserAttributes.TITLE]}}</p>
-          <p> {{ user[UserAttributes.COUNTRY_CODE] }}</p>
+  <label for="profile-modal" @click="$emit('showModal')" class="card card-bordered shadow-xl w-[340px] 2xl:w-[400px] h-[420px] bg-white sm:mx-3 md:mx-0">
+    <div class="card-body flex-grow-0 overflow-hidden gap-4 p-6">
+      <div class="flex flex-row  gap-4 self-stretch">
+        <BaseAvatar class="flex-none size-20 h-max" :src="user.picture" :text="getIntials(user.name)" />
+        <div class="flex flex-col self-stretch justify-center gap-1">
+          <h2 class="font-bold text-2xl">{{ user.name }}</h2>
+          <span class="font-medium line-clamp-1"> {{ user[UserAttributes.TITLE] }}</span>
+          <CountryWidget :country-code="user[UserAttributes.COUNTRY_CODE]"></CountryWidget>
         </div>
-        <div v-if="user[UserAttributes.TAGS]" class="flex flex-wrap gap-2">
-          <div v-for="tag in JSON.parse(user[UserAttributes.TAGS])" :key="tag" class="badge">
-            {{ tag }}
-          </div>
+      </div>
+      <div v-if="user[UserAttributes.TAGS]" class="flex gap-2 w-3/4 overflow-hidden whitespace-nowrap">
+        <div v-for="tag in JSON.parse(user[UserAttributes.TAGS])" :key="tag"
+          class="badge-lg badge-primary bg-secondary text-black-secondary rounded text-sm gap-[0.625rem] py-1 px-[0.63rem]">
+          {{ tag }}
         </div>
       </div>
       <hr>
-      <div class="flex gap-2">
-        <label for="booking-modal" class="btn btn-primary" @click="$emit('showModal')">
-          預約
-        </label>
-        <label for="profile-modal" class="btn btn-secondary" @click="$emit('showModal')">
-          關於我
-        </label>
-      </div>
-      <p :id="`about-${user.sub}`" class="overflow-hidden line-clamp-3 mt-4">
+      <p :id="`about-${user.sub}`" class="overflow-hidden line-clamp-3">
         {{ user.profile }}
       </p>
+      <div class="bg-[#F4F6FA] rounded-[0.25rem] gap-4 flex flex-col p-2" v-if="user[UserAttributes.DESC_WHAT_CAN_I_HELP]">
+        <h3 class=" font-bold text-lg">我可以提供哪些幫助?</h3>
+        <p class="line-clamp-3 text-base leading-[140%]">{{ user[UserAttributes.DESC_WHAT_CAN_I_HELP] }}</p>
+      </div>
     </div>
-  </div>
+  </label>
 </template>
 
 <script setup>
 import { UserAttributes } from '../constants';
 import BaseAvatar from './base/BaseAvatar';
+import CountryWidget from './base/BaseCountryWidget.vue'
 
 defineProps({
   user: {

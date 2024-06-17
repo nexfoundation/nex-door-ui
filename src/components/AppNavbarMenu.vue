@@ -7,7 +7,7 @@
     </li>
     <li v-if="!isAuthenticated">
       <router-link to="/auth">
-        登入
+        登入註冊
       </router-link>
     </li>
     <li v-if="isAuthenticated">

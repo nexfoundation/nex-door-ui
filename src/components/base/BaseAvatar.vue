@@ -6,8 +6,8 @@
     <div
       class="w-20 rounded-full"
       :class="{
-        'bg-neutral-focus': !src,
-        'text-neutral-content': !src,
+        'bg-[#F4F6FA]': !src,
+        'text-[#1E2122]': !src,
       }"
     >
       <img
@@ -16,7 +16,7 @@
       >
       <span
         v-if="!src"
-        class="text-2xl"
+        class="text-[2.25rem] font-medium w-18"
       >{{ text }}</span>
     </div>
   </div>

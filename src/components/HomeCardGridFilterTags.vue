@@ -1,7 +1,7 @@
 <template lang="">
   <div>
-    <div class="">
-      <button class="btn btn-outline mr-2 hover:bg-blue-900 focus:shadow-outline"
+    <div class="flex overflow-hidden text-lg text-center gap-3">
+      <button class="flex btn btn-outline px-3 py-4 hover:bg-secondary hover:text-[black] hover:border-secondary-green focus:shadow-outline border-[#C6CBD3] text-[#00000099]"
       v-for="option in availableTags"  :key="option" @click="selectOption(option)"
       :class="{ 'bg-blue-500': selectedTag === option }"
       >{{ option }}</button>
@@ -15,16 +15,12 @@ export default {
     return {
       selectedTag: '',
       availableTags: [
-        '稅務簽證',
+        '海外留學',
+        '求職瓶頸',
         '職涯發展',
-        '商業創業',
-        '租屋買房',
-        '旅行生活',
+        '稅務簽證',
         '人生相談',
         '興趣分享',
-        '設計美學',
-        '海外婚姻',
-        '海外留學',
       ],
     }
   },
