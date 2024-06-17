@@ -51,7 +51,7 @@
           <span>或</span>
           <button
             type="button"
-            class="btn btn-secondary btn-outline w-full !text-black border-secondary-blue text-[20px] rounded-[100px] font-medium border-[2px]"
+            class="btn btn-secondary btn-outline w-full !text-black border-secondary-blue text-[20px] rounded-[100px] font-medium border-[2px] normal-case"
             @click="googleIDPLogin"
           >
             Google 登入
