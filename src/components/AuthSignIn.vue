@@ -64,7 +64,7 @@
 
 <script setup>
 import { auth } from '../firebase-exports'
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { reactive, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
@@ -119,7 +119,20 @@ async function onSubmit(values) {
 }
 
 async function googleIDPLogin() {
-  //TODO: Implement Google IDP login via firebase
+  try {
+    const userCredential = await signInWithPopup(auth, new GoogleAuthProvider())
+    console.log(userCredential)
+    store.dispatch('setIsAuthenticated', true)
+    store.dispatch('setUser', userCredential.user)
+
+    if (route.query.redirect) {
+      router.push(route.query.redirect)
+    } else {
+      router.push('/profile')
+    }
+  } catch (err) {
+    state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
+  }
 }
 
 defineEmits(['forgotPassword'])

@@ -54,10 +54,17 @@
 </template>
 
 <script setup>
-import { Auth } from 'aws-amplify'
+import { auth } from '../firebase-exports'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { useRouter, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import { Form, defineRule } from 'vee-validate'
 import { required, email, min } from '@vee-validate/rules'
 import BaseInput from './base/BaseInput'
+
+const router = useRouter()
+const route = useRoute()
+const store = useStore()
 
 defineRule('required', required)
 defineRule('email', email)
@@ -70,13 +77,25 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['submit'])
+const emit = defineEmits(['submit', 'google-sign-in-error'])
 function onSubmit(values) {
   emit('submit', values)
 }
 
 async function googleIDPLogin() {
-  Auth.federatedSignIn({provider: 'Google'})
+  try {
+    const userCredential = await signInWithPopup(auth, new GoogleAuthProvider())
+    store.dispatch('setIsAuthenticated', true)
+    store.dispatch('setUser', userCredential.user)
+
+    if (route.query.redirect) {
+      router.push(route.query.redirect)
+    } else {
+      router.push('/profile')
+    }
+  } catch (err) {
+    emit('google-sign-in-error', err.message)
+  }
 }
 
 </script>

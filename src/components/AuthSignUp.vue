@@ -10,6 +10,7 @@
       <AuthSignUpFormCredential
         :error-message="state.errorMessage"
         @submit="signUp"
+        @google-sign-in-error="state.errorMessage = $event"
       />
     </div>
   </div>
