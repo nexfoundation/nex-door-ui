@@ -20,7 +20,10 @@
       v-if="state.currentTab === Tabs.SIGN_IN"
       @forgot-password="state.currentTab = Tabs.FORGOT_PASSWORD"
     />
-    <AuthSignUp v-if="state.currentTab === Tabs.SIGN_UP" />
+    <AuthSignUp 
+      v-if="state.currentTab === Tabs.SIGN_UP"
+      @sign-up-completed="state.currentTab = Tabs.SIGN_IN" 
+    />
     <AuthForgotPassword
       v-if="state.currentTab === Tabs.FORGOT_PASSWORD"
       @reset-completed="state.currentTab = Tabs.SIGN_IN"
