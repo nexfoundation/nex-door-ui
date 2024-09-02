@@ -66,7 +66,6 @@
 
 <script setup>
 import axios from 'axios'
-import { Auth } from 'aws-amplify'
 import { inject, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
@@ -80,6 +79,8 @@ import BaseSelect from './base/BaseSelect'
 import BaseTextarea from './base/BaseTextarea'
 
 import jsonData from "../assets/country-iso-code-tw.json";
+
+import { auth } from '../firebase-exports'
 
 defineRule('required', required)
 defineRule('maxFileSize', value => {
@@ -105,7 +106,7 @@ const router = useRouter()
 const appUserPictureServiceEndpoint = inject('appUserPictureServiceEndpoint')
 
 const state = reactive({
-  user: await Auth.currentAuthenticatedUser(),
+  user: auth.currentUser,
   options: [
     '稅務簽證',
     '職涯發展',
@@ -223,10 +224,12 @@ async function onSubmit(values) {
   }
 
   try {
-    await Auth.updateUserAttributes(state.user, data)
+    // TODO: Replace with API to update the user in firebase
+    // await Auth.updateUserAttributes(state.user, data)
 
-    // Refresh local current user session and state
-    store.dispatch('setUser', await Auth.currentAuthenticatedUser({ bypassCache: true }))
+    // // Refresh local current user session and state
+    await auth.currentUser.reload()
+    store.dispatch('setUser', auth.currentUser)
     router.push('/')
   } catch (err) {
     console.error(err)

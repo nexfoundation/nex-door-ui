@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Auth } from 'aws-amplify'
+import { auth } from '../firebase-exports'
 import { themeChange } from 'theme-change'
 
 import AppNavbar from './AppNavbar'
@@ -24,7 +24,7 @@ export default {
   },
   async beforeCreate() {
     try {
-      const user = await Auth.currentAuthenticatedUser()
+      const user = auth.currentUser
       this.$store.dispatch('setIsAuthenticated', true)
       this.$store.dispatch('setUser', user)
     } catch (err) {
