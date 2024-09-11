@@ -23,15 +23,14 @@
 
 <script setup>
 import { reactive, computed } from 'vue';
-import { API } from 'aws-amplify';
 import { UserAttributes } from '../constants';
-import { userToCard } from '../helpers';
+//import { userToCard } from '../helpers';
 import HomeCard from './HomeCard';
 import HomeCardGridFilterTags from "./HomeCardGridFilterTags.vue";
 import HomeCardGridFilterCountry from './HomeCardGridFilterCountry.vue';
 
-const apiName = 'ServiceEndpoint';
-const path = '/query';
+// const apiName = 'ServiceEndpoint';
+// const path = '/query';
 const state = reactive({
   users: [],
   modalCurrentUser: undefined,
@@ -42,9 +41,10 @@ const state = reactive({
 });
 
 try {
-  const response = await API.get(apiName, path);
-  const users = response.map(userToCard);
-  state.users = users;
+  // TODO: Replace with API to query the user from firebase
+  // const response = await API.get(apiName, path);
+  // const users = response.map(userToCard);
+  // state.users = users;
 } catch (error) {
   console.error(error);
 }

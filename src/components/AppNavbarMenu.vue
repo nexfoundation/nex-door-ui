@@ -1,7 +1,7 @@
 <template>
   <ul v-bind="menuAttrs">
     <li v-if="isAuthenticated">
-      <p @click="signOut">
+      <p @click="signOutUser">
         登出
       </p>
     </li>
@@ -19,10 +19,12 @@
 </template>
 
 <script setup>
-import { Auth } from 'aws-amplify'
+import { auth } from '../firebase-exports'
+import { signOut } from 'firebase/auth'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+
 const store = useStore()
 const router = useRouter()
 
@@ -40,9 +42,9 @@ const isAuthenticated = computed(() => {
   return store.state.isAuthenticated
 })
 
-async function signOut() {
+async function signOutUser() {
   try {
-    await Auth.signOut()
+    await signOut(auth)
     store.dispatch('setIsAuthenticated', false)
     store.dispatch('setUser', {})
     router.push('/')

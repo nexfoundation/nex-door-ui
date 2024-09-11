@@ -20,11 +20,11 @@
         @submit="onSubmit"
       >
         <BaseInput
-          id="username"
-          name="username"
-          label="用戶名稱"
-          autocomplete="username"
-          rules="required"
+          id="email"
+          name="email"
+          label="電子信箱"
+          autocomplete="email"
+          rules="required|email"
         />
         <BaseInput
           id="password"
@@ -63,13 +63,15 @@
 </template>
 
 <script setup>
-import { Auth } from 'aws-amplify'
+import { auth, db } from '../firebase-exports'
+import { setDoc, doc } from 'firebase/firestore'
+import { signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { reactive, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { useLoading } from 'vue-loading-overlay'
 import { Form, defineRule } from 'vee-validate'
-import { required } from '@vee-validate/rules'
+import { required, email } from '@vee-validate/rules'
 import { useI18n } from '../mixin/i18n.js'
 import BaseInput from './base/BaseInput'
 
@@ -80,6 +82,7 @@ const $loading = useLoading()
 const { geti18nAuthenticationErrorMessage } = useI18n()
 
 defineRule('required', required)
+defineRule('email', email)
 
 const formContainer = ref(null)
 const state = reactive({
@@ -91,18 +94,23 @@ async function onSubmit(values) {
   const loader = $loading.show({
     container: formContainer.value
   })
-  const { username, password } = values
+  const { email, password } = values
 
   try {
-    const user = await Auth.signIn(username, password)
+    const userCredential = await signInWithEmailAndPassword(auth, email, password)
+    if (!userCredential.user.emailVerified) {
+      await signOut(auth)
+      throw new Error('Email not verified')
+    }
+    
     store.dispatch('setIsAuthenticated', true)
-    store.dispatch('setUser', user)
+    store.dispatch('setUser', userCredential.user)
+
     if (route.query.redirect) {
       router.push(route.query.redirect)
     } else {
-      router.push('/')
+      router.push('/profile')
     }
-
   } catch (err) {
     state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
 
@@ -112,7 +120,27 @@ async function onSubmit(values) {
 }
 
 async function googleIDPLogin() {
-  Auth.federatedSignIn({ provider: 'Google' })
+  try {
+    const userCredential = await signInWithPopup(auth, new GoogleAuthProvider())
+    const user = userCredential.user
+    if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+      await setDoc(doc(db, 'userProfiles', user.uid), {
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName,
+      })
+    }
+    store.dispatch('setIsAuthenticated', true)
+    store.dispatch('setUser', userCredential.user)
+
+    if (route.query.redirect) {
+      router.push(route.query.redirect)
+    } else {
+      router.push('/profile')
+    }
+  } catch (err) {
+    state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
+  }
 }
 
 defineEmits(['forgotPassword'])

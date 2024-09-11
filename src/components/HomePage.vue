@@ -139,8 +139,7 @@ import { computed, reactive, ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { UserAttributes } from '../constants';
-import { userToCard } from '../helpers';
-import { API } from 'aws-amplify';
+//import { userToCard } from '../helpers';
 import BaseAvatar from './base/BaseAvatar';
 import HomeCardGrid from './HomeCardGrid';
 import BookingConfirmation from './BookingConfirmation';
@@ -197,9 +196,11 @@ async function onSubmit(values) {
   };
 
   try {
-    await API.post('ServiceEndpoint', 'submit', info);
-    document.getElementById('booking-modal').checked = false;
-    document.getElementById('email-sent-modal').checked = true;
+    // TODO: Replace with API to send booking email
+    // await API.post('ServiceEndpoint', 'submit', info);
+    // document.getElementById('booking-modal').checked = false;
+    // document.getElementById('email-sent-modal').checked = true;
+    console.log(info);
   } catch (err) {
     state.errorMessage = err;
   }
@@ -207,8 +208,10 @@ async function onSubmit(values) {
 
 async function fetchMentor(uuid) {
   try {
-    const matches = await API.get('ServiceEndpoint', `user/${uuid}`);
-    state.user = userToCard(matches[0]);
+    // TODO: Replace with API to query the user from firebase
+    // const matches = await API.get('ServiceEndpoint', `user/${uuid}`);
+    // state.user = userToCard(matches[0]);
+    console.log(uuid);
     if (profileModalInput.value) {
       profileModalInput.value.checked = true;
     }
