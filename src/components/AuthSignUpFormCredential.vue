@@ -54,7 +54,8 @@
 </template>
 
 <script setup>
-import { auth } from '../firebase-exports'
+import { auth,db } from '../firebase-exports'
+import { setDoc, doc } from 'firebase/firestore'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
@@ -85,6 +86,14 @@ function onSubmit(values) {
 async function googleIDPLogin() {
   try {
     const userCredential = await signInWithPopup(auth, new GoogleAuthProvider())
+    const user = userCredential.user
+    if (user.metadata.creationTime === user.metadata.lastSignInTime) {
+      await setDoc(doc(db, 'userProfiles', user.uid), {
+        uid: user.uid,
+        email: user.email,
+        name: user.displayName,
+      })
+    }
     store.dispatch('setIsAuthenticated', true)
     store.dispatch('setUser', userCredential.user)
 

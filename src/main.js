@@ -38,27 +38,37 @@ const router = VueRouter.createRouter({
 const app = createApp(App)
 
 onAuthStateChanged(auth, (user) => {
-  if (user && user.metadata.creationTime !== user.metadata.lastSignInTime) {
+  if (user) {
     store.dispatch('setIsAuthenticated', true)
     store.dispatch('setUser', user)
   }
+  else {
+    store.dispatch('setIsAuthenticated', false)
+    store.dispatch('setUser', null)
+  }
 })
+
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    }, reject);
+  });
+};
 
 // implement protected routes for only signed in users
 router.beforeResolve(async (to, _, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const user = auth.currentUser
-    if (user) {
-      try {
+    try{
+      const user = await getCurrentUser()
+      if (user) {
         await user.getIdToken()
         next()
-      } catch (err) {
-        next({
-          path: '/auth',
-          query: { redirect: to.fullPath},
-        })
+      } else {
+        throw new Error('No authenticated user')
       }
-    } else {
+    } catch (err) {
       next({
         path: '/auth',
         query: { redirect: to.fullPath},

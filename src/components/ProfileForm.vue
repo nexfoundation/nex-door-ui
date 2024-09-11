@@ -52,9 +52,9 @@
         <h2 class="leading-normal font-medium !mt-5">3. 可預約時段</h2>
         <span>讓大家知道你的諮詢時段，請記得定期更新！</span>
         <BaseSelect id="acceptMentoring" name="acceptMentoring" label="是否開放預約諮詢" help-text="*若選否，您的資料將不被公開" data-required
-          :options="[{ value: '0', text: '否' }, { value: '1', text: '是' }]" />
+          :options="[{ value: false, text: '否' }, { value: true, text: '是' }]" />
         <BaseInput id="timezone" label="所在時區" name="timezone" placeholder="例：美東夏日時間(EST)" />
-        <BaseInput id="available_time" label="開放預約時間" name="available_time" placeholder="例：一月／週一到週五／16:00-19:00" />
+        <BaseInput id="availableTime" label="開放預約時間" name="availableTime" placeholder="例：一月／週一到週五／16:00-19:00" />
 
         <button type="submit" class="btn btn-primary !mt-5 rounded-[6.25rem] disabled:bg-[#EEE] disabled:text-[#666666]" :disabled="!meta.valid || isSubmitting">
           更新
@@ -73,14 +73,14 @@ import VueMultiselect from 'vue-multiselect'
 import { ErrorMessage, Field, Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
 
-import { UserAttributes } from '../constants'
 import BaseInput from './base/BaseInput'
 import BaseSelect from './base/BaseSelect'
 import BaseTextarea from './base/BaseTextarea'
 
 import jsonData from "../assets/country-iso-code-tw.json";
 
-import { auth } from '../firebase-exports'
+import { auth, db } from '../firebase-exports'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 
 defineRule('required', required)
 defineRule('maxFileSize', value => {
@@ -105,6 +105,18 @@ const router = useRouter()
 
 const appUserPictureServiceEndpoint = inject('appUserPictureServiceEndpoint')
 
+async function fetchUserProfile(uid) {
+  try {
+    const userProfileRef = doc(db, 'userProfiles', uid)
+    const userProfileDoc = await getDoc(userProfileRef);
+    if (!userProfileDoc.exists())  throw new Error('User profile not found')
+    return userProfileDoc.data()
+  }catch (err) {
+    console.error(err)
+  }
+}
+const userProfile = await fetchUserProfile(auth.currentUser.uid)
+
 const state = reactive({
   user: auth.currentUser,
   options: [
@@ -127,79 +139,53 @@ const countryOptions = Object.entries(jsonData.countries).map(
     text: value,
   })
 );
-
-const { username } = state.user
-const {
-  email,
-  name,
-  picture,
-  profile,
-  website,
-  [UserAttributes.ACCEPT_MENTORING]: acceptMentoring,
-  // [UserAttributes.CALENDLY_URL]: calendlyUrl,
-  [UserAttributes.TAGS]: tags,
-  [UserAttributes.LINKEDIN]: linkedIn,
-  [UserAttributes.FACEBOOK]: facebook,
-  [UserAttributes.INSTAGRAM]: instagram,
-  [UserAttributes.COUNTRY_CODE]: countryCode,
-  [UserAttributes.TIMEZONE]: timezone,
-  [UserAttributes.TITLE]: title,
-  [UserAttributes.AVAILABLE_TIME]: available_time,
-  [UserAttributes.DESC_WHAT_CAN_I_HELP]: desc_what_can_i_help, 
-  [UserAttributes.DESC_ACHIVEMENT]: desc_achivement, 
-  [UserAttributes.DESC_SKILL]: desc_skill, 
-  [UserAttributes.DESC_OTHER]: desc_other, 
-  [UserAttributes.DESC_MENTORS_NOTICE]: desc_mentors_notice, 
-} = state.user.attributes;
+// no username in firebase auth, use uid instead
+const username = state.user.uid
+const email = state.user.email
+const name  = userProfile.name
+const picture = "";
+const profile = userProfile.profileBio
+const website = userProfile.website
+const acceptMentoring = userProfile.acceptMentoring
+const tags = userProfile.tags
+const linkedIn = userProfile.linkedIn
+const countryCode = userProfile.countryCode
+const timezone = userProfile.timezone
+const title = userProfile.title
+const availableTime = userProfile.availableTime
 
 const formValues = {
   acceptMentoring: acceptMentoring || "0",
-  // calendlyUrl: calendlyUrl || "",
   email: email || "",
   name: name || "",
   picture: picture || "",
   profile: profile || "",
-  tags: tags ? JSON.parse(tags) : [],
+  tags: tags || [],
   countryCode: countryCode || "",
   username,
   website: website || "",
   linkedIn: linkedIn || "",
-  facebook: facebook || "",
-  instagram: instagram || "",
   timezone: timezone || "",
   title: title || "",
-  available_time: available_time || "",
-  desc_what_can_i_help: desc_what_can_i_help || "",
-  desc_achivement: desc_achivement || "",
-  desc_skill: desc_skill || "",
-  desc_other: desc_other || "",
-  desc_mentors_notice: desc_mentors_notice || "",
+  availableTime: availableTime || "",
 };
 
 async function onSubmit(values) {
   const data = {
     name: values.name,
+    title: values.title,
+    countryCode: values.countryCode,
     picture: values.picture,
-    profile: values.profile,
+    linkedIn: values.linkedIn,
+    profileBio: values.profile,
     website: values.website,
-    [UserAttributes.ACCEPT_MENTORING]: values.acceptMentoring,
-    [UserAttributes.TAGS]: JSON.stringify(values.tags),
-    [UserAttributes.COUNTRY_CODE]: values.countryCode,
-    // [UserAttributes.CALENDLY_URL]: values.calendlyUrl,
-    [UserAttributes.LINKEDIN]: values.linkedIn,
-    [UserAttributes.FACEBOOK]: values.facebook,
-    [UserAttributes.INSTAGRAM]: values.instagram,
-    [UserAttributes.AVAILABLE_TIME]: values.available_time.trim(),
-    [UserAttributes.TIMEZONE]: values.timezone.trim(),
-    [UserAttributes.TITLE]: values.title.trim(),
-    [UserAttributes.DESC_WHAT_CAN_I_HELP]: values.desc_what_can_i_help.trim(),
-    [UserAttributes.DESC_ACHIVEMENT]: values.desc_achivement.trim(),
-    [UserAttributes.DESC_SKILL]: values.desc_skill.trim(),
-    [UserAttributes.DESC_OTHER]: values.desc_other.trim(),
-    [UserAttributes.DESC_MENTORS_NOTICE]: values.desc_mentors_notice.trim(),
+    acceptMentoring : values.acceptMentoring,
+    tags: values.tags,
+    availableTime: values.availableTime.trim(),
+    timezone: values.timezone.trim(),
   }
 
-
+  // TODO: find a object storage service in firebase
   if (values.pictureFile) {
     const file = values.pictureFile
 
@@ -224,10 +210,9 @@ async function onSubmit(values) {
   }
 
   try {
-    // TODO: Replace with API to update the user in firebase
-    // await Auth.updateUserAttributes(state.user, data)
+    await updateDoc(doc(db, 'userProfiles', state.user.uid), data)
 
-    // // Refresh local current user session and state
+    // Refresh local current user session and state
     await auth.currentUser.reload()
     store.dispatch('setUser', auth.currentUser)
     router.push('/')

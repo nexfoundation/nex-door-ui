@@ -21,8 +21,10 @@ import { reactive, ref } from 'vue'
 import { useLoading } from 'vue-loading-overlay'
 import { useI18n } from '../mixin/i18n'
 import AuthSignUpFormCredential from './AuthSignUpFormCredential'
-import { auth } from '../firebase-exports'
-import { createUserWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth'
+import { db, firebaseConfig } from '../firebase-exports'
+import { createUserWithEmailAndPassword, sendEmailVerification, getAuth } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
+import { initializeApp, deleteApp } from 'firebase/app'
 
 const emit = defineEmits(['sign-up-completed'])
 
@@ -48,10 +50,16 @@ async function signUp(form) {
   try {
     state.username = form.username
     state.email = form.attributes.email
-    const userCredential = await createUserWithEmailAndPassword(auth, form.attributes.email, form.password)
+    const appForSignUp = initializeApp(firebaseConfig, 'appForSignUp')
+    const authForSignUp = getAuth(appForSignUp)
+    const userCredential = await createUserWithEmailAndPassword(authForSignUp, form.attributes.email, form.password)
+    const user = userCredential.user
+    await Promise.all([
+      setDoc(doc(db, 'userProfiles', user.uid), { uid: user.uid, email: user.email }),
+      sendEmailVerification(user),
+      deleteApp(appForSignUp)
+    ])
     emit('sign-up-completed')
-    await sendEmailVerification(userCredential.user)
-    await signOut(auth)
   } catch (err) {
     state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
   } finally {
