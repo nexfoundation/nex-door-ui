@@ -73,9 +73,9 @@ import VueMultiselect from 'vue-multiselect'
 import { ErrorMessage, Field, Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
 
-import BaseInput from './base/BaseInput'
-import BaseSelect from './base/BaseSelect'
-import BaseTextarea from './base/BaseTextarea'
+import BaseInput from './base/BaseInput.vue'
+import BaseSelect from './base/BaseSelect.vue'
+import BaseTextarea from './base/BaseTextarea.vue'
 
 import jsonData from "../assets/country-iso-code-tw.json";
 

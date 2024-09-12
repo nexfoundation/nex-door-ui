@@ -30,7 +30,7 @@
 
 <script setup>
 import { UserAttributes } from '../constants';
-import BaseAvatar from './base/BaseAvatar';
+import BaseAvatar from './base/BaseAvatar.vue';
 import CountryWidget from './base/BaseCountryWidget.vue'
 
 defineProps({

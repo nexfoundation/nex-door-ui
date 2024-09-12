@@ -73,7 +73,7 @@ import { useLoading } from 'vue-loading-overlay'
 import { Form, defineRule } from 'vee-validate'
 import { required, email } from '@vee-validate/rules'
 import { useI18n } from '../mixin/i18n.js'
-import BaseInput from './base/BaseInput'
+import BaseInput from './base/BaseInput.vue'
 
 const router = useRouter()
 const route = useRoute()

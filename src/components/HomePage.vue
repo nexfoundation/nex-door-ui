@@ -140,9 +140,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { UserAttributes } from '../constants';
 //import { userToCard } from '../helpers';
-import BaseAvatar from './base/BaseAvatar';
-import HomeCardGrid from './HomeCardGrid';
-import BookingConfirmation from './BookingConfirmation';
+import BaseAvatar from './base/BaseAvatar.vue';
+import HomeCardGrid from './HomeCardGrid.vue';
+import BookingConfirmation from './BookingConfirmation.vue';
 import BaseCountryWidget from './base/BaseCountryWidget.vue';
 
 const route = useRoute();

@@ -42,7 +42,7 @@
 <script setup>
 import { Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
-import BaseInput from './base/BaseInput'
+import BaseInput from './base/BaseInput.vue'
 
 defineRule('required', required)
 

@@ -40,5 +40,5 @@
 </template>
 
 <script setup>
-import AppNavbarMenu from './AppNavbarMenu'
+import AppNavbarMenu from './AppNavbarMenu.vue'
 </script>

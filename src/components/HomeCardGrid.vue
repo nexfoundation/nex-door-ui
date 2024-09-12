@@ -25,7 +25,7 @@
 import { reactive, computed } from 'vue';
 import { UserAttributes } from '../constants';
 //import { userToCard } from '../helpers';
-import HomeCard from './HomeCard';
+import HomeCard from './HomeCard.vue';
 import HomeCardGridFilterTags from "./HomeCardGridFilterTags.vue";
 import HomeCardGridFilterCountry from './HomeCardGridFilterCountry.vue';
 
