@@ -3,8 +3,8 @@
     <div class="flex flex-col place-items-center">
       <div class="flex justify-center align-middle py-6 px-4 md:m-12 mx-4 my-6">
         <div class="flex flex-col bg-white rounded-xl py-6 px-4 md:w-[644px] p-10 shadow-[0_10px_30px_0px_rgba(0,0,0,0.05)] gap-3">
-          <HomeCardGridFilterCountry class=" " @selectedTags-updated="handleSelectedCountryTagsUpdate"></HomeCardGridFilterCountry>
-          <HomeCardGridFilterTags class="flex self-center"  @selectedTags-updated="handleSelectedTagsUpdate"></HomeCardGridFilterTags>
+          <HomeCardGridFilterCountry class=" " @selected-tags-updated="handleSelectedCountryTagsUpdate" />
+          <HomeCardGridFilterTags class="flex self-center" @selected-tags-updated="handleSelectedTagsUpdate" />
         </div>
       </div>
 

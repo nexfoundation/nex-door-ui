@@ -3,8 +3,12 @@
     <div class="  flex  flex-col justify-center items-center  ">
       <img class="w-24 -mb-2" src="../assets/nex-door-logo.svg">
       <div class="font-medium leading-tight align-middle text-center font-logo">
-        <div class=" font-bold text-lg ">NEX</div>
-        <div class=" ">Door</div>
+        <div class=" font-bold text-lg ">
+          NEX
+        </div>
+        <div class=" ">
+          Door
+        </div>
       </div>
     </div>
     <div class="flex flex-col">

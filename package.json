@@ -7,7 +7,8 @@
     "build": "vite build",
     "build:staging": "vite build --mode staging",
     "serve": "vite preview",
-    "lint": "eslint --ext .js,.vue src/"
+    "lint": "eslint --ext .js,.vue src/",
+    "lint:fix": "eslint --ext .js,.vue src/ --fix"
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.4",

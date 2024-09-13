@@ -1,10 +1,13 @@
 <template lang="">
   <div>
     <div class="flex overflow-hidden text-lg text-center gap-3">
-      <button class="flex btn btn-outline px-3 py-4 hover:bg-secondary hover:text-[black] hover:border-secondary-green focus:shadow-outline border-[#C6CBD3] text-[#00000099]"
-      v-for="option in availableTags"  :key="option" @click="selectOption(option)"
-      :class="{ 'bg-blue-500': selectedTag === option }"
-      >{{ option }}</button>
+      <button
+        v-for="option in availableTags"
+        :key="option" class="flex btn btn-outline px-3 py-4 hover:bg-secondary hover:text-[black] hover:border-secondary-green focus:shadow-outline border-[#C6CBD3] text-[#00000099]" :class="{ 'bg-blue-500': selectedTag === option }"
+        @click="selectOption(option)"
+      >
+        {{ option }}
+      </button>
     </div>
   </div>
 </template>
