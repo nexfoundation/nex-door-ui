@@ -34,9 +34,9 @@
 <script setup>
 import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import AuthSignIn from './AuthSignIn'
-import AuthSignUp from './AuthSignUp'
-import AuthForgotPassword from './AuthForgotPassword'
+import AuthSignIn from './AuthSignIn.vue'
+import AuthSignUp from './AuthSignUp.vue'
+import AuthForgotPassword from './AuthForgotPassword.vue'
 const route = useRoute()
 
 const Tabs = Object.freeze({

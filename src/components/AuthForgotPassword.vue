@@ -49,7 +49,7 @@ import { useLoading } from 'vue-loading-overlay'
 import { Form, defineRule } from 'vee-validate'
 import { email, required } from '@vee-validate/rules'
 import { useI18n } from '../mixin/i18n'
-import BaseInput from './base/BaseInput'
+import BaseInput from './base/BaseInput.vue'
 
 defineRule('required', required)
 defineRule('email', email)

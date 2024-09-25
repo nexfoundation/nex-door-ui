@@ -20,7 +20,7 @@
 import { reactive, ref } from 'vue'
 import { useLoading } from 'vue-loading-overlay'
 import { useI18n } from '../mixin/i18n'
-import AuthSignUpFormCredential from './AuthSignUpFormCredential'
+import AuthSignUpFormCredential from './AuthSignUpFormCredential.vue'
 import { db, firebaseConfig } from '../firebase-exports'
 import { createUserWithEmailAndPassword, sendEmailVerification, getAuth } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'

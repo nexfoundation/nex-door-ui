@@ -37,8 +37,8 @@
 import { Form, defineRule } from 'vee-validate';
 import { required, email } from '@vee-validate/rules';
 import { UserAttributes } from '../constants';
-import BaseInput from './base/BaseInput';
-import BaseTextarea from './base/BaseTextarea';
+import BaseInput from './base/BaseInput.vue';
+import BaseTextarea from './base/BaseTextarea.vue';
 
 defineRule('required', required);
 defineRule('email', email);

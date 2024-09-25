@@ -61,7 +61,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { Form, defineRule } from 'vee-validate'
 import { required, email, min } from '@vee-validate/rules'
-import BaseInput from './base/BaseInput'
+import BaseInput from './base/BaseInput.vue'
 
 const router = useRouter()
 const route = useRoute()

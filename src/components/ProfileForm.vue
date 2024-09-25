@@ -5,15 +5,21 @@
     </div>
     <Form v-slot="{ meta, isSubmitting }" :initial-values="formValues" @submit="onSubmit">
       <div class="container shadow rounded-lg bordered bg-white p-9 space-y-3 [&>*]:w-full w-[520px] ">
-        <h1 class="leading-normal self-stretch text-lg leading-tight font-bold">在此進行註冊或編輯資料</h1>
+        <h1 class="leading-normal self-stretch text-lg leading-tight font-bold">
+          在此進行註冊或編輯資料
+        </h1>
 
-        <h2 class="py-0 px-1 font-medium mt-5">1. 基本資料</h2>
+        <h2 class="py-0 px-1 font-medium mt-5">
+          1. 基本資料
+        </h2>
         <BaseInput name="username" label="用戶名稱" disabled data-required />
         <BaseInput name="email" label="Email" disabled data-required />
         <BaseInput id="name" label="名稱" name="name" placeholder="名稱" rules="required" data-required />
-        <BaseInput name="title" id="title" label="職業或學歷" placeholder="職業＠公司名稱 or 碩士@台灣大學" rules="required" data-required />
-        <BaseSelect id="countryCode" placeholder="選取國家" name="countryCode" label="所在國家" :options="countryOptions"
-          data-required />
+        <BaseInput id="title" name="title" label="職業或學歷" placeholder="職業＠公司名稱 or 碩士@台灣大學" rules="required" data-required />
+        <BaseSelect
+          id="countryCode" placeholder="選取國家" name="countryCode" label="所在國家" :options="countryOptions"
+          data-required
+        />
         <!-- avatar -->
         <div class="form-control mb-3">
           <label for="picture" class="label cursor-pointer ">
@@ -22,8 +28,10 @@
             </span>
           </label>
           <Field v-slot="{ handleChange, handleBlur }" name="pictureFile" rules="maxFileSize">
-            <input id="picture" type="file" accept="image/png, image/jpeg" class="file-input file-input-bordered  "
-              @change="handleChange" @blur="handleBlur">
+            <input
+              id="picture" type="file" accept="image/png, image/jpeg" class="file-input file-input-bordered  "
+              @change="handleChange" @blur="handleBlur"
+            >
           </Field>
           <label class="label">
             <span class="label-text-alt text-error">
@@ -32,27 +40,37 @@
           </label>
         </div>
 
-        <h2 class="py-0 px-1 leading-normal font-medium mt-5">2. 詳細資料</h2>
+        <h2 class="py-0 px-1 leading-normal font-medium mt-5">
+          2. 詳細資料
+        </h2>
         <span>分享更多個人資訊，讓大家了解你！</span>
-        <BaseInput id="linkedIn" label="LinkedIn" name="linkedIn" placeholder="https://www.linkedin.com/in/profile/"
-          rules="validLinkedIn" />
+        <BaseInput
+          id="linkedIn" label="LinkedIn" name="linkedIn" placeholder="https://www.linkedin.com/in/profile/"
+          rules="validLinkedIn"
+        />
         <BaseInput id="website" label="個人網站/blog" name="website" placeholder="https://www.portfolio.com" />
         <div class="form-control">
           <label class="label">
             <span class="label-text">諮詢類別</span>
           </label>
           <Field v-slot="{ field }" name="tags">
-            <VueMultiselect v-bind="field" v-model="field.value" :options="state.options" :multiple="true"
-              :close-on-select="false" placeholder="選取你可以提供諮詢的項目" />
-            </Field>
-            <BaseTextarea id="profileBio" name="profile" label="個人簡介 Bio" :rows="5" placeholder="中英文皆可，建議300字以內" />
+            <VueMultiselect
+              v-bind="field" v-model="field.value" :options="state.options" :multiple="true"
+              :close-on-select="false" placeholder="選取你可以提供諮詢的項目"
+            />
+          </Field>
+          <BaseTextarea id="profileBio" name="profile" label="個人簡介 Bio" :rows="5" placeholder="中英文皆可，建議300字以內" />
         </div>
         <!-- # May can use zoneinfo attribute instead -->
 
-        <h2 class="leading-normal font-medium !mt-5">3. 可預約時段</h2>
+        <h2 class="leading-normal font-medium !mt-5">
+          3. 可預約時段
+        </h2>
         <span>讓大家知道你的諮詢時段，請記得定期更新！</span>
-        <BaseSelect id="acceptMentoring" name="acceptMentoring" label="是否開放預約諮詢" help-text="*若選否，您的資料將不被公開" data-required
-          :options="[{ value: false, text: '否' }, { value: true, text: '是' }]" />
+        <BaseSelect
+          id="acceptMentoring" name="acceptMentoring" label="是否開放預約諮詢" help-text="*若選否，您的資料將不被公開" data-required
+          :options="[{ value: false, text: '否' }, { value: true, text: '是' }]"
+        />
         <BaseInput id="timezone" label="所在時區" name="timezone" placeholder="例：美東夏日時間(EST)" />
         <BaseInput id="availableTime" label="開放預約時間" name="availableTime" placeholder="例：一月／週一到週五／16:00-19:00" />
 
@@ -73,9 +91,9 @@ import VueMultiselect from 'vue-multiselect'
 import { ErrorMessage, Field, Form, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
 
-import BaseInput from './base/BaseInput'
-import BaseSelect from './base/BaseSelect'
-import BaseTextarea from './base/BaseTextarea'
+import BaseInput from './base/BaseInput.vue'
+import BaseSelect from './base/BaseSelect.vue'
+import BaseTextarea from './base/BaseTextarea.vue'
 
 import jsonData from "../assets/country-iso-code-tw.json";
 

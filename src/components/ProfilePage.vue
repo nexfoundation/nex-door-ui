@@ -18,6 +18,6 @@
 </template>
 
 <script setup>
-import ProfileForm from './ProfileForm'
+import ProfileForm from './ProfileForm.vue'
 
 </script>

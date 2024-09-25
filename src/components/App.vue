@@ -13,8 +13,8 @@
 import { auth } from '../firebase-exports'
 import { themeChange } from 'theme-change'
 
-import AppNavbar from './AppNavbar'
-import AppFooter from './AppFooter'
+import AppNavbar from './AppNavbar.vue'
+import AppFooter from './AppFooter.vue'
 
 export default {
   name: 'App',
