@@ -86,13 +86,13 @@
               </div>
             </div>
             <div v-if="state.user[UserAttributes.TAGS]" class="flex flex-wrap self-stretch content-start  gap-2 line-clamp-2 overflow-hidden">
-              <div v-for="tag in JSON.parse(state.user[UserAttributes.TAGS])" :key="tag" class="badge w-[80px] h-[28px] rounded-[8px] mb-2 mr-2 !p-[12px]  text-sm text-center self-center bg-secondary border-none text-black-secondary">
+              <div v-for="tag in state.user[UserAttributes.TAGS]" :key="tag" class="badge w-[80px] h-[28px] rounded-[8px] mb-2 mr-2 !p-[12px]  text-sm text-center self-center bg-secondary border-none text-black-secondary">
                 {{ tag }}
               </div>
             </div>
             <div>
-              <p v-if="state.user.profile">
-                {{ state.user.profile }}
+              <p v-if="state.user.profileBio">
+                {{ state.user.profileBio }}
               </p>
               <!-- almost repeated code on homecard.vue -->
               <div v-if="state.user[UserAttributes.DESC_WHAT_CAN_I_HELP]" class="bg-[#F4F6FA] rounded-[0.25rem] gap-4 flex flex-col p-2">
@@ -107,9 +107,10 @@
           <p class="text-sm text-start">欲諮詢者，請先登入或註冊</p>
 
           <div class="flex flex-col items-center gap-2 mt-8">
+            <!-- TODO: check this redirect -->
             <router-link
               class="text-center content-center bg-gradient-to-r from-[#6FD7FD] to-[#47DE7899]/[0.6] hover:from-[#9FE4FE] hover:to-[#C6F5D5] border-none w-full h-[48px] rounded-[100px] text-black text-[20px] disabled:bg-[#E5E8EE] font-medium"
-              :to="{ path: 'auth', query: { redirect: `/?mentor=${state.user?.sub}` } }"
+              :to="{ path: 'auth', query: { redirect: `/?mentor=${state.user?.uid}` } }"
             >
               立即登入
             </router-link>
@@ -154,6 +155,8 @@ import BaseAvatar from './base/BaseAvatar.vue';
 import HomeCardGrid from './HomeCardGrid.vue';
 import BookingConfirmation from './BookingConfirmation.vue';
 import BaseCountryWidget from './base/BaseCountryWidget.vue';
+import { db } from '../firebase-exports';
+import { doc, getDoc } from 'firebase/firestore';
 
 const route = useRoute();
 const router = useRouter();
@@ -216,12 +219,18 @@ async function onSubmit(values) {
   }
 }
 
-async function fetchMentor(uuid) {
+async function fetchMentor(uid) {
   try {
     // TODO: Replace with API to query the user from firebase
     // const matches = await API.get('ServiceEndpoint', `user/${uuid}`);
     // state.user = userToCard(matches[0]);
-    console.log(uuid);
+    // check if this function works
+    const docRef = doc(db, 'userProfiles', uid);
+    const docSnap = await getDoc(docRef);
+    if(docSnap.exists()) {
+      state.user = docSnap.data();
+    }
+
     if (profileModalInput.value) {
       profileModalInput.value.checked = true;
     }
@@ -236,7 +245,7 @@ const closeEmailSentModal = () => {
 
 function modalChange(e) {
   if (e.target.checked) {
-    router.replace({ query: { mentor: state.user.sub } });
+    router.replace({ query: { mentor: state.user.uid } });
   } else {
     state.user = undefined;
     router.replace({ query: { mentor: undefined } });

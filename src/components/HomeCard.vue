@@ -12,15 +12,15 @@
       </div>
       <div v-if="user[UserAttributes.TAGS]" class="flex gap-2 w-3/4 overflow-hidden whitespace-nowrap">
         <div
-          v-for="tag in JSON.parse(user[UserAttributes.TAGS])" :key="tag"
+          v-for="tag in user[UserAttributes.TAGS]" :key="tag"
           class="badge-lg badge-primary bg-secondary text-black-secondary rounded text-sm gap-[0.625rem] py-1 px-[0.63rem]"
         >
           {{ tag }}
         </div>
       </div>
       <hr>
-      <p :id="`about-${user.sub}`" class="overflow-hidden line-clamp-3">
-        {{ user.profile }}
+      <p :id="`about-${user.uid}`" class="overflow-hidden line-clamp-3">
+        {{ user.profileBio }}
       </p>
       <div v-if="user[UserAttributes.DESC_WHAT_CAN_I_HELP]" class="bg-[#F4F6FA] rounded-[0.25rem] gap-4 flex flex-col p-2">
         <h3 class=" font-bold text-lg">我可以提供哪些幫助?</h3>

@@ -14,6 +14,7 @@
 
 <script>
 export default {
+  emits: ['selected-tags-updated'],
   data() {
     return {
       selectedTag: '',
@@ -29,15 +30,8 @@ export default {
   },
   methods: {
     selectOption(option) {
-      // ?adhoc: fix empty data from cognito 
-      if (this.selectedTag == option) {
-        this.selectedTag = ''
-        this.$emit('selectedTags-updated', []);
-      }
-      else {
-        this.selectedTag = option;
-        this.$emit('selectedTags-updated', this.selectedTag);
-      }
+      this.selectedTag = this.selectedTag === option ? '' : option;
+      this.$emit('selected-tags-updated', this.selectedTag);
     },
   },
 }

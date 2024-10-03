@@ -50,6 +50,7 @@ async function signUp(form) {
   try {
     state.username = form.username
     state.email = form.attributes.email
+    // TODO: make signup app a singleton
     const appForSignUp = initializeApp(firebaseConfig, 'appForSignUp')
     const authForSignUp = getAuth(appForSignUp)
     const userCredential = await createUserWithEmailAndPassword(authForSignUp, form.attributes.email, form.password)

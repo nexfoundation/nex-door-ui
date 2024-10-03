@@ -9,7 +9,7 @@
       </div>
 
       <div v-if="state.users" class="flex flex-wrap gap-4 px-4 py-6 justify-center mx-4 my-6 md:mx-4 md:my-12 xl:mx-20 max-w-[1280px] ">
-        <HomeCard v-for="user in usersFiltered" :key="user.sub" :user="user" @show-modal="$emit('showModal', user)" />
+        <HomeCard v-for="user in usersFiltered" :key="user.uid" :user="user" @show-modal="$emit('showModal', user)" />
         <div v-if="usersFiltered.length == 0">
           <p>找不到符合條件的導師呦🫠</p>
         </div>
@@ -24,13 +24,12 @@
 <script setup>
 import { reactive, computed } from 'vue';
 import { UserAttributes } from '../constants';
-//import { userToCard } from '../helpers';
 import HomeCard from './HomeCard.vue';
 import HomeCardGridFilterTags from "./HomeCardGridFilterTags.vue";
 import HomeCardGridFilterCountry from './HomeCardGridFilterCountry.vue';
+import { db } from '../firebase-exports';
+import { collection, getDocs } from 'firebase/firestore';
 
-// const apiName = 'ServiceEndpoint';
-// const path = '/query';
 const state = reactive({
   users: [],
   modalCurrentUser: undefined,
@@ -41,10 +40,9 @@ const state = reactive({
 });
 
 try {
-  // TODO: Replace with API to query the user from firebase
-  // const response = await API.get(apiName, path);
-  // const users = response.map(userToCard);
-  // state.users = users;
+  const snapshot = await getDocs(collection(db, 'userProfiles'));
+  const users = snapshot.docs.map(doc => doc.data());
+  state.users = users;
 } catch (error) {
   console.error(error);
 }
@@ -58,7 +56,9 @@ const handleSelectedCountryTagsUpdate = (selectedCountryObj) => {
 const usersFiltered = computed(() => {
   return state.users.filter((u) => {
     // Check if the user accepts mentoring and includes the necessary tags
-    const baseCheck = u[UserAttributes.ACCEPT_MENTORING] === '1' && u[UserAttributes.TAGS]?.includes(state.filters.tags);
+    const acceptedMentoring = u[UserAttributes.ACCEPT_MENTORING];
+    const includesTags = !state.filters.tags || u[UserAttributes.TAGS]?.includes(state.filters.tags);
+    const baseCheck = acceptedMentoring && includesTags;
 
     // If country filter is null, ignore the country code check
     if (!state.filters.country) {
