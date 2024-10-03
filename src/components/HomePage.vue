@@ -156,7 +156,7 @@ import HomeCardGrid from './HomeCardGrid.vue';
 import BookingConfirmation from './BookingConfirmation.vue';
 import BaseCountryWidget from './base/BaseCountryWidget.vue';
 import { db } from '../firebase-exports';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, addDoc, collection, Timestamp } from 'firebase/firestore';
 
 const route = useRoute();
 const router = useRouter();
@@ -197,23 +197,22 @@ onMounted(() => {
 
 async function onSubmit(values) {
   state.errorMessage = '';
-
-  const info = {
-    body: {
-      recipient_uuid: state.user.sub,
-      message: `
+  
+  const appointmentRequest = {
+    from: values.email,
+    to: state.user.email,
+    message: `
       ${values.note}
       我有空的時間是: ${values.availableTime}
       `,
-    },
+      createdAt: Timestamp.now(),
   };
 
   try {
-    // TODO: Replace with API to send booking email
-    // await API.post('ServiceEndpoint', 'submit', info);
-    // document.getElementById('booking-modal').checked = false;
-    // document.getElementById('email-sent-modal').checked = true;
-    console.log(info);
+    const appointmentRequestsRef = collection(db, 'appointmentRequests');
+    await addDoc(appointmentRequestsRef, appointmentRequest);
+    document.getElementById('profile-modal').checked = false;
+    document.getElementById('email-sent-modal').checked = true;
   } catch (err) {
     state.errorMessage = err;
   }
@@ -221,10 +220,6 @@ async function onSubmit(values) {
 
 async function fetchMentor(uid) {
   try {
-    // TODO: Replace with API to query the user from firebase
-    // const matches = await API.get('ServiceEndpoint', `user/${uuid}`);
-    // state.user = userToCard(matches[0]);
-    // check if this function works
     const docRef = doc(db, 'userProfiles', uid);
     const docSnap = await getDoc(docRef);
     if(docSnap.exists()) {
