@@ -19,13 +19,6 @@
       rules="required|email"
     />
     <BaseInput
-      id="name"
-      name="username"
-      label="用戶名稱"
-      autocomplete="username"
-      rules="required"
-    />
-    <BaseInput
       id="password"
       name="password"
       label="密碼"
