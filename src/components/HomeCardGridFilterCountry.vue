@@ -35,8 +35,8 @@ function customLabel({ text, value }) {
 watch(
     () => state.selected,
     (selected) => {
-        emit('selectedTags-updated', selected);
+        emit('selected-tags-updated', selected);
     });
-const emit = defineEmits(['selectedTags-updated']);
+const emit = defineEmits(['selected-tags-updated']);
 
 </script>

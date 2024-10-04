@@ -21,10 +21,9 @@ import { reactive, ref } from 'vue'
 import { useLoading } from 'vue-loading-overlay'
 import { useI18n } from '../mixin/i18n'
 import AuthSignUpFormCredential from './AuthSignUpFormCredential.vue'
-import { db, firebaseConfig } from '../firebase-exports'
-import { createUserWithEmailAndPassword, sendEmailVerification, getAuth } from 'firebase/auth'
+import { db, authForSignUp } from '../firebase-exports'
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { doc, setDoc } from 'firebase/firestore'
-import { initializeApp, deleteApp } from 'firebase/app'
 
 const emit = defineEmits(['sign-up-completed'])
 
@@ -50,14 +49,11 @@ async function signUp(form) {
   try {
     state.username = form.username
     state.email = form.attributes.email
-    const appForSignUp = initializeApp(firebaseConfig, 'appForSignUp')
-    const authForSignUp = getAuth(appForSignUp)
     const userCredential = await createUserWithEmailAndPassword(authForSignUp, form.attributes.email, form.password)
     const user = userCredential.user
     await Promise.all([
       setDoc(doc(db, 'userProfiles', user.uid), { uid: user.uid, email: user.email }),
-      sendEmailVerification(user),
-      deleteApp(appForSignUp)
+      sendEmailVerification(user)
     ])
     emit('sign-up-completed')
   } catch (err) {
