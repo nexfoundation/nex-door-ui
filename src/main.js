@@ -18,6 +18,8 @@ import AuthPage from "./components/AuthPage.vue";
 import HomePage from "./components/HomePage.vue";
 import ProfilePage from "./components/ProfilePage.vue";
 
+import "./opentelemetry.js"
+
 // Vuex store
 import store from "./store";
 
