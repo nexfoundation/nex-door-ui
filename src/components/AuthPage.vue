@@ -1,6 +1,8 @@
 <template>
   <div class="container my-20">
-    <div class="tabs tabs-boxed w-96 mx-auto mt-8 justify-center bg-transparent">
+    <div
+      class="tabs tabs-boxed w-96 mx-auto mt-8 justify-center bg-transparent"
+    >
       <div
         class="tab"
         :class="{ 'tab-active': state.currentTab === Tabs.SIGN_IN }"
@@ -20,9 +22,9 @@
       v-if="state.currentTab === Tabs.SIGN_IN"
       @forgot-password="state.currentTab = Tabs.FORGOT_PASSWORD"
     />
-    <AuthSignUp 
+    <AuthSignUp
       v-if="state.currentTab === Tabs.SIGN_UP"
-      @sign-up-completed="state.currentTab = Tabs.SIGN_IN" 
+      @sign-up-completed="state.currentTab = Tabs.SIGN_IN"
     />
     <AuthForgotPassword
       v-if="state.currentTab === Tabs.FORGOT_PASSWORD"
@@ -32,18 +34,18 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
-import { useRoute } from 'vue-router'
-import AuthSignIn from './AuthSignIn.vue'
-import AuthSignUp from './AuthSignUp.vue'
-import AuthForgotPassword from './AuthForgotPassword.vue'
-const route = useRoute()
+import { reactive } from "vue";
+import { useRoute } from "vue-router";
+import AuthSignIn from "./AuthSignIn.vue";
+import AuthSignUp from "./AuthSignUp.vue";
+import AuthForgotPassword from "./AuthForgotPassword.vue";
+const route = useRoute();
 
 const Tabs = Object.freeze({
-  SIGN_UP: 'signUp',
-  SIGN_IN: 'signIn',
-  FORGOT_PASSWORD: 'forgotPassword',
-})
+  SIGN_UP: "signUp",
+  SIGN_IN: "signIn",
+  FORGOT_PASSWORD: "forgotPassword",
+});
 
 function currentTab() {
   switch (route.query.tab) {
@@ -59,6 +61,6 @@ function currentTab() {
 }
 
 const state = reactive({
-  currentTab: currentTab()
-})
+  currentTab: currentTab(),
+});
 </script>

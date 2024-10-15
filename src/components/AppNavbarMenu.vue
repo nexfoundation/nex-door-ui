@@ -1,55 +1,53 @@
 <template>
   <ul v-bind="menuAttrs">
     <li v-if="isAuthenticated">
-      <p @click="signOutUser">
-        登出
-      </p>
+      <p @click="signOutUser">登出</p>
     </li>
     <li v-if="!isAuthenticated">
-      <router-link to="/auth">
-        登入註冊
-      </router-link>
+      <router-link to="/auth"> 登入註冊 </router-link>
     </li>
     <li v-if="isAuthenticated">
-      <router-link to="/profile">
-        個人資料
-      </router-link>
+      <router-link to="/profile"> 個人資料 </router-link>
     </li>
   </ul>
 </template>
 
 <script setup>
-import { auth } from '../firebase-exports'
-import { signOut } from 'firebase/auth'
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { auth } from "../firebase-exports";
+import { signOut } from "firebase/auth";
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
-const store = useStore()
-const router = useRouter()
+const store = useStore();
+const router = useRouter();
 
 const props = defineProps({
   isMobile: Boolean,
-})
+});
 
 const menuAttrs = computed(() => {
   return props.isMobile
-    ? { tabindex: 0, class: 'menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52' }
-    : { class: 'menu menu-horizontal px-1 gap-2' }
-})
+    ? {
+        tabindex: 0,
+        class:
+          "menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52",
+      }
+    : { class: "menu menu-horizontal px-1 gap-2" };
+});
 
 const isAuthenticated = computed(() => {
-  return store.state.isAuthenticated
-})
+  return store.state.isAuthenticated;
+});
 
 async function signOutUser() {
   try {
-    await signOut(auth)
-    store.dispatch('setIsAuthenticated', false)
-    store.dispatch('setUser', {})
-    router.push('/')
+    await signOut(auth);
+    store.dispatch("setIsAuthenticated", false);
+    store.dispatch("setUser", {});
+    router.push("/");
   } catch (err) {
-    console.error('error signing out:', err)
+    console.error("error signing out:", err);
   }
 }
 </script>

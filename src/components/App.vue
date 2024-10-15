@@ -10,28 +10,28 @@
 </template>
 
 <script>
-import { auth } from '../firebase-exports'
-import { themeChange } from 'theme-change'
+import { auth } from "../firebase-exports";
+import { themeChange } from "theme-change";
 
-import AppNavbar from './AppNavbar.vue'
-import AppFooter from './AppFooter.vue'
+import AppNavbar from "./AppNavbar.vue";
+import AppFooter from "./AppFooter.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     AppNavbar,
     AppFooter,
   },
   async beforeCreate() {
     if (auth.currentUser) {
-      this.$store.dispatch('setIsAuthenticated', true)
-      this.$store.dispatch('setUser', auth.currentUser)
+      this.$store.dispatch("setIsAuthenticated", true);
+      this.$store.dispatch("setUser", auth.currentUser);
     } else {
       //guest user
     }
   },
   mounted() {
-    themeChange(false)
+    themeChange(false);
   },
-}
+};
 </script>

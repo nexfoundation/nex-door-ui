@@ -1,30 +1,30 @@
-import Vuex from 'vuex'
+import Vuex from "vuex";
 
 const actions = {
-  setIsAuthenticated ({ commit }, isAuthenticated) {
-    commit('isAuthenticated', isAuthenticated)
+  setIsAuthenticated({ commit }, isAuthenticated) {
+    commit("isAuthenticated", isAuthenticated);
   },
-  setUser ({ commit }, user) {
-    commit('setUser', user)
+  setUser({ commit }, user) {
+    commit("setUser", user);
   },
-}
+};
 
 const mutations = {
-   isAuthenticated(state, isAuthenticated) {
-     state.isAuthenticated = isAuthenticated
-   },
-   setUser(state, user) {
-    state.user = user
-  }
-}
+  isAuthenticated(state, isAuthenticated) {
+    state.isAuthenticated = isAuthenticated;
+  },
+  setUser(state, user) {
+    state.user = user;
+  },
+};
 
 const store = new Vuex.Store({
   state: {
     isAuthenticated: false,
-    user: {}
+    user: {},
   },
   actions,
-  mutations
-})
+  mutations,
+});
 
-export default store
+export default store;

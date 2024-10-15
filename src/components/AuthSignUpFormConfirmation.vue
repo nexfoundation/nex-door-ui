@@ -4,11 +4,7 @@
     class="flex flex-col"
     @submit="onSubmit"
   >
-    <div
-      v-if="errorMessage"
-      class="alert alert-error"
-      role="alert"
-    >
+    <div v-if="errorMessage" class="alert alert-error" role="alert">
       {{ errorMessage }}
     </div>
     <p>(請確認您的 Email OTP 驗證碼)</p>
@@ -20,10 +16,7 @@
 
     <div class="text-xs">
       沒收到驗證碼？
-      <a
-        class="link"
-        @click="$emit('resendConfirmationCode')"
-      >
+      <a class="link" @click="$emit('resendConfirmationCode')">
         點我重新發送驗證碼 {{ `(${confirmationCodeCooldownSecond} 秒)` }}
       </a>
     </div>
@@ -40,11 +33,11 @@
 </template>
 
 <script setup>
-import { Form, defineRule } from 'vee-validate'
-import { required } from '@vee-validate/rules'
-import BaseInput from './base/BaseInput.vue'
+import { Form, defineRule } from "vee-validate";
+import { required } from "@vee-validate/rules";
+import BaseInput from "./base/BaseInput.vue";
 
-defineRule('required', required)
+defineRule("required", required);
 
 defineProps({
   confirmationCodeCooldownSecond: {
@@ -53,13 +46,12 @@ defineProps({
   },
   errorMessage: {
     type: String,
-    default: '',
+    default: "",
   },
-})
+});
 
-const emit = defineEmits(['submit', 'resendConfirmationCode'])
+const emit = defineEmits(["submit", "resendConfirmationCode"]);
 function onSubmit(values) {
-  emit('submit', values)
+  emit("submit", values);
 }
-
 </script>
