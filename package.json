@@ -11,6 +11,7 @@
     "lint:fix": "eslint \"src/**/*.{js,vue}\" --fix"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-web": "^0.41.0",
     "@opentelemetry/context-zone": "^1.26.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.53.0",

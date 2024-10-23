@@ -10,17 +10,17 @@ import { getWebAutoInstrumentations } from "@opentelemetry/auto-instrumentations
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
 const provider = new WebTracerProvider({
-    resource: {
-        attributes: {
-            [ATTR_SERVICE_NAME]: "nex-door-ui",
-        },
+  resource: {
+    attributes: {
+      [ATTR_SERVICE_NAME]: "nex-door-ui",
     },
+  },
 });
 
 provider.addSpanProcessor(
   new BatchSpanProcessor(
     new OTLPTraceExporter({
-      url: import.meta.env.VITE_OTEL_EXPORTER_OTLP_ENDPOINT,
+      url: import.meta.env.VITE_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT,
       headers: {},
     }),
   ),
@@ -30,7 +30,7 @@ provider.addSpanProcessor(
 provider.addSpanProcessor(
   new BatchSpanProcessor(
     new ConsoleSpanExporter({
-        serviceName: "nex-door-ui",
+      serviceName: "nex-door-ui",
     }),
   ),
 );
