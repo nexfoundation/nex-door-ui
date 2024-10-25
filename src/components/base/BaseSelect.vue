@@ -1,18 +1,12 @@
 <template>
   <div class="form-control">
-    <label
-      v-if="label"
-      class="label cursor-pointer"
-      :for="id"
-    >
+    <label v-if="label" class="label cursor-pointer" :for="id">
       <span class="label-text">{{ label }}</span>
-      <span class="label-text-alt" :class="{'hidden': !dataRequired}">必填</span>
+      <span class="label-text-alt" :class="{ hidden: !dataRequired }"
+        >必填</span
+      >
     </label>
-    <Field
-      v-slot="{ field, meta, errorMessage }"
-      :name="name"
-      :rules="rules"
-    >
+    <Field v-slot="{ field, meta, errorMessage }" :name="name" :rules="rules">
       <select
         :id="id"
         v-bind="field"
@@ -30,16 +24,10 @@
           {{ option.text }}
         </option>
       </select>
-      <label
-        v-if="helpText"
-        class="label"
-      >
+      <label v-if="helpText" class="label">
         <span class="label-text-alt">{{ helpText }}</span>
       </label>
-      <label
-        v-if="errorMessage && meta.touched"
-        class="label"
-      >
+      <label v-if="errorMessage && meta.touched" class="label">
         <span class="label-text-alt text-error">{{ errorMessage }}</span>
       </label>
     </Field>
@@ -47,7 +35,7 @@
 </template>
 
 <script setup>
-import { Field } from 'vee-validate'
+import { Field } from "vee-validate";
 
 defineProps({
   id: {
@@ -64,7 +52,7 @@ defineProps({
   },
   modelValue: {
     type: String,
-    default: '',
+    default: "",
   },
   name: {
     type: String,
@@ -80,7 +68,7 @@ defineProps({
   },
   dataRequired: {
     type: Boolean,
-    default: false
+    default: false,
   },
   disabled: Boolean,
   options: {
@@ -91,7 +79,7 @@ defineProps({
     type: String,
     default: undefined,
   },
-})
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(["update:modelValue"]);
 </script>

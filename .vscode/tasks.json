@@ -6,7 +6,14 @@
 			"type": "npm",
 			"script": "serve",
 			"problemMatcher": [],
-			"detail": "vue-cli-service serve"
+			"detail": "preview changes without building the project"
+		},
+		{
+			"label": "dev",
+			"type": "npm",
+			"script": "dev",
+			"problemMatcher": [],
+			"detail": "full-featured development environment with more advanced features"
 		},
 		{
 			"type": "npm",
@@ -14,14 +21,12 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: build",
-			"detail": "vue-cli-service build"
 		},
 		{
 			"type": "npm",
 			"script": "lint",
 			"problemMatcher": [],
 			"label": "npm: lint",
-			"detail": "vue-cli-service lint"
 		},
 	]
 }

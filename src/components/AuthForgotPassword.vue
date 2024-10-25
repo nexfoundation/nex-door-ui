@@ -1,22 +1,10 @@
 <template>
-  <div
-    ref="formContainer"
-    class="card w-96 mx-auto shadow-xl"
-  >
+  <div ref="formContainer" class="card w-96 mx-auto shadow-xl">
     <div class="card-body">
-      <h1 class="card-title">
-        重設密碼
-      </h1>
+      <h1 class="card-title">重設密碼</h1>
       <template v-if="state.formState === AuthForgotPasswordState.INITIAL">
-        <Form
-          v-slot="{ meta, isSubmitting }"
-          @submit="onSubmitForgotPassword"
-        >
-          <div
-            v-if="state.errorMessage"
-            class="alert alert-error"
-            role="alert"
-          >
+        <Form v-slot="{ meta, isSubmitting }" @submit="onSubmitForgotPassword">
+          <div v-if="state.errorMessage" class="alert alert-error" role="alert">
             {{ state.errorMessage }}
           </div>
           <BaseInput
@@ -42,55 +30,52 @@
 </template>
 
 <script setup>
-import { auth } from '../firebase-exports'
-import { sendPasswordResetEmail } from 'firebase/auth'
-import { reactive, ref } from 'vue'
-import { useLoading } from 'vue-loading-overlay'
-import { Form, defineRule } from 'vee-validate'
-import { email, required } from '@vee-validate/rules'
-import { useI18n } from '../mixin/i18n'
-import BaseInput from './base/BaseInput'
+import { auth } from "../firebase-exports";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { reactive, ref } from "vue";
+import { useLoading } from "vue-loading-overlay";
+import { Form, defineRule } from "vee-validate";
+import { email, required } from "@vee-validate/rules";
+import { useI18n } from "../mixin/i18n";
+import BaseInput from "./base/BaseInput.vue";
 
-defineRule('required', required)
-defineRule('email', email)
+defineRule("required", required);
+defineRule("email", email);
 
+const { geti18nAuthenticationErrorMessage } = useI18n();
 
-const { geti18nAuthenticationErrorMessage } = useI18n()
-
-const $loading = useLoading()
+const $loading = useLoading();
 
 const AuthForgotPasswordState = Object.freeze({
-  INITIAL: 'resetPassword',
-  CONFIRMATION: 'resetPasswordConfirm',
-})
+  INITIAL: "resetPassword",
+  CONFIRMATION: "resetPasswordConfirm",
+});
 
-const formContainer = ref(null)
+const formContainer = ref(null);
 const state = reactive({
-  email: '',
+  email: "",
   formState: AuthForgotPasswordState.INITIAL,
-})
+});
 
-const emit = defineEmits(['reset-completed'])
+const emit = defineEmits(["reset-completed"]);
 async function onSubmitForgotPassword(values) {
-  state.errorMessage = ''
+  state.errorMessage = "";
   const loader = $loading.show({
-    container: formContainer.value
-  })
+    container: formContainer.value,
+  });
 
   try {
-    await sendPasswordResetEmail(auth, values.email)
+    await sendPasswordResetEmail(auth, values.email);
     //TODO: show email sent message like a toast
     setTimeout(() => {
-      emit('reset-completed')
-      state.email = values.email
-      state.formState = AuthForgotPasswordState.CONFIRMATION
-    }, 3000)
+      emit("reset-completed");
+      state.email = values.email;
+      state.formState = AuthForgotPasswordState.CONFIRMATION;
+    }, 3000);
   } catch (err) {
-    state.errorMessage = geti18nAuthenticationErrorMessage(err.message)
-
+    state.errorMessage = geti18nAuthenticationErrorMessage(err.message);
   } finally {
-    loader.hide()
+    loader.hide();
   }
 }
-
 </script>

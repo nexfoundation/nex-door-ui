@@ -4,11 +4,7 @@
     class="flex flex-col"
     @submit="onSubmit"
   >
-    <div
-      v-if="errorMessage"
-      class="alert alert-error"
-      role="alert"
-    >
+    <div v-if="errorMessage" class="alert alert-error" role="alert">
       {{ errorMessage }}
     </div>
     <BaseInput
@@ -17,13 +13,6 @@
       label="電子信箱"
       placeholder="abc@xyz.com"
       rules="required|email"
-    />
-    <BaseInput
-      id="name"
-      name="username"
-      label="用戶名稱"
-      autocomplete="username"
-      rules="required"
     />
     <BaseInput
       id="password"
@@ -54,57 +43,59 @@
 </template>
 
 <script setup>
-import { auth,db } from '../firebase-exports'
-import { setDoc, doc } from 'firebase/firestore'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { useRouter, useRoute } from 'vue-router'
-import { useStore } from 'vuex'
-import { Form, defineRule } from 'vee-validate'
-import { required, email, min } from '@vee-validate/rules'
-import BaseInput from './base/BaseInput'
+import { auth, db } from "../firebase-exports";
+import { setDoc, doc } from "firebase/firestore";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useRouter, useRoute } from "vue-router";
+import { useStore } from "vuex";
+import { Form, defineRule } from "vee-validate";
+import { required, email, min } from "@vee-validate/rules";
+import BaseInput from "./base/BaseInput.vue";
 
-const router = useRouter()
-const route = useRoute()
-const store = useStore()
+const router = useRouter();
+const route = useRoute();
+const store = useStore();
 
-defineRule('required', required)
-defineRule('email', email)
-defineRule('min', min)
+defineRule("required", required);
+defineRule("email", email);
+defineRule("min", min);
 
 defineProps({
   errorMessage: {
     type: String,
-    default: '',
+    default: "",
   },
-})
+});
 
-const emit = defineEmits(['submit', 'google-sign-in-error'])
+const emit = defineEmits(["submit", "google-sign-in-error"]);
 function onSubmit(values) {
-  emit('submit', values)
+  emit("submit", values);
 }
 
 async function googleIDPLogin() {
   try {
-    const userCredential = await signInWithPopup(auth, new GoogleAuthProvider())
-    const user = userCredential.user
+    const userCredential = await signInWithPopup(
+      auth,
+      new GoogleAuthProvider(),
+    );
+    const user = userCredential.user;
     if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-      await setDoc(doc(db, 'userProfiles', user.uid), {
+      await setDoc(doc(db, "userProfiles", user.uid), {
         uid: user.uid,
         email: user.email,
         name: user.displayName,
-      })
+      });
     }
-    store.dispatch('setIsAuthenticated', true)
-    store.dispatch('setUser', userCredential.user)
+    store.dispatch("setIsAuthenticated", true);
+    store.dispatch("setUser", userCredential.user);
 
     if (route.query.redirect) {
-      router.push(route.query.redirect)
+      router.push(route.query.redirect);
     } else {
-      router.push('/profile')
+      router.push("/profile");
     }
   } catch (err) {
-    emit('google-sign-in-error', err.message)
+    emit("google-sign-in-error", err.message);
   }
 }
-
 </script>
