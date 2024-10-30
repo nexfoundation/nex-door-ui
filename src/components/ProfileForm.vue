@@ -222,7 +222,7 @@ const countryOptions = Object.entries(jsonData.countries).map(
 const username = state.user.uid;
 const email = state.user.email;
 const name = userProfile.name;
-const picture = "";
+const picture = userProfile.picture;
 const profile = userProfile.profileBio;
 const website = userProfile.website;
 const acceptMentoring = userProfile.acceptMentoring;
@@ -264,7 +264,6 @@ async function onSubmit(values) {
     timezone: values.timezone.trim(),
   };
 
-  // TODO: find a object storage service in firebase
   if (values.pictureFile) {
     const file = values.pictureFile;
     const userId = auth.currentUser.uid;
