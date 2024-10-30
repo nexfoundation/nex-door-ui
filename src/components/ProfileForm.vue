@@ -264,7 +264,6 @@ async function onSubmit(values) {
     timezone: values.timezone.trim(),
   };
 
-  // TODO: fix the picture missing bug
   if (values.pictureFile) {
     const file = values.pictureFile;
     const userId = auth.currentUser.uid;
