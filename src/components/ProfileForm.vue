@@ -145,8 +145,7 @@
 </template>
 
 <script setup>
-import axios from "axios";
-import { inject, reactive } from "vue";
+import { reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import VueMultiselect from "vue-multiselect";
@@ -159,8 +158,9 @@ import BaseTextarea from "./base/BaseTextarea.vue";
 
 import jsonData from "../assets/country-iso-code-tw.json";
 
-import { auth, db } from "../firebase-exports";
+import { auth, db, storage } from "../firebase-exports";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 defineRule("required", required);
 defineRule("maxFileSize", (value) => {
@@ -183,8 +183,6 @@ defineRule("validLinkedIn", (value) => {
 
 const store = useStore();
 const router = useRouter();
-
-const appUserPictureServiceEndpoint = inject("appUserPictureServiceEndpoint");
 
 async function fetchUserProfile(uid) {
   try {
@@ -269,23 +267,19 @@ async function onSubmit(values) {
   // TODO: find a object storage service in firebase
   if (values.pictureFile) {
     const file = values.pictureFile;
+    const userId = auth.currentUser.uid;
+    const profilePictureRef = ref(
+      storage,
+      `profilePictures/${userId}/profile.jpg`,
+    );
 
     try {
-      const url = `${appUserPictureServiceEndpoint}user/${username}/picture/${file.name}`;
-      await axios({
-        method: "put",
-        maxBodyLength: file.size,
-        url,
-        headers: {
-          "Content-Type": file.type,
-        },
-        data: file,
-      });
-      data.picture = url;
+      const snapshot = await uploadBytes(profilePictureRef, file);
+      const pictureURL = await getDownloadURL(snapshot.ref);
+      data.picture = pictureURL;
     } catch (err) {
       console.error(err);
       state.errorMessage = err;
-      return;
     }
   }
 

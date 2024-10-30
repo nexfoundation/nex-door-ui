@@ -66,7 +66,6 @@ async function onSubmitForgotPassword(values) {
 
   try {
     await sendPasswordResetEmail(auth, values.email);
-    //TODO: show email sent message like a toast
     setTimeout(() => {
       emit("reset-completed");
       state.email = values.email;
