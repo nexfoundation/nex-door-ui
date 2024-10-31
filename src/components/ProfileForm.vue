@@ -269,7 +269,7 @@ async function onSubmit(values) {
     const userId = auth.currentUser.uid;
     const profilePictureRef = ref(
       storage,
-      `profilePictures/${userId}/profile.jpg`,
+      `profile_pictures/${userId}/profile.jpg`,
     );
 
     try {
