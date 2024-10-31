@@ -145,6 +145,7 @@
 </template>
 
 <script setup>
+
 import { reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -158,9 +159,11 @@ import BaseTextarea from "./base/BaseTextarea.vue";
 
 import jsonData from "../assets/country-iso-code-tw.json";
 
+
 import { auth, db, storage } from "../firebase-exports";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 
 defineRule("required", required);
 defineRule("maxFileSize", (value) => {
@@ -183,6 +186,7 @@ defineRule("validLinkedIn", (value) => {
 
 const store = useStore();
 const router = useRouter();
+
 
 async function fetchUserProfile(uid) {
   try {
