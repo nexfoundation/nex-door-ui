@@ -11,6 +11,14 @@
     "lint:fix": "eslint \"src/**/*.{js,vue}\" --fix"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-web": "^0.41.0",
+    "@opentelemetry/context-zone": "^1.26.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.53.0",
+    "@opentelemetry/instrumentation": "^0.53.0",
+    "@opentelemetry/sdk-trace-base": "^1.26.0",
+    "@opentelemetry/sdk-trace-web": "^1.26.0",
+    "@opentelemetry/semantic-conventions": "^1.27.0",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@vee-validate/rules": "^4.7.4",
     "autoprefixer": "10.4.13",
@@ -67,5 +75,13 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "description": "Set up the following environment variables in the `.env.{mode}` file by default it is `.env.development`:",
+  "main": "postcss.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

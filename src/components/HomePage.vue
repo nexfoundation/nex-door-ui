@@ -260,7 +260,9 @@ import BookingConfirmation from "./BookingConfirmation.vue";
 import BaseCountryWidget from "./base/BaseCountryWidget.vue";
 import { db } from "../firebase-exports";
 import { doc, getDoc, addDoc, collection, Timestamp } from "firebase/firestore";
+import { trace, SpanStatusCode } from "@opentelemetry/api";
 
+const tracer = trace.getTracer("nex-door-ui");
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
@@ -308,14 +310,18 @@ async function onSubmit(values) {
       `,
     createdAt: Timestamp.now(),
   };
-
+  const span = tracer.startSpan("submit-appointment-request");
   try {
     const appointmentRequestsRef = collection(db, "appointmentRequests");
     await addDoc(appointmentRequestsRef, appointmentRequest);
     document.getElementById("profile-modal").checked = false;
     document.getElementById("email-sent-modal").checked = true;
+    span.setStatus({ code: SpanStatusCode.OK });
   } catch (err) {
     state.errorMessage = err;
+    span.setStatus({ code: SpanStatusCode.ERROR, message: err.message });
+  } finally {
+    span.end();
   }
 }
 
