@@ -14,7 +14,6 @@
         <h1 class="leading-normal self-stretch text-lg leading-tight font-bold">
           在此進行註冊或編輯資料
         </h1>
-
         <h2 class="py-0 px-1 font-medium mt-5">1. 基本資料</h2>
         <BaseInput name="email" label="Email" disabled data-required />
         <BaseInput
@@ -119,6 +118,7 @@
             { value: true, text: '是' },
           ]"
         />
+        <TimeSlotSelector></TimeSlotSelector>
         <BaseInput
           id="timezone"
           label="所在時區"
@@ -127,7 +127,7 @@
         />
         <BaseInput
           id="availableTime"
-          label="開放預約時間"
+          label="預約時間註記"
           name="availableTime"
           placeholder="例：一月／週一到週五／16:00-19:00"
         />
@@ -145,6 +145,7 @@
 </template>
 
 <script setup>
+import TimeSlotSelector from "./ProfileFormTimeSlotSelector.vue";
 import { reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
