@@ -90,8 +90,8 @@ import { generateTimeSlots } from "/src/helpers/timeSlotUtils.js";
 export default {
   data() {
     return {
-      weekdays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      selectedWeekday: 0, // Default to Monday
+      weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Fridaay", "Saturday"],
+      selectedWeekday: 1, // Default to Monday
       startTime: "09:00", // Default start time
       endTime: "17:00", // Default end time (5:00 PM)
       selectedDuration: 60, // Default duration (in minutes)
