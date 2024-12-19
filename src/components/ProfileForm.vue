@@ -235,7 +235,7 @@ const title = userProfile.title;
 const availableTime = userProfile.availableTime;
 
 const formValues = {
-  acceptMentoring: acceptMentoring || "0",
+  acceptMentoring: acceptMentoring ?? true,
   email: email || "",
   name: name || "",
   picture: picture || "",
