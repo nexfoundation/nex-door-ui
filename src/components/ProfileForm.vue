@@ -118,7 +118,16 @@
             { value: true, text: '是' },
           ]"
         />
-        <TimeSlotSelector></TimeSlotSelector>
+        <TimeSlotSelector
+          :initial-weekday="calendarSelectedWeekday"
+          :initial-start-time="calendarStartTime"
+          :initial-end-time="calendarEndTime"
+          :initial-duration="calendarSelectedDuration"
+          @update:selected-weekday="updateWeekday"
+          @update:start-time="updateStartTime"
+          @update:end-time="updateEndTime"
+          @update:selected-duration="updateDuration"
+        ></TimeSlotSelector>
         <BaseInput
           id="timezone"
           label="所在時區"
@@ -233,6 +242,10 @@ const countryCode = userProfile.countryCode;
 const timezone = userProfile.timezone;
 const title = userProfile.title;
 const availableTime = userProfile.availableTime;
+const calendarSelectedWeekday = userProfile.calendarSelectedWeekday;
+const calendarStartTime = userProfile.calendarStartTime;
+const calendarEndTime = userProfile.calendarEndTime;
+const calendarSelectedDuration = userProfile.calendarSelectedDuration;
 
 const formValues = {
   acceptMentoring: acceptMentoring ?? true,
@@ -248,8 +261,24 @@ const formValues = {
   timezone: timezone || "",
   title: title || "",
   availableTime: availableTime || "",
+  selectedWeekday: calendarSelectedWeekday || 0,
+  startTime: calendarStartTime || "09:00",
+  endTime: calendarEndTime || "17:00",
+  selectedDuration: calendarSelectedDuration || 60,
 };
 
+function updateWeekday(value) {
+  formValues.selectedWeekday = value;
+}
+function updateStartTime(value) {
+  formValues.startTime = value;
+}
+function updateEndTime(value) {
+  formValues.endTime = value;
+}
+function updateDuration(value) {
+  formValues.selectedDuration = Number(value);
+}
 async function onSubmit(values) {
   const data = {
     name: values.name,
@@ -263,6 +292,10 @@ async function onSubmit(values) {
     tags: values.tags,
     availableTime: values.availableTime.trim(),
     timezone: values.timezone.trim(),
+    calendarSelectedWeekday: formValues.selectedWeekday,
+    calendarStartTime: formValues.startTime,
+    calendarEndTime: formValues.endTime,
+    calendarSelectedDuration: formValues.selectedDuration,
   };
 
   if (values.pictureFile) {

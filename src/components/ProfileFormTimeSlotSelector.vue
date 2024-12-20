@@ -88,15 +88,61 @@
 <script>
 import { generateTimeSlots } from "/src/helpers/timeSlotUtils.js";
 export default {
+  props: {
+    initialWeekday: {
+      type: Number,
+      default: 1, // Default to Monday
+    },
+    initialStartTime: {
+      type: String,
+      default: "09:00", // Default start time
+    },
+    initialEndTime: {
+      type: String,
+      default: "17:00", // Default end time (5:00 PM)
+    },
+    initialDuration: {
+      type: Number,
+      default: 60, // Default duration (in minutes)
+    },
+  },
+  emits: [
+    "update:selected-weekday",
+    "update:start-time",
+    "update:end-time",
+    "update:selected-duration",
+  ],
   data() {
     return {
-      weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Fridaay", "Saturday"],
-      selectedWeekday: 1, // Default to Monday
-      startTime: "09:00", // Default start time
-      endTime: "17:00", // Default end time (5:00 PM)
-      selectedDuration: 60, // Default duration (in minutes)
+      weekdays: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      selectedWeekday: this.initialWeekday, // Default to Monday
+      startTime: this.initialStartTime, // Default start time
+      endTime: this.initialEndTime, // Default end time (5:00 PM)
+      selectedDuration: this.initialDuration, // Default duration (in minutes)
       timeSlots: [],
     };
+  },
+  watch: {
+    selectedWeekday() {
+      this.$emit("update:selected-weekday", this.selectedWeekday);
+    },
+    startTime() {
+      this.$emit("update:start-time", this.startTime);
+    },
+    endTime() {
+      this.$emit("update:end-time", this.endTime);
+    },
+    selectedDuration() {
+      this.$emit("update:selected-duration", this.selectedDuration);
+    },
   },
   methods: {
     generateTimeSlots() {
