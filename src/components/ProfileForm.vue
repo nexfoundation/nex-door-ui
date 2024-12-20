@@ -14,7 +14,6 @@
         <h1 class="leading-normal self-stretch text-lg leading-tight font-bold">
           在此進行註冊或編輯資料
         </h1>
-
         <h2 class="py-0 px-1 font-medium mt-5">1. 基本資料</h2>
         <BaseInput name="email" label="Email" disabled data-required />
         <BaseInput
@@ -119,6 +118,16 @@
             { value: true, text: '是' },
           ]"
         />
+        <TimeSlotSelector
+          :initial-weekday="calendarSelectedWeekday"
+          :initial-start-time="calendarStartTime"
+          :initial-end-time="calendarEndTime"
+          :initial-duration="calendarSelectedDuration"
+          @update:selected-weekday="updateWeekday"
+          @update:start-time="updateStartTime"
+          @update:end-time="updateEndTime"
+          @update:selected-duration="updateDuration"
+        ></TimeSlotSelector>
         <BaseInput
           id="timezone"
           label="所在時區"
@@ -127,7 +136,7 @@
         />
         <BaseInput
           id="availableTime"
-          label="開放預約時間"
+          label="預約時間註記"
           name="availableTime"
           placeholder="例：一月／週一到週五／16:00-19:00"
         />
@@ -145,6 +154,7 @@
 </template>
 
 <script setup>
+import TimeSlotSelector from "./ProfileFormTimeSlotSelector.vue";
 import { reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -232,9 +242,13 @@ const countryCode = userProfile.countryCode;
 const timezone = userProfile.timezone;
 const title = userProfile.title;
 const availableTime = userProfile.availableTime;
+const calendarSelectedWeekday = userProfile.calendarSelectedWeekday;
+const calendarStartTime = userProfile.calendarStartTime;
+const calendarEndTime = userProfile.calendarEndTime;
+const calendarSelectedDuration = userProfile.calendarSelectedDuration;
 
 const formValues = {
-  acceptMentoring: acceptMentoring || "0",
+  acceptMentoring: acceptMentoring ?? true,
   email: email || "",
   name: name || "",
   picture: picture || "",
@@ -247,8 +261,24 @@ const formValues = {
   timezone: timezone || "",
   title: title || "",
   availableTime: availableTime || "",
+  selectedWeekday: calendarSelectedWeekday || 0,
+  startTime: calendarStartTime || "09:00",
+  endTime: calendarEndTime || "17:00",
+  selectedDuration: calendarSelectedDuration || 60,
 };
 
+function updateWeekday(value) {
+  formValues.selectedWeekday = value;
+}
+function updateStartTime(value) {
+  formValues.startTime = value;
+}
+function updateEndTime(value) {
+  formValues.endTime = value;
+}
+function updateDuration(value) {
+  formValues.selectedDuration = Number(value);
+}
 async function onSubmit(values) {
   const data = {
     name: values.name,
@@ -262,6 +292,10 @@ async function onSubmit(values) {
     tags: values.tags,
     availableTime: values.availableTime.trim(),
     timezone: values.timezone.trim(),
+    calendarSelectedWeekday: formValues.selectedWeekday,
+    calendarStartTime: formValues.startTime,
+    calendarEndTime: formValues.endTime,
+    calendarSelectedDuration: formValues.selectedDuration,
   };
 
   if (values.pictureFile) {
