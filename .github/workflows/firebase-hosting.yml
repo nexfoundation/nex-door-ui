@@ -1,0 +1,81 @@
+name: Deploy to Firebase Hosting
+
+on:
+  pull_request:
+    branches: [master, staging]
+  push:
+    branches: [master, staging]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  preview:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Write env file
+        env:
+          DOOR_ENV: ${{ vars.DOOR_ENV_STAGING }}
+        run: printf '%s\n' "$DOOR_ENV" > .env.staging.local
+      - run: npm run build:staging
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NEX_WORK_QA }}
+          projectId: nex-work-qa
+          target: door
+
+  staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Write env file
+        env:
+          DOOR_ENV: ${{ vars.DOOR_ENV_STAGING }}
+        run: printf '%s\n' "$DOOR_ENV" > .env.staging.local
+      - run: npm run build:staging
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NEX_WORK_QA }}
+          projectId: nex-work-qa
+          target: door
+          channelId: live
+
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Write env file
+        env:
+          DOOR_ENV: ${{ vars.DOOR_ENV_PRODUCTION }}
+        run: printf '%s\n' "$DOOR_ENV" > .env.production.local
+      - run: npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NEX_JOB_REFER }}
+          projectId: nex-job-refer
+          target: door
+          channelId: live

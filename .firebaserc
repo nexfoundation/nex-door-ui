@@ -1,0 +1,23 @@
+{
+  "projects": {
+    "default": "nex-work-qa",
+    "staging": "nex-work-qa",
+    "prod": "nex-job-refer"
+  },
+  "targets": {
+    "nex-work-qa": {
+      "hosting": {
+        "door": [
+          "nex-door-qa"
+        ]
+      }
+    },
+    "nex-job-refer": {
+      "hosting": {
+        "door": [
+          "nex-door"
+        ]
+      }
+    }
+  }
+}
