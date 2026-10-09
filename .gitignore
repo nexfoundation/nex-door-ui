@@ -38,3 +38,6 @@ build/
 dist/
 node_modules/
 awsconfiguration.json
+
+# Firebase CLI deploy cache
+.firebase/
