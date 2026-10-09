@@ -25,7 +25,9 @@ jobs:
       - name: Write env file
         env:
           DOOR_ENV: ${{ vars.DOOR_ENV_STAGING }}
-        run: printf '%s\n' "$DOOR_ENV" > .env.staging.local
+        run: |
+          [ -n "$DOOR_ENV" ] || { echo "::error::Repository variable DOOR_ENV_STAGING is not set"; exit 1; }
+          printf '%s\n' "$DOOR_ENV" > .env.staging.local
       - run: npm run build:staging
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -47,7 +49,9 @@ jobs:
       - name: Write env file
         env:
           DOOR_ENV: ${{ vars.DOOR_ENV_STAGING }}
-        run: printf '%s\n' "$DOOR_ENV" > .env.staging.local
+        run: |
+          [ -n "$DOOR_ENV" ] || { echo "::error::Repository variable DOOR_ENV_STAGING is not set"; exit 1; }
+          printf '%s\n' "$DOOR_ENV" > .env.staging.local
       - run: npm run build:staging
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -70,7 +74,9 @@ jobs:
       - name: Write env file
         env:
           DOOR_ENV: ${{ vars.DOOR_ENV_PRODUCTION }}
-        run: printf '%s\n' "$DOOR_ENV" > .env.production.local
+        run: |
+          [ -n "$DOOR_ENV" ] || { echo "::error::Repository variable DOOR_ENV_PRODUCTION is not set"; exit 1; }
+          printf '%s\n' "$DOOR_ENV" > .env.production.local
       - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
