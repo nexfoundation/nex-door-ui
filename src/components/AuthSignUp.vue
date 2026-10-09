@@ -16,7 +16,7 @@ import { reactive, ref } from "vue";
 import { useLoading } from "vue-loading-overlay";
 import { useI18n } from "../mixin/i18n";
 import AuthSignUpFormCredential from "./AuthSignUpFormCredential.vue";
-import { db, authForSignUp } from "../firebase-exports";
+import { dbForSignUp, authForSignUp } from "../firebase-exports";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -52,7 +52,7 @@ async function signUp(form) {
     );
     const user = userCredential.user;
     await Promise.all([
-      setDoc(doc(db, "userProfiles", user.uid), {
+      setDoc(doc(dbForSignUp, "userProfiles", user.uid), {
         uid: user.uid,
         email: user.email,
       }),

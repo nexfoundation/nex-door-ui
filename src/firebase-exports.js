@@ -18,6 +18,7 @@ const auth = getAuth(app);
 const appForSignUp = initializeApp(firebaseConfig, "appForSignUp");
 const authForSignUp = getAuth(appForSignUp);
 const db = getFirestore(app);
+const dbForSignUp = getFirestore(appForSignUp);
 const storage = getStorage(app);
 
-export { auth, authForSignUp, db, firebaseConfig, storage };
+export { auth, authForSignUp, db, dbForSignUp, firebaseConfig, storage };

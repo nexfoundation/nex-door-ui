@@ -304,6 +304,7 @@ async function onSubmit(values) {
   const appointmentRequest = {
     from: values.email,
     to: state.user.email,
+    toUid: state.user.uid,
     message: `
       ${values.note}
       我有空的時間是: ${values.availableTime}
@@ -337,7 +338,10 @@ async function fetchMentor(uid) {
       profileModalInput.value.checked = true;
     }
   } catch (err) {
-    console.debug(err);
+    // Non-mentor profiles are not readable; treat as not found.
+    if (err.code !== "permission-denied") {
+      console.debug(err);
+    }
   }
 }
 
