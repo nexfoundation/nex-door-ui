@@ -44,7 +44,7 @@ import HomeCard from "./HomeCard.vue";
 import HomeCardGridFilterTags from "./HomeCardGridFilterTags.vue";
 import HomeCardGridFilterCountry from "./HomeCardGridFilterCountry.vue";
 import { db } from "../firebase-exports";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const state = reactive({
   users: [],
@@ -56,7 +56,12 @@ const state = reactive({
 });
 
 try {
-  const snapshot = await getDocs(collection(db, "userProfiles"));
+  const snapshot = await getDocs(
+    query(
+      collection(db, "userProfiles"),
+      where(UserAttributes.ACCEPT_MENTORING, "==", true),
+    ),
+  );
   const users = snapshot.docs.map((doc) => doc.data());
   state.users = users;
 } catch (error) {

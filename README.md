@@ -1,7 +1,15 @@
 ## Deployment Steps
 ### Environment Variables for Firebase Configuration
 
-Set up the following environment variables in the `.env.{mode}` file by default it is `.env.development`:
+Vite loads Firebase configuration from per-mode env files (all git-ignored except the example):
+
+| Command | Mode | Env file |
+| --- | --- | --- |
+| `npm run dev` | development | `.env.development` |
+| `npm run build:staging` | staging (QA, `nex-work-qa`) | `.env.staging.local` |
+| `npm run build` | production (`nex-job-refer`) | `.env.production.local` |
+
+Copy `.env.production.example` and fill in:
 
 ```
 VITE_FIREBASE_API_KEY=
@@ -13,7 +21,34 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=
 VITE_FIREBASE_APP_ID=
 ```
 
-And there are two ways to deploy your web application using Docker.
+### Firebase Hosting
+
+The site is served by Firebase Hosting target `door` (`firebase.json`, `.firebaserc`):
+
+- staging: project `nex-work-qa`, site `nex-door-qa`
+- prod: project `nex-job-refer`, site `nex-door`
+
+Manual deploy (requires `firebase login` and access to the project):
+
+```
+npm run build:staging && firebase deploy --only hosting:door -P staging
+npm run build && firebase deploy --only hosting:door -P prod
+```
+
+CI (`.github/workflows/firebase-hosting.yml`):
+
+- pull request to `master`/`staging`: staging build deployed to a QA preview channel (skipped for forks)
+- push to `staging`: QA live
+- push to `master`: prod live
+
+Required repository settings:
+
+- Variables: `DOOR_ENV_STAGING`, `DOOR_ENV_PRODUCTION` — full multi-line `.env` content written to `.env.staging.local` / `.env.production.local` before building
+- Secrets: `FIREBASE_SERVICE_ACCOUNT_NEX_WORK_QA`, `FIREBASE_SERVICE_ACCOUNT_NEX_JOB_REFER` — service account JSON with Firebase Hosting Admin on each project
+
+### Local Development with Docker
+
+There are two ways to run the app locally using Docker.
 
 ### VS Code Remote Container
 
